@@ -5,7 +5,7 @@ interface LoadingSpinnerProps {
   text?: string;
 }
 
-export const LoadingSpinner = ({ size = 'md', text = 'Loading...' }: LoadingSpinnerProps) => {
+export const LoadingSpinner = ({ size = 'md', text = 'Loading Scooty...' }: LoadingSpinnerProps) => {
   const sizeClasses = {
     sm: 'w-8 h-8',
     md: 'w-16 h-16',
@@ -13,7 +13,7 @@ export const LoadingSpinner = ({ size = 'md', text = 'Loading...' }: LoadingSpin
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[200px] space-y-4">
+    <div className="flex flex-col items-center justify-center min-h-[200px] space-y-4 bg-white dark:bg-black">
       <motion.div
         className="relative"
         initial={{ opacity: 0, scale: 0.5 }}
@@ -21,20 +21,20 @@ export const LoadingSpinner = ({ size = 'md', text = 'Loading...' }: LoadingSpin
         transition={{ duration: 0.5 }}
       >
         <motion.div
-          className={`${sizeClasses[size]} border-4 border-blue-200 border-t-blue-600 rounded-full`}
+          className={`${sizeClasses[size]} border-4 border-gray-200 dark:border-secondary-800 border-t-primary-500 rounded-full`}
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
         />
         <motion.div
           className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${
             size === 'sm' ? 'w-4 h-4' : size === 'md' ? 'w-8 h-8' : 'w-12 h-12'
-          } bg-gradient-to-r from-blue-500 to-purple-500 rounded-full`}
+          } bg-primary-500 rounded-full`}
           animate={{ scale: [1, 1.2, 1] }}
           transition={{ duration: 2, repeat: Infinity }}
         />
       </motion.div>
-      <motion.p 
-        className="text-gray-600 dark:text-gray-300 font-medium"
+      <motion.p
+        className="text-gray-600 dark:text-gray-400 font-medium font-display"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}

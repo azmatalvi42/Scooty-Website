@@ -1,167 +1,255 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { 
-  Code, 
-  Smartphone, 
-  Cloud, 
-  Palette, 
-  Database, 
-  Shield,
+import { useState } from 'react';
+import {
+  Brain,
+  Route,
+  Settings,
+  Smartphone,
+  BarChart3,
+  ShieldCheck,
   ArrowRight,
   CheckCircle
 } from 'lucide-react';
 
-const services = [
+const solutions = [
   {
-    icon: Code,
-    title: 'Web Development',
-    description: 'Full-stack web applications with modern technologies',
-    features: ['React/Next.js', 'Node.js/Express', 'TypeScript', 'API Development'],
-    color: 'from-blue-500 to-cyan-500',
-    popular: true
+    icon: Brain,
+    title: 'Fleet Intelligence',
+    subtitle: 'AI-powered fleet management',
+    description:
+      'Our demand-prediction engine analyses historical ride data, weather, events, and real-time signals to position vehicles exactly where riders need them — before they even open the app.',
+    features: ['Demand Forecasting', 'Dynamic Pricing', 'Fleet Sizing', 'Zone Optimization'],
+    highlights: [
+      { value: '35%', label: 'Higher utilization' },
+      { value: '2x', label: 'Faster rebalancing' },
+    ],
+    image: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+  {
+    icon: Route,
+    title: 'Route Optimization',
+    subtitle: 'ML-driven routing & rebalancing',
+    description:
+      'Machine-learning models process live traffic, topography, and rider behaviour to suggest the fastest, safest routes while our rebalancing algorithm keeps supply and demand in sync across every zone.',
+    features: ['Real-time Routing', 'Rebalancing AI', 'Traffic Analysis', 'Multi-modal Paths'],
+    highlights: [
+      { value: '18%', label: 'Shorter trips' },
+      { value: '4min', label: 'Avg wait time' },
+    ],
+    image: 'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+  {
+    icon: Settings,
+    title: 'Smart Operations',
+    subtitle: 'Automated charging & dispatch',
+    description:
+      'From battery-swap scheduling to predictive maintenance alerts, our operations engine automates the tedious work so your team can focus on growth. Downtime drops, throughput rises.',
+    features: ['Auto-dispatch', 'Predictive Maintenance', 'Charging Optimization', 'Task Automation'],
+    highlights: [
+      { value: '60%', label: 'Less downtime' },
+      { value: '3x', label: 'Ops efficiency' },
+    ],
+    image: 'https://images.pexels.com/photos/3862132/pexels-photo-3862132.jpeg?auto=compress&cs=tinysrgb&w=800',
   },
   {
     icon: Smartphone,
-    title: 'Mobile Development',
-    description: 'Native and cross-platform mobile applications',
-    features: ['React Native', 'Flutter', 'iOS/Android', 'App Store Deployment'],
-    color: 'from-green-500 to-teal-500',
-    popular: false
+    title: 'Rider Experience',
+    subtitle: 'White-label mobile app',
+    description:
+      'A beautiful, white-label rider app with real-time GPS tracking, one-tap payments, ride history, and a loyalty programme that keeps riders coming back.',
+    features: ['Real-time Tracking', 'In-app Payments', 'Ride History', 'Loyalty Program'],
+    highlights: [
+      { value: '4.8★', label: 'App Store rating' },
+      { value: '72%', label: 'Rider retention' },
+    ],
+    image: 'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=800',
   },
   {
-    icon: Cloud,
-    title: 'Cloud Solutions',
-    description: 'Scalable cloud infrastructure and deployment',
-    features: ['AWS/Azure', 'Docker/Kubernetes', 'CI/CD Pipelines', 'Monitoring'],
-    color: 'from-purple-500 to-pink-500',
-    popular: false
+    icon: BarChart3,
+    title: 'City Dashboard',
+    subtitle: 'Analytics for city partners',
+    description:
+      'Give transportation departments full visibility with a real-time dashboard covering usage patterns, safety metrics, revenue, and custom KPIs — all exportable and API-ready.',
+    features: ['Usage Analytics', 'Safety Reports', 'Revenue Insights', 'Custom KPIs'],
+    highlights: [
+      { value: '50+', label: 'City partners' },
+      { value: 'Real-time', label: 'Data refresh' },
+    ],
+    image: 'https://images.pexels.com/photos/7947541/pexels-photo-7947541.jpeg?auto=compress&cs=tinysrgb&w=800',
   },
   {
-    icon: Palette,
-    title: 'UI/UX Design',
-    description: 'Beautiful and intuitive user interfaces',
-    features: ['Figma/Adobe XD', 'Prototyping', 'User Research', 'Design Systems'],
-    color: 'from-orange-500 to-red-500',
-    popular: false
-  },
-  {
-    icon: Database,
-    title: 'Database Design',
-    description: 'Efficient database architecture and optimization',
-    features: ['PostgreSQL/MongoDB', 'Database Modeling', 'Query Optimization', 'Data Migration'],
-    color: 'from-indigo-500 to-purple-500',
-    popular: false
-  },
-  {
-    icon: Shield,
-    title: 'Security & Performance',
-    description: 'Secure and high-performance applications',
-    features: ['Security Audits', 'Performance Optimization', 'SSL Implementation', 'Load Testing'],
-    color: 'from-teal-500 to-blue-500',
-    popular: false
+    icon: ShieldCheck,
+    title: 'Safety & Compliance',
+    subtitle: 'AI-powered safety monitoring',
+    description:
+      'Geofencing, speed governance, incident detection, and automated regulatory reports ensure you stay compliant in every market while keeping riders and pedestrians safe.',
+    features: ['Geofencing', 'Speed Limits', 'Incident Detection', 'Regulatory Reports'],
+    highlights: [
+      { value: '40%', label: 'Fewer incidents' },
+      { value: '100%', label: 'Compliance rate' },
+    ],
+    image: 'https://images.pexels.com/photos/3184639/pexels-photo-3184639.jpeg?auto=compress&cs=tinysrgb&w=800',
   },
 ];
 
 export const Services = () => {
+  const [active, setActive] = useState(0);
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
 
+  const current = solutions[active];
+
   return (
-    <section id="services" ref={ref} className="py-20 bg-white dark:bg-gray-900">
+    <section id="services" ref={ref} className="py-20 bg-white dark:bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            My <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Services</span>
+          <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4">
+            Our <span className="text-primary-500">Solutions</span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Comprehensive solutions to bring your digital vision to life with cutting-edge technology 
-            and best practices.
+          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+            End-to-end technology platform powering the next generation of urban micro-mobility.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 50 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
-              className="group relative"
-            >
-              <div className="relative bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-8 border border-white/20 dark:border-gray-700/20 hover:shadow-xl transition-all duration-300 overflow-hidden">
-                {service.popular && (
-                  <div className="absolute top-4 right-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-3 py-1 rounded-full text-xs font-medium">
-                    Popular
+        {/* Icon navbar */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="flex justify-center mb-12"
+        >
+          <div className="inline-flex flex-wrap justify-center gap-2 sm:gap-3 bg-gray-100 dark:bg-navy-800 backdrop-blur-sm rounded-2xl p-2 border border-gray-200 dark:border-white/10">
+            {solutions.map((solution, index) => {
+              const isActive = index === active;
+              return (
+                <button
+                  key={index}
+                  onClick={() => setActive(index)}
+                  className={`relative flex flex-col items-center gap-1 px-4 py-3 rounded-xl text-xs font-medium transition-all duration-300 min-w-[80px] ${
+                    isActive
+                      ? 'bg-white dark:bg-black shadow-lg text-black dark:text-primary-400'
+                      : 'text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-white/50 dark:hover:bg-black/50'
+                  }`}
+                >
+                  <div
+                    className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                      isActive
+                        ? 'bg-primary-500 text-black scale-110'
+                        : 'bg-gray-200 dark:bg-secondary-800 text-gray-500 dark:text-gray-500'
+                    }`}
+                  >
+                    <solution.icon className="w-5 h-5" />
                   </div>
-                )}
-                
-                <div className="relative z-10">
-                  <div className={`w-16 h-16 bg-gradient-to-r ${service.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                    <service.icon className="w-8 h-8 text-white" />
+                  <span className="hidden sm:block whitespace-nowrap">{solution.title}</span>
+
+                  {isActive && (
+                    <motion.div
+                      layoutId="active-dot"
+                      className="sm:hidden w-1.5 h-1.5 rounded-full bg-primary-500"
+                    />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </motion.div>
+
+        {/* Slide content */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={active}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+          >
+            <div className="rounded-3xl overflow-hidden border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-navy-800 backdrop-blur-sm">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                {/* Left — Text */}
+                <div className="p-8 md:p-12 flex flex-col justify-center">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-6 w-fit bg-primary-500 text-black">
+                    <current.icon className="w-3.5 h-3.5" />
+                    {current.subtitle}
                   </div>
 
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                    {service.title}
+                  <h3 className="text-3xl md:text-4xl font-bold font-display text-gray-900 dark:text-white mb-4">
+                    {current.title}
                   </h3>
-                  
-                  <p className="text-gray-600 dark:text-gray-300 mb-6">
-                    {service.description}
+
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
+                    {current.description}
                   </p>
 
-                  <div className="space-y-2 mb-6">
-                    {service.features.map((feature, featureIndex) => (
-                      <div key={featureIndex} className="flex items-center space-x-2">
-                        <CheckCircle className="w-4 h-4 text-green-500" />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">{feature}</span>
+                  <div className="grid grid-cols-2 gap-3 mb-8">
+                    {current.features.map((feature, i) => (
+                      <div key={i} className="flex items-center space-x-2">
+                        <CheckCircle className="w-4 h-4 text-primary-500 flex-shrink-0" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">{feature}</span>
                       </div>
                     ))}
                   </div>
 
-                  <button className="group/btn w-full flex items-center justify-center space-x-2 py-3 px-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-medium hover:from-purple-600 hover:to-teal-600 transition-all duration-300">
+                  <div className="flex gap-6 mb-8">
+                    {current.highlights.map((h, i) => (
+                      <div key={i}>
+                        <div className="text-2xl font-bold font-display text-primary-500">
+                          {h.value}
+                        </div>
+                        <div className="text-xs text-gray-500">{h.label}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <motion.button
+                    onClick={() =>
+                      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+                    }
+                    className="group inline-flex items-center space-x-2 px-6 py-3 bg-primary-500 text-black rounded-full font-semibold hover:bg-primary-400 transition-all duration-300 w-fit"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <span>Learn More</span>
-                    <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                  </button>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </motion.button>
                 </div>
 
-                {/* Hover effect background */}
-                <div className={`absolute inset-0 bg-gradient-to-r ${service.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300 rounded-2xl`} />
+                {/* Right — Image */}
+                <div className="relative min-h-[300px] lg:min-h-0">
+                  <img
+                    src={current.image}
+                    alt={current.title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/40 dark:from-navy-800/60 to-transparent lg:from-transparent" />
+                </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
+            </div>
 
-        {/* CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-16 text-center"
-        >
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl p-8 border border-blue-200/20 dark:border-blue-700/20">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              Ready to Start Your Project?
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
-              Let's discuss how I can help bring your ideas to life with the perfect combination 
-              of technology and creativity.
-            </p>
-            <motion.button
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-medium hover:from-purple-600 hover:to-teal-600 transition-all duration-300"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Get Free Consultation
-            </motion.button>
-          </div>
-        </motion.div>
+            {/* Slide indicator dots */}
+            <div className="flex justify-center gap-2 mt-6">
+              {solutions.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setActive(index)}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    index === active
+                      ? 'w-8 bg-primary-500'
+                      : 'w-1.5 bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600'
+                  }`}
+                />
+              ))}
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );

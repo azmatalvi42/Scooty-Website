@@ -1,87 +1,81 @@
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useAnimationFrame } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Github, Linkedin, Mail, Users, Briefcase } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { Linkedin, Mail, Quote } from 'lucide-react';
 
-const openPositions = [
+const partnerQuotes = [
   {
-    title: 'Software Engineer',
-    type: 'Full-time',
-    location: 'Remote',
-    experience: '2-4 years',
-    skills: ['JavaScript', 'React', 'Node.js', 'Python'],
-    urgent: true
+    quote: 'Scooty\'s AI platform cut our fleet rebalancing costs in half within the first quarter. The data insights alone were worth the partnership.',
+    name: 'Elena Vasquez',
+    role: 'Director of Transportation',
+    org: 'City of San Francisco',
+    avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=300',
   },
   {
-    title: 'Frontend Engineer',
-    type: 'Full-time',
-    location: 'Remote',
-    experience: '3-5 years',
-    skills: ['React', 'Next.js', 'TailwindCSS', 'TypeScript'],
-    urgent: false
+    quote: 'We evaluated six vendors. Scooty was the only platform that could handle real-time demand prediction at our scale — across 12 districts simultaneously.',
+    name: 'Thomas Brandt',
+    role: 'Head of Urban Mobility',
+    org: 'Berlin Senate Department',
+    avatar: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=300',
   },
   {
-    title: 'Backend Engineer',
-    type: 'Full-time',
-    location: 'Remote',
-    experience: '3-6 years',
-    skills: ['Node.js', 'Express/NestJS', 'MongoDB', 'PostgreSQL'],
-    urgent: false
+    quote: 'Rider satisfaction jumped 34% after switching to Scooty. The app experience is seamless and our city dashboard gives us complete visibility.',
+    name: 'Priya Nair',
+    role: 'Transit Innovation Lead',
+    org: 'Austin Metro Authority',
+    avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=300',
   },
   {
-    title: 'Full Stack Developer',
-    type: 'Contract',
-    location: 'Remote',
-    experience: '4-7 years',
-    skills: ['React', 'Node.js', 'AWS', 'Docker'],
-    urgent: true
+    quote: 'The predictive maintenance module alone reduced our vehicle downtime by 60%. Scooty doesn\'t just manage fleets — it transforms operations.',
+    name: 'James Okoro',
+    role: 'COO',
+    org: 'GreenWheel Mobility',
+    avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=300',
   },
   {
-    title: 'UI/UX Designer',
-    type: 'Full-time',
-    location: 'Remote',
-    experience: '2-5 years',
-    skills: ['Figma', 'Adobe XD', 'Prototyping', 'User Research'],
-    urgent: false
+    quote: 'As a city of 4 million people, we needed a partner who understood compliance at scale. Scooty made our regulatory reporting fully automated.',
+    name: 'Marie Dupont',
+    role: 'Deputy Mayor of Transport',
+    org: 'City of Lyon',
+    avatar: 'https://images.pexels.com/photos/712513/pexels-photo-712513.jpeg?auto=compress&cs=tinysrgb&w=300',
   },
   {
-    title: 'DevOps Engineer',
-    type: 'Full-time',
-    location: 'Remote',
-    experience: '3-6 years',
-    skills: ['CI/CD', 'Docker', 'Kubernetes', 'AWS'],
-    urgent: false
-  }
+    quote: 'From onboarding to launch in 6 weeks — Scooty\'s team moved faster than any technology partner we\'ve worked with. Truly world-class execution.',
+    name: 'Carlos Medina',
+    role: 'VP Operations',
+    org: 'RideFlow LATAM',
+    avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=300',
+  },
 ];
 
 const teamMembers = [
   {
-    name: 'Hazrat Ali',
-    role: 'Lead Developer & Founder',
+    name: 'Amir Khalid',
+    role: 'CEO & Co-Founder',
     avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=300',
-    bio: 'Full-stack developer with 5+ years of experience in building scalable applications.',
-    skills: ['React', 'Node.js', 'AWS', 'TypeScript'],
+    bio: 'Former transit tech lead at Google. 10+ years building intelligent transportation systems.',
+    skills: ['Strategy', 'AI/ML', 'Urban Planning', 'Fundraising'],
     linkedin: 'https://linkedin.com',
-    github: 'https://github.com'
   },
   {
-    name: 'Sarah Johnson',
-    role: 'Senior Frontend Developer',
+    name: 'Sarah Chen',
+    role: 'CTO',
     avatar: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=300',
-    bio: 'Expert in React and modern frontend technologies with a passion for user experience.',
-    skills: ['React', 'Vue.js', 'CSS', 'UX Design'],
+    bio: 'PhD in ML from Stanford. Previously built autonomous systems at Waymo and Cruise.',
+    skills: ['Machine Learning', 'Systems Architecture', 'Robotics', 'Edge Computing'],
     linkedin: 'https://linkedin.com',
-    github: 'https://github.com'
   },
   {
-    name: 'Michael Chen',
-    role: 'Backend Architect',
+    name: 'Marcus Rivera',
+    role: 'VP Engineering',
     avatar: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=300',
-    bio: 'Specialized in building robust backend systems and cloud infrastructure.',
-    skills: ['Python', 'Django', 'PostgreSQL', 'Docker'],
+    bio: 'Scaled engineering teams at Uber and Lime. Expert in real-time distributed systems.',
+    skills: ['Platform Engineering', 'IoT', 'Cloud Infra', 'Team Leadership'],
     linkedin: 'https://linkedin.com',
-    github: 'https://github.com'
-  }
+  },
 ];
+
+const scrollQuotes = [...partnerQuotes, ...partnerQuotes];
 
 export const Team = () => {
   const [ref, inView] = useInView({
@@ -89,25 +83,39 @@ export const Team = () => {
     threshold: 0.1,
   });
 
+  const CARD_WIDTH = 400;
+  const totalWidth = partnerQuotes.length * CARD_WIDTH;
+  const x = useMotionValue(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useAnimationFrame(() => {
+    if (isPaused) return;
+    const current = x.get();
+    const next = current - 0.5;
+    x.set(next <= -totalWidth ? 0 : next);
+  });
+
   return (
-    <section id="team" ref={ref} className="py-20 bg-white dark:bg-gray-900">
+    <section id="careers" ref={ref} className="py-20 bg-gray-50 dark:bg-navy-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section heading */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            Our <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Team</span>
+          <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4">
+            Meet the <span className="text-primary-500">Team</span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Meet the talented individuals who make our projects come to life and help us deliver exceptional results.
+          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+            The people building the operating system for micro-mobility.
           </p>
         </motion.div>
 
-        {/* Current Team Members */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+        {/* Leadership Team */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
           {teamMembers.map((member, index) => (
             <motion.div
               key={index}
@@ -116,26 +124,20 @@ export const Team = () => {
               transition={{ duration: 0.8, delay: index * 0.1 }}
               className="group"
             >
-              <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 border border-white/20 dark:border-gray-700/20 hover:shadow-xl transition-all duration-300">
+              <div className="bg-white dark:bg-black/60 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 dark:border-white/10 hover:shadow-xl hover:border-primary-500/30 transition-all duration-300">
                 <div className="text-center mb-6">
-                  <div className="relative inline-block">
-                    <img
-                      src={member.avatar}
-                      alt={member.name}
-                      className="w-24 h-24 rounded-full mx-auto mb-4 object-cover ring-4 ring-blue-100 dark:ring-blue-900/30 group-hover:ring-blue-200 dark:group-hover:ring-blue-800/50 transition-all duration-300"
-                    />
-                    <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center">
-                      <Users className="w-4 h-4 text-white" />
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                  <img
+                    src={member.avatar}
+                    alt={member.name}
+                    className="w-24 h-24 rounded-full mx-auto mb-4 object-cover ring-4 ring-gray-100 dark:ring-secondary-800 group-hover:ring-primary-500/30 transition-all duration-300"
+                  />
+                  <h3 className="text-xl font-bold font-display text-gray-900 dark:text-white mb-1">
                     {member.name}
                   </h3>
-                  <p className="text-blue-600 dark:text-blue-400 font-medium mb-3">
+                  <p className="text-primary-600 dark:text-primary-400 font-medium mb-3">
                     {member.role}
                   </p>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
                     {member.bio}
                   </p>
                 </div>
@@ -144,7 +146,7 @@ export const Team = () => {
                   {member.skills.map((skill, skillIndex) => (
                     <span
                       key={skillIndex}
-                      className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs font-medium"
+                      className="px-2 py-1 bg-primary-500/10 text-primary-700 dark:text-primary-400 rounded text-xs font-medium border border-primary-500/20"
                     >
                       {skill}
                     </span>
@@ -154,19 +156,13 @@ export const Team = () => {
                 <div className="flex justify-center space-x-4">
                   <a
                     href={member.linkedin}
-                    className="p-2 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    className="p-2 text-gray-400 hover:text-primary-500 transition-colors"
                   >
                     <Linkedin className="w-5 h-5" />
                   </a>
                   <a
-                    href={member.github}
-                    className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-                  >
-                    <Github className="w-5 h-5" />
-                  </a>
-                  <a
-                    href="mailto:contact@example.com"
-                    className="p-2 text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+                    href="mailto:careers@scooty.ai"
+                    className="p-2 text-gray-400 hover:text-primary-500 transition-colors"
                   >
                     <Mail className="w-5 h-5" />
                   </a>
@@ -176,97 +172,60 @@ export const Team = () => {
           ))}
         </div>
 
-        {/* Open Positions */}
+        {/* Partner quotes */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="mb-16"
         >
           <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center">
-              <Briefcase className="w-8 h-8 mr-3 text-blue-600 dark:text-blue-400" />
-              Open Positions
+            <h3 className="text-3xl md:text-4xl font-bold font-display text-gray-900 dark:text-white mb-3">
+              Global Scale, <span className="text-primary-500">Local Impact</span>
             </h3>
-            <p className="text-lg text-gray-600 dark:text-gray-300">
-              Join our team and help us build the future of technology
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Hear from the city leaders and operators who partner with Scooty every day.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {openPositions.map((position, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.6 + index * 0.1 }}
-                className="group relative"
-              >
-                <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-6 border border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300">
-                  {position.urgent && (
-                    <div className="absolute top-4 right-4 bg-gradient-to-r from-red-500 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-medium">
-                      Urgent
+          {/* Scrolling track */}
+          <div
+            className="overflow-hidden"
+            ref={containerRef}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            <motion.div className="flex gap-6" style={{ x }}>
+              {scrollQuotes.map((q, index) => (
+                <div
+                  key={index}
+                  className="flex-shrink-0 w-[360px] sm:w-[380px]"
+                >
+                  <div className="bg-white dark:bg-black/70 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 dark:border-white/10 h-full flex flex-col">
+                    <Quote className="w-8 h-8 text-primary-500/20 mb-4 flex-shrink-0" />
+
+                    <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-6 flex-1">
+                      "{q.quote}"
+                    </p>
+
+                    <div className="flex items-center gap-3 pt-4 border-t border-gray-200 dark:border-white/10">
+                      <img
+                        src={q.avatar}
+                        alt={q.name}
+                        className="w-10 h-10 rounded-full object-cover ring-2 ring-gray-100 dark:ring-secondary-800"
+                      />
+                      <div>
+                        <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                          {q.name}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {q.role}, {q.org}
+                        </p>
+                      </div>
                     </div>
-                  )}
-                  
-                  <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                    {position.title}
-                  </h4>
-                  
-                  <div className="flex items-center space-x-4 mb-3 text-sm text-gray-600 dark:text-gray-400">
-                    <span className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-1 rounded">
-                      {position.type}
-                    </span>
-                    <span>{position.location}</span>
-                    <span>{position.experience}</span>
                   </div>
-
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {position.skills.map((skill, skillIndex) => (
-                      <span
-                        key={skillIndex}
-                        className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs font-medium"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-
-                  <button
-                    onClick={() => document.getElementById('auth')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="w-full py-2 px-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-purple-600 hover:to-teal-600 transition-all duration-300"
-                  >
-                    Apply Now
-                  </button>
                 </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Join Team CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="text-center"
-        >
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl p-8 border border-blue-200/20 dark:border-blue-700/20">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              Don't See Your Role?
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
-              We're always looking for talented individuals to join our team. Send us your resume 
-              and let's discuss how you can contribute to our mission.
-            </p>
-            <motion.button
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-medium hover:from-purple-600 hover:to-teal-600 transition-all duration-300"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Get In Touch
-            </motion.button>
+              ))}
+            </motion.div>
           </div>
         </motion.div>
       </div>

@@ -11,20 +11,17 @@ import { About } from './components/sections/About';
 import { Services } from './components/sections/Services';
 import { Projects } from './components/sections/Projects';
 import { Team } from './components/sections/Team';
-import { Auth } from './components/sections/Auth';
 import { Contact } from './components/sections/Contact';
 import { ChatbotDemo } from './components/sections/ChatbotDemo';
-import { ProjectDetail } from './components/projects/ProjectDetail';
 
 const HomePage = () => (
   <>
     <Hero />
-    <About />
     <Services />
-    <Projects />
-    <Team />
     <ChatbotDemo />
-    <Auth />
+    <Projects />
+    <About />
+    <Team />
     <Contact />
   </>
 );
@@ -33,7 +30,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading time
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 2000);
@@ -48,18 +44,17 @@ function App() {
   return (
     <ErrorBoundary>
       <Router>
-        <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+        <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
           <CustomCursor />
           <ParticleBackground />
-          
+
           <Navbar />
-          
+
           <main>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/project/:id" element={<ProjectDetail />} />
               <Route path="*" element={
-                <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20 flex items-center justify-center">
+                <div className="min-h-screen bg-gray-50 dark:bg-black pt-20 flex items-center justify-center">
                   <div className="text-center">
                     <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
                       404 - Page Not Found
@@ -69,7 +64,7 @@ function App() {
                     </p>
                     <a
                       href="/"
-                      className="inline-flex items-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      className="inline-flex items-center space-x-2 px-6 py-3 bg-primary-500 text-black rounded-lg hover:bg-primary-400 transition-colors font-semibold"
                     >
                       <span>Go Home</span>
                     </a>
@@ -78,7 +73,7 @@ function App() {
               } />
             </Routes>
           </main>
-          
+
           <Footer />
         </div>
       </Router>
