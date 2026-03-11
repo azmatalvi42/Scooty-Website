@@ -12,21 +12,21 @@ const impactStats = [
 
 const caseStudies = [
   {
-    city: 'San Francisco, CA',
+    city: 'Brampton, ON',
     image: 'https://images.pexels.com/photos/1006965/pexels-photo-1006965.jpeg?auto=compress&cs=tinysrgb&w=600',
     rides: '2.1M rides served',
     emissions: '4,200 tons CO2 saved',
     highlight: 'Reduced average commute time by 18%',
   },
   {
-    city: 'Austin, TX',
+    city: 'Barrie, ON',
     image: 'https://images.pexels.com/photos/2614818/pexels-photo-2614818.jpeg?auto=compress&cs=tinysrgb&w=600',
     rides: '1.5M rides served',
     emissions: '3,100 tons CO2 saved',
     highlight: 'Fleet utilization increased by 35%',
   },
   {
-    city: 'Berlin, Germany',
+    city: 'Burlington, ON',
     image: 'https://images.pexels.com/photos/1128408/pexels-photo-1128408.jpeg?auto=compress&cs=tinysrgb&w=600',
     rides: '3.4M rides served',
     emissions: '6,800 tons CO2 saved',

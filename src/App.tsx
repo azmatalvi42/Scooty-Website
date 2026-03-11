@@ -13,6 +13,11 @@ import { Projects } from './components/sections/Projects';
 import { Team } from './components/sections/Team';
 import { Contact } from './components/sections/Contact';
 import { ChatbotDemo } from './components/sections/ChatbotDemo';
+import { RidersPage } from './pages/RidersPage';
+import { RiderDetailPage } from './pages/RiderDetailPage';
+import { PartnersPage } from './pages/PartnersPage';
+import { TechnologyPage } from './pages/TechnologyPage';
+import { CityPage } from './pages/CityPage';
 
 const HomePage = () => (
   <>
@@ -53,6 +58,11 @@ function App() {
           <main>
             <Routes>
               <Route path="/" element={<HomePage />} />
+              <Route path="/riders" element={<RidersPage />} />
+              <Route path="/riders/:topic" element={<RiderDetailPage />} />
+              <Route path="/partners" element={<PartnersPage />} />
+              <Route path="/partners/:city" element={<CityPage />} />
+              <Route path="/technology" element={<TechnologyPage />} />
               <Route path="*" element={
                 <div className="min-h-screen bg-gray-50 dark:bg-black pt-20 flex items-center justify-center">
                   <div className="text-center">

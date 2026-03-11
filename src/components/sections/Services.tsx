@@ -2,63 +2,24 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useState } from 'react';
 import {
-  Brain,
-  Route,
-  Settings,
-  Smartphone,
-  BarChart3,
-  ShieldCheck,
+  Bike,
+  Handshake,
+  Info,
+  Leaf,
+  Share2,
   ArrowRight,
-  CheckCircle
+  CheckCircle,
+  Code
 } from 'lucide-react';
 
 const solutions = [
   {
-    icon: Brain,
-    title: 'Fleet Intelligence',
-    subtitle: 'AI-powered fleet management',
+    icon: Code,
+    title: 'Technology',
+    subtitle: 'Built around the rider experience',
     description:
-      'Our demand-prediction engine analyses historical ride data, weather, events, and real-time signals to position vehicles exactly where riders need them — before they even open the app.',
-    features: ['Demand Forecasting', 'Dynamic Pricing', 'Fleet Sizing', 'Zone Optimization'],
-    highlights: [
-      { value: '35%', label: 'Higher utilization' },
-      { value: '2x', label: 'Faster rebalancing' },
-    ],
-    image: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800',
-  },
-  {
-    icon: Route,
-    title: 'Route Optimization',
-    subtitle: 'ML-driven routing & rebalancing',
-    description:
-      'Machine-learning models process live traffic, topography, and rider behaviour to suggest the fastest, safest routes while our rebalancing algorithm keeps supply and demand in sync across every zone.',
-    features: ['Real-time Routing', 'Rebalancing AI', 'Traffic Analysis', 'Multi-modal Paths'],
-    highlights: [
-      { value: '18%', label: 'Shorter trips' },
-      { value: '4min', label: 'Avg wait time' },
-    ],
-    image: 'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800',
-  },
-  {
-    icon: Settings,
-    title: 'Smart Operations',
-    subtitle: 'Automated charging & dispatch',
-    description:
-      'From battery-swap scheduling to predictive maintenance alerts, our operations engine automates the tedious work so your team can focus on growth. Downtime drops, throughput rises.',
-    features: ['Auto-dispatch', 'Predictive Maintenance', 'Charging Optimization', 'Task Automation'],
-    highlights: [
-      { value: '60%', label: 'Less downtime' },
-      { value: '3x', label: 'Ops efficiency' },
-    ],
-    image: 'https://images.pexels.com/photos/3862132/pexels-photo-3862132.jpeg?auto=compress&cs=tinysrgb&w=800',
-  },
-  {
-    icon: Smartphone,
-    title: 'Rider Experience',
-    subtitle: 'White-label mobile app',
-    description:
-      'A beautiful, white-label rider app with real-time GPS tracking, one-tap payments, ride history, and a loyalty programme that keeps riders coming back.',
-    features: ['Real-time Tracking', 'In-app Payments', 'Ride History', 'Loyalty Program'],
+      'A dedicated section speaking directly to everyday riders — how to get started, what makes Scooty different, and why millions choose us for their daily commute.',
+    features: ['App Download CTA', 'Ride Benefits', 'Safety Features', 'Rewards Program'],
     highlights: [
       { value: '4.8★', label: 'App Store rating' },
       { value: '72%', label: 'Rider retention' },
@@ -66,30 +27,69 @@ const solutions = [
     image: 'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=800',
   },
   {
-    icon: BarChart3,
-    title: 'City Dashboard',
-    subtitle: 'Analytics for city partners',
+    icon: Bike,
+    title: 'Riders',
+    subtitle: 'Built around the rider experience',
     description:
-      'Give transportation departments full visibility with a real-time dashboard covering usage patterns, safety metrics, revenue, and custom KPIs — all exportable and API-ready.',
-    features: ['Usage Analytics', 'Safety Reports', 'Revenue Insights', 'Custom KPIs'],
+      'A dedicated section speaking directly to everyday riders — how to get started, what makes Scooty different, and why millions choose us for their daily commute.',
+    features: ['App Download CTA', 'Ride Benefits', 'Safety Features', 'Rewards Program'],
     highlights: [
-      { value: '50+', label: 'City partners' },
-      { value: 'Real-time', label: 'Data refresh' },
+      { value: '4.8★', label: 'App Store rating' },
+      { value: '72%', label: 'Rider retention' },
     ],
-    image: 'https://images.pexels.com/photos/7947541/pexels-photo-7947541.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: 'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=800',
   },
   {
-    icon: ShieldCheck,
-    title: 'Safety & Compliance',
-    subtitle: 'AI-powered safety monitoring',
+    icon: Handshake,
+    title: 'Our Partners',
+    subtitle: 'Why cities and operators choose us',
     description:
-      'Geofencing, speed governance, incident detection, and automated regulatory reports ensure you stay compliant in every market while keeping riders and pedestrians safe.',
-    features: ['Geofencing', 'Speed Limits', 'Incident Detection', 'Regulatory Reports'],
+      'A section tailored to city officials, fleet operators, and developers — showcasing our partnership models, cost outcomes, and the data-driven tools we put in their hands.',
+    features: ['Partnership Tiers', 'ROI Calculator', 'City Dashboard', 'Operator Tools'],
     highlights: [
-      { value: '40%', label: 'Fewer incidents' },
-      { value: '100%', label: 'Compliance rate' },
+      { value: '40%', label: 'Cost reduction' },
+      { value: '50+', label: 'City partners' },
+    ],
+    image: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+  {
+    icon: Info,
+    title: 'About SCOOTY',
+    subtitle: 'Our mission and story',
+    description:
+      'Who we are, why we started, and where we\'re headed. This section humanises the brand — sharing our founding principles, our team, and our vision for the future of urban transport.',
+    features: ['Founding Story', 'Mission Statement', 'Core Values', 'Team Intro'],
+    highlights: [
+      { value: '2019', label: 'Founded' },
+      { value: '3', label: 'Continents active' },
     ],
     image: 'https://images.pexels.com/photos/3184639/pexels-photo-3184639.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+  {
+    icon: Leaf,
+    title: 'Our Impact',
+    subtitle: 'Measuring what matters',
+    description:
+      'Scooty exists to make cities cleaner. This section tracks our environmental footprint — CO₂ avoided, car trips replaced, and the sustainability milestones we\'ve hit along the way.',
+    features: ['CO₂ Avoided', 'Car Trips Replaced', 'Sustainability Goals', 'City-level Data'],
+    highlights: [
+      { value: '12k t', label: 'CO₂ avoided' },
+      { value: '4M+', label: 'Car trips replaced' },
+    ],
+    image: 'https://images.pexels.com/photos/3862132/pexels-photo-3862132.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+  {
+    icon: Share2,
+    title: 'Social Media',
+    subtitle: 'Community, proof, and connection',
+    description:
+      'Real posts, real riders, real cities. Our social feed brings the Scooty community to life — showing authentic moments from the streets and keeping the brand current and relatable.',
+    features: ['Live Feed', 'User Content', 'Brand Moments', 'Community Highlights'],
+    highlights: [
+      { value: '280k', label: 'Followers' },
+      { value: '18%', label: 'Avg engagement' },
+    ],
+    image: 'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800',
   },
 ];
 
@@ -127,14 +127,14 @@ export const Services = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="flex justify-center mb-12"
         >
-          <div className="inline-flex flex-wrap justify-center gap-2 sm:gap-3 bg-gray-100 dark:bg-navy-800 backdrop-blur-sm rounded-2xl p-2 border border-gray-200 dark:border-white/10">
+          <div className="inline-flex flex-wrap justify-center gap-2 sm:gap-3 bg-gray-100 dark:bg-navy-800 backdrop-blur-sm rounded-2xl p-2 border border-gray-200 dark:border-white/10 max-w-full">
             {solutions.map((solution, index) => {
               const isActive = index === active;
               return (
                 <button
                   key={index}
                   onClick={() => setActive(index)}
-                  className={`relative flex flex-col items-center gap-1 px-4 py-3 rounded-xl text-xs font-medium transition-all duration-300 min-w-[80px] ${
+                  className={`relative flex flex-col items-center gap-1 px-3 py-3 rounded-xl text-xs font-medium transition-all duration-300 min-w-[72px] ${
                     isActive
                       ? 'bg-white dark:bg-black shadow-lg text-black dark:text-primary-400'
                       : 'text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-white/50 dark:hover:bg-black/50'

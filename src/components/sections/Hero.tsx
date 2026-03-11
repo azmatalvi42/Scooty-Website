@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowDown, ArrowRight } from 'lucide-react';
+import { ArrowRight, ArrowDown } from 'lucide-react';
 
 const stats = [
   { number: '50+', label: 'Cities' },
@@ -11,36 +11,57 @@ const stats = [
 export const Hero = () => {
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-black dark:via-navy-800 dark:to-black" />
 
-      {/* Subtle grid */}
-      <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.04]"
+      {/* ── Video background ── */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+        poster="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=1920"
+      >
+        {/* Primary — close-up scooter riding */}
+        <source
+          src="https://videos.pexels.com/video-files/5321794/5321794-hd_1920_1080_25fps.mp4"
+          type="video/mp4"
+        />
+        {/* Fallback */}
+        <source
+          src="https://videos.pexels.com/video-files/1851190/1851190-hd_1920_1080_25fps.mp4"
+          type="video/mp4"
+        />
+      </video>
+
+      {/* ── Dark overlay with bottom gradient pull ── */}
+      <div className="absolute inset-0 bg-black/60" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+
+      {/* ── Subtle yellow grid — sits on top of video ── */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
         style={{
-          backgroundImage: 'linear-gradient(rgba(234,179,8,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(234,179,8,0.4) 1px, transparent 1px)',
+          backgroundImage:
+            'linear-gradient(rgba(234,179,8,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(234,179,8,0.6) 1px, transparent 1px)',
           backgroundSize: '60px 60px',
         }}
       />
 
-      {/* Floating orbs */}
-      <div className="absolute inset-0">
+      {/* ── Subtle yellow glow orbs ── */}
+      <div className="absolute inset-0 pointer-events-none">
         <motion.div
-          className="absolute top-20 left-10 w-32 h-32 bg-primary-500/20 rounded-full blur-xl"
-          animate={{ y: [0, -20, 0], rotate: [0, 180, 360] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-24 left-12 w-40 h-40 bg-primary-500/10 rounded-full blur-3xl"
+          animate={{ y: [0, -20, 0] }}
+          transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
-          className="absolute top-40 right-20 w-24 h-24 bg-primary-400/15 rounded-full blur-xl"
-          animate={{ y: [0, 20, 0], rotate: [360, 180, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.div
-          className="absolute bottom-20 left-1/3 w-20 h-20 bg-accent-500/15 rounded-full blur-xl"
-          animate={{ y: [0, -30, 0], rotate: [0, 270, 360] }}
-          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute bottom-32 right-16 w-32 h-32 bg-primary-400/10 rounded-full blur-3xl"
+          animate={{ y: [0, 18, 0] }}
+          transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut' }}
         />
       </div>
 
+      {/* ── Content ── */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -53,26 +74,22 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center px-4 py-2 bg-primary-500/10 border border-primary-500/20 rounded-full"
+            className="inline-flex items-center px-4 py-2 bg-primary-500/15 border border-primary-500/30 rounded-full backdrop-blur-sm"
           >
-            <span className="text-sm font-medium text-primary-600 dark:text-primary-400">
+            <span className="text-sm font-medium text-primary-400">
               AI-Powered Micro Mobility Platform
             </span>
           </motion.div>
 
-          {/* Main heading */}
+          {/* Heading */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-4xl md:text-6xl lg:text-7xl font-bold font-display leading-tight"
           >
-            <span className="block text-gray-900 dark:text-white">
-              Reimagining Urban
-            </span>
-            <span className="block text-primary-500">
-              Mobility with AI
-            </span>
+            <span className="block text-white">Where Mobility</span>
+            <span className="block text-primary-500">Meets Intelligence</span>
           </motion.h1>
 
           {/* Subtitle */}
@@ -80,38 +97,35 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto"
+            className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto"
           >
-            Intelligent fleet management for e-scooters and e-bikes.
-            We use machine learning and real-time analytics to move cities forward.
+            SCOOTY’s Mobility-as-a-Service (MaaS) technology platform helps communities modernize their public transit systems. We integrate on-demand mobility, digital payments and AI-powered transit intelligence with existing transit infrastructure to make daily commuting smooth, simple and efficient. 
           </motion.p>
 
-          {/* CTA Buttons */}
+          {/* CTA buttons */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-12"
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             <motion.button
               onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
-              className="group relative px-8 py-4 bg-primary-500 text-black rounded-full font-semibold overflow-hidden"
+              className="group px-8 py-4 bg-primary-500 text-black rounded-full font-semibold flex items-center space-x-2 shadow-lg shadow-primary-500/25"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <span className="relative z-10 flex items-center space-x-2">
-                <span>Explore Solutions</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </span>
+              <span>Learn More</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </motion.button>
 
             <motion.button
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              className="group flex items-center space-x-2 px-8 py-4 bg-transparent backdrop-blur-sm border border-gray-300 dark:border-white/20 text-gray-700 dark:text-gray-300 rounded-full font-medium hover:border-primary-500 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-300"
+              className="px-8 py-4 backdrop-blur-sm bg-white/10 border border-white/25 text-white rounded-full font-medium hover:border-primary-500/60 hover:bg-white/15 transition-all duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <span>Talk to Us</span>
+              Get Help
             </motion.button>
           </motion.div>
 
@@ -120,7 +134,7 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="flex flex-wrap justify-center gap-8 sm:gap-12 mt-16 pt-12 border-t border-gray-200 dark:border-white/10"
+            className="flex flex-wrap justify-center gap-8 sm:gap-12 mt-6 pt-10 border-t border-white/10"
           >
             {stats.map((stat, index) => (
               <motion.div
@@ -133,31 +147,30 @@ export const Hero = () => {
                 <div className="text-3xl md:text-4xl font-bold font-display text-primary-500">
                   {stat.number}
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-500 mt-1">
-                  {stat.label}
-                </div>
+                <div className="text-sm text-white/50 mt-1">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
-
-          {/* Scroll indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-          >
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="flex flex-col items-center space-y-2 text-gray-400"
-            >
-              <span className="text-sm">Scroll to explore</span>
-              <ArrowDown className="w-5 h-5" />
-            </motion.div>
-          </motion.div>
         </motion.div>
       </div>
+
+      {/* ── Scroll nudge ── */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.4, duration: 0.8 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+      >
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          className="flex flex-col items-center gap-1 cursor-pointer"
+          onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+        >
+          <span className="text-xs text-white/40 tracking-widest uppercase">Scroll</span>
+          <ArrowDown className="w-4 h-4 text-white/40" />
+        </motion.div>
+      </motion.div>
     </section>
   );
 };

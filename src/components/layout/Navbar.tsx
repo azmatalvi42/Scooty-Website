@@ -1,19 +1,20 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X, Zap } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 import { ThemeToggle } from '../ui/ThemeToggle';
 
 const navigation = [
-  { name: 'Solutions', href: '#services' },
-  { name: 'Technology', href: '#technology' },
-  { name: 'Impact', href: '#impact' },
-  { name: 'About', href: '#about' },
-  { name: 'Careers', href: '#careers' },
+  { name: 'Home', href: '/' },
+  { name: 'Riders', href: '/riders' },
+  { name: 'Partners', href: '/partners' },
+  { name: 'Technology', href: '/technology' },
 ];
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,11 +25,17 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNavClick = (href: string) => {
+  // Close mobile menu on route change
+  useEffect(() => {
     setIsOpen(false);
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+  }, [location.pathname]);
+
+  const handleTalkToUs = () => {
+    setIsOpen(false);
+    if (location.pathname === '/') {
+      document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.location.href = '/#contact';
     }
   };
 
@@ -49,29 +56,35 @@ export const Navbar = () => {
             className="flex items-center"
             whileHover={{ scale: 1.05 }}
           >
-            <div className="flex-shrink-0 flex items-center space-x-2">
+            <Link to="/" className="flex-shrink-0 flex items-center space-x-2">
               <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
                 <Zap className="w-5 h-5 text-black" />
               </div>
               <span className="text-2xl font-bold font-display text-gray-900 dark:text-white">
                 Scooty
               </span>
-            </div>
+            </Link>
           </motion.div>
 
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
-              {navigation.map((item) => (
-                <motion.button
-                  key={item.name}
-                  onClick={() => handleNavClick(item.href)}
-                  className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {item.name}
-                </motion.button>
-              ))}
+              {navigation.map((item) => {
+                const isActive = location.pathname === item.href;
+                return (
+                  <motion.div key={item.name} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Link
+                      to={item.href}
+                      className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                        isActive
+                          ? 'text-primary-600 dark:text-primary-400'
+                          : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-primary-400'
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
 
@@ -79,7 +92,7 @@ export const Navbar = () => {
             <ThemeToggle />
 
             <motion.button
-              onClick={() => handleNavClick('#contact')}
+              onClick={handleTalkToUs}
               className="hidden sm:flex items-center space-x-1 px-5 py-2 bg-primary-500 text-black rounded-full font-semibold hover:bg-primary-400 transition-all duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -109,28 +122,31 @@ export const Navbar = () => {
           height: isOpen ? 'auto' : 0
         }}
         transition={{ duration: 0.3 }}
-        className="md:hidden bg-white/95 dark:bg-black/95 backdrop-blur-lg"
+        className="md:hidden bg-white/95 dark:bg-black/95 backdrop-blur-lg overflow-hidden"
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          {navigation.map((item) => (
-            <motion.button
-              key={item.name}
-              onClick={() => handleNavClick(item.href)}
-              className="block w-full text-left px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-primary-400 transition-colors duration-200"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              {item.name}
-            </motion.button>
-          ))}
-          <motion.button
-            onClick={() => handleNavClick('#contact')}
+          {navigation.map((item) => {
+            const isActive = location.pathname === item.href;
+            return (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={`block px-3 py-2 transition-colors duration-200 ${
+                  isActive
+                    ? 'text-primary-600 dark:text-primary-400 font-medium'
+                    : 'text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-primary-400'
+                }`}
+              >
+                {item.name}
+              </Link>
+            );
+          })}
+          <button
+            onClick={handleTalkToUs}
             className="block w-full text-left px-3 py-2 text-primary-500 font-medium"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
           >
             Talk to Us
-          </motion.button>
+          </button>
         </div>
       </motion.div>
     </motion.nav>
