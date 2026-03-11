@@ -99,8 +99,7 @@ export const Hero = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto"
           >
-            SCOOTY’s Mobility-as-a-Service (MaaS) technology platform helps communities modernize their public transit systems. We integrate on-demand mobility, digital payments and AI-powered transit intelligence with existing transit infrastructure to make daily commuting smooth, simple and efficient. 
-          </motion.p>
+SCOOTY connects on-demand mobility, digital payments, and AI transit intelligence to modernize public transportation for communities across Canada          </motion.p>
 
           {/* CTA buttons */}
           <motion.div
@@ -129,28 +128,7 @@ export const Hero = () => {
             </motion.button>
           </motion.div>
 
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="flex flex-wrap justify-center gap-8 sm:gap-12 mt-6 pt-10 border-t border-white/10"
-          >
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 1 + index * 0.1 }}
-                className="text-center"
-              >
-                <div className="text-3xl md:text-4xl font-bold font-display text-primary-500">
-                  {stat.number}
-                </div>
-                <div className="text-sm text-white/50 mt-1">{stat.label}</div>
-              </motion.div>
-            ))}
-          </motion.div>
+          
         </motion.div>
       </div>
 

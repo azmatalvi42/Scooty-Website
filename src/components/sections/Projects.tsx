@@ -74,8 +74,8 @@ export const Projects = () => {
   });
 
   return (
-    <section id="impact" ref={ref} className="py-20 bg-gray-50 dark:bg-navy-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="impact" ref={ref} className="relative py-20 bg-gray-50 dark:bg-navy-800 overflow-hidden">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}

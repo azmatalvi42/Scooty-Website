@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useState } from 'react';
 import { Mail, Phone, MapPin, Send, Linkedin, Twitter } from 'lucide-react';
-
 export const Contact = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -38,8 +37,9 @@ export const Contact = () => {
   };
 
   return (
-    <section id="contact" ref={ref} className="py-20 bg-white dark:bg-black">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contact" ref={ref} className="py-20 bg-white dark:bg-black relative overflow-hidden">
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}

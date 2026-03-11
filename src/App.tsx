@@ -1,13 +1,17 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { CustomCursor } from './components/ui/CustomCursor';
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  return null;
+};
 import { LoadingSpinner } from './components/ui/LoadingSpinner';
 import { ParticleBackground } from './components/ui/ParticleBackground';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { Hero } from './components/sections/Hero';
-import { About } from './components/sections/About';
 import { Services } from './components/sections/Services';
 import { Projects } from './components/sections/Projects';
 import { Team } from './components/sections/Team';
@@ -18,16 +22,19 @@ import { RiderDetailPage } from './pages/RiderDetailPage';
 import { PartnersPage } from './pages/PartnersPage';
 import { TechnologyPage } from './pages/TechnologyPage';
 import { CityPage } from './pages/CityPage';
+import { AboutPage } from './pages/AboutPage';
 
 const HomePage = () => (
   <>
     <Hero />
-    <Services />
-    <ChatbotDemo />
-    <Projects />
-    <About />
-    <Team />
-    <Contact />
+    <div className="relative">
+      <ParticleBackground absolute />
+      <Services />
+      <ChatbotDemo />
+      <Projects />
+      <Team />
+      <Contact />
+    </div>
   </>
 );
 
@@ -49,8 +56,8 @@ function App() {
   return (
     <ErrorBoundary>
       <Router>
+        <ScrollToTop />
         <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
-          <CustomCursor />
           <ParticleBackground />
 
           <Navbar />
@@ -63,6 +70,7 @@ function App() {
               <Route path="/partners" element={<PartnersPage />} />
               <Route path="/partners/:city" element={<CityPage />} />
               <Route path="/technology" element={<TechnologyPage />} />
+              <Route path="/about" element={<AboutPage />} />
               <Route path="*" element={
                 <div className="min-h-screen bg-gray-50 dark:bg-black pt-20 flex items-center justify-center">
                   <div className="text-center">

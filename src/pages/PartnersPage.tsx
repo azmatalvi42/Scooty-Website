@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import {
   Shield,
@@ -15,7 +16,6 @@ import {
   MapPin,
   CheckCircle,
   ArrowRight,
-  ChevronRight,
   Users,
   Zap,
   Eye,
@@ -90,7 +90,6 @@ const whatWeBring = [
     title: 'Connected Communities',
     description:
       "SCOOTY's team brings decades of combined experience in urban planning, civil engineering, transportation policy, mobility operations, and community development — allowing us to design mobility systems that strengthen community connectivity.",
-    sublist: ['Urban planning', 'Civil engineering', 'Transportation policy', 'Mobility operations', 'Community development'],
   },
   {
     icon: SlidersHorizontal,
@@ -103,7 +102,6 @@ const whatWeBring = [
     title: 'Partnership Beyond Words',
     description:
       'SCOOTY partnerships are built on collaboration. We engage stakeholders throughout planning and operations, ensuring programs evolve with community feedback and data insights.',
-    sublist: ['Municipal governments', 'Transit agencies', 'Universities and colleges', 'Developers and landowners', 'Community organizations', 'Local businesses'],
   },
 ];
 
@@ -111,6 +109,7 @@ const partnerSolutions = [
   {
     icon: Building2,
     title: 'Cities',
+    subtitle: 'Municipality Programs',
     image: 'https://images.pexels.com/photos/1486222/pexels-photo-1486222.jpeg?auto=compress&cs=tinysrgb&w=800',
     description:
       'Work with a Canadian mobility provider that understands how municipalities operate. SCOOTY collaborates closely with city teams to design programs aligned with transportation strategies, sustainability goals, and urban planning initiatives.',
@@ -121,11 +120,11 @@ const partnerSolutions = [
       'Transit integration',
       'Community engagement programs',
     ],
-    note: 'We prioritize data privacy and only share aggregated, anonymized insights with municipalities.',
   },
   {
     icon: Briefcase,
     title: 'Businesses & Property Owners',
+    subtitle: 'Commercial Partners',
     image: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800',
     description:
       'Shared mobility can become a competitive advantage. By integrating micromobility into retail, commercial, and mixed-use developments, businesses can attract more visitors, improve accessibility, and enhance customer experiences.',
@@ -135,11 +134,11 @@ const partnerSolutions = [
       'Support sustainable development goals',
       'Attract tenants and customers',
     ],
-    note: 'Turn mobility into a competitive advantage for your development.',
   },
   {
     icon: GraduationCap,
     title: 'Campuses',
+    subtitle: 'Academic Programs',
     image: 'https://images.pexels.com/photos/1462009/pexels-photo-1462009.jpeg?auto=compress&cs=tinysrgb&w=800',
     description:
       'SCOOTY provides turnkey micromobility programs designed for academic environments. Our solutions combine vehicles, software, operations, and research opportunities that support campus mobility needs.',
@@ -149,11 +148,11 @@ const partnerSolutions = [
       'Campus-wide operational support',
       'Next-generation mobility insights',
     ],
-    note: 'We actively collaborate with universities and research institutions to develop next-generation mobility technology.',
   },
   {
     icon: Home,
     title: 'Developers',
+    subtitle: 'Real Estate & Development',
     image: 'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=800',
     description:
       'Build communities designed for the future of transportation. SCOOTY helps developers create connected neighborhoods where residents can live, work, and move sustainably.',
@@ -163,7 +162,6 @@ const partnerSolutions = [
       'Residential connectivity programs',
       'Sustainable infrastructure support',
     ],
-    note: 'Build communities designed for the future of transportation.',
   },
 ];
 
@@ -174,11 +172,11 @@ const locations = [
     launched: 'April 2023',
     status: 'active',
     vehicles: ['E-Scooters'],
+    image: 'https://images.pexels.com/photos/1486222/pexels-photo-1486222.jpeg?auto=compress&cs=tinysrgb&w=900',
     highlights: [
       'Service area covering the entire city',
       'Riding on roads ≤ 50 km/h',
       'Slow-speed zones in parks and trails',
-      'Designated parking zones',
       'Transit network integration',
     ],
   },
@@ -188,6 +186,7 @@ const locations = [
     launched: 'June 2024',
     status: 'active',
     vehicles: ['E-Bikes'],
+    image: 'https://images.pexels.com/photos/1000445/pexels-photo-1000445.jpeg?auto=compress&cs=tinysrgb&w=900',
     highlights: [
       'Waterfront service area',
       'Riding permitted on local trails',
@@ -200,6 +199,7 @@ const locations = [
     launched: 'August 2024',
     status: 'active',
     vehicles: ['E-Scooters', 'E-Bikes'],
+    image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=900',
     highlights: [
       'Riding on roads ≤ 50 km/h',
       'Designated parking zones',
@@ -212,6 +212,7 @@ const locations = [
     launched: 'June 2025',
     status: 'active',
     vehicles: ['E-Scooters'],
+    image: 'https://images.pexels.com/photos/1139556/pexels-photo-1139556.jpeg?auto=compress&cs=tinysrgb&w=900',
     highlights: [
       '7 km trail corridor',
       'Designated parking zones',
@@ -232,12 +233,15 @@ const safetyFeatures = [
 /* ─────────────────────────────────────────── COMPONENT ─── */
 
 export const PartnersPage = () => {
+  const [activeTab, setActiveTab] = useState(0);
   const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [valuesRef, valuesInView] = useInView({ triggerOnce: true, threshold: 0.05 });
   const [bringRef, bringInView] = useInView({ triggerOnce: true, threshold: 0.05 });
   const [solutionsRef, solutionsInView] = useInView({ triggerOnce: true, threshold: 0.05 });
   const [locationsRef, locationsInView] = useInView({ triggerOnce: true, threshold: 0.05 });
   const [safetyRef, safetyInView] = useInView({ triggerOnce: true, threshold: 0.05 });
+
+  const currentSolution = partnerSolutions[activeTab];
 
   return (
     <div className="min-h-screen bg-white dark:bg-black overflow-x-hidden">
@@ -536,82 +540,145 @@ export const PartnersPage = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {partnerSolutions.map((sol, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                animate={solutionsInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: index * 0.12 }}
-                className="bg-white dark:bg-navy-800 rounded-3xl overflow-hidden border border-gray-200 dark:border-white/10 hover:shadow-xl hover:border-primary-500/30 transition-all duration-300 group"
-              >
-                {/* Image header */}
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={sol.image}
-                    alt={sol.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-                  <div className="absolute bottom-4 left-5 flex items-center gap-3">
-                    <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center shadow-lg">
-                      <sol.icon className="w-5 h-5 text-black" />
+          {/* Icon tab bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={solutionsInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="flex justify-center mb-12"
+          >
+            <div className="inline-flex flex-wrap justify-center gap-2 sm:gap-3 bg-white dark:bg-navy-800 backdrop-blur-sm rounded-2xl p-2 border border-gray-200 dark:border-white/10 max-w-full">
+              {partnerSolutions.map((sol, index) => {
+                const isActive = index === activeTab;
+                return (
+                  <button
+                    key={index}
+                    onClick={() => setActiveTab(index)}
+                    className={`relative flex flex-col items-center gap-1 px-3 py-3 rounded-xl text-xs font-medium transition-all duration-300 min-w-[72px] ${
+                      isActive
+                        ? 'bg-gray-100 dark:bg-black shadow-lg text-black dark:text-primary-400'
+                        : 'text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-black/50'
+                    }`}
+                  >
+                    <div
+                      className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                        isActive
+                          ? 'bg-primary-500 text-black scale-110'
+                          : 'bg-gray-200 dark:bg-secondary-800 text-gray-500 dark:text-gray-500'
+                      }`}
+                    >
+                      <sol.icon className="w-5 h-5" />
                     </div>
-                    <h3 className="text-xl font-bold font-display text-white">{sol.title}</h3>
+                    <span className="hidden sm:block whitespace-nowrap">{sol.title}</span>
+                    {isActive && (
+                      <motion.div
+                        layoutId="partner-active-dot"
+                        className="sm:hidden w-1.5 h-1.5 rounded-full bg-primary-500"
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </motion.div>
+
+          {/* Slide content */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+            >
+              <div className="rounded-3xl overflow-hidden border border-gray-200 dark:border-white/10 bg-white dark:bg-navy-800">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                  {/* Left — Text */}
+                  <div className="p-8 md:p-12 flex flex-col justify-center">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-6 w-fit bg-primary-500 text-black">
+                      <currentSolution.icon className="w-3.5 h-3.5" />
+                      {currentSolution.subtitle}
+                    </div>
+
+                    <h3 className="text-3xl md:text-4xl font-bold font-display text-gray-900 dark:text-white mb-4">
+                      {currentSolution.title}
+                    </h3>
+
+                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
+                      {currentSolution.description}
+                    </p>
+
+                    <div className="grid grid-cols-2 gap-3 mb-8">
+                      {currentSolution.features.map((feature, i) => (
+                        <div key={i} className="flex items-center space-x-2">
+                          <CheckCircle className="w-4 h-4 text-primary-500 flex-shrink-0" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <motion.button
+                      className="group inline-flex items-center space-x-2 px-6 py-3 bg-primary-500 text-black rounded-full font-semibold hover:bg-primary-400 transition-all duration-300 w-fit"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <span>Learn More</span>
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </motion.button>
+                  </div>
+
+                  {/* Right — Image */}
+                  <div className="relative min-h-[300px] lg:min-h-0">
+                    <img
+                      src={currentSolution.image}
+                      alt={currentSolution.title}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/40 dark:from-navy-800/60 to-transparent lg:from-transparent" />
                   </div>
                 </div>
+              </div>
 
-                {/* Content */}
-                <div className="p-7">
-                  <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-5">
-                    {sol.description}
-                  </p>
-
-                  <ul className="space-y-2 mb-5">
-                    {sol.features.map((feat, fi) => (
-                      <li key={fi} className="flex items-center space-x-2.5 text-sm">
-                        <CheckCircle className="w-4 h-4 text-primary-500 flex-shrink-0" />
-                        <span className="text-gray-700 dark:text-gray-300">{feat}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {sol.note && (
-                    <p className="text-xs text-gray-400 dark:text-gray-500 italic border-t border-gray-100 dark:border-white/10 pt-4">
-                      {sol.note}
-                    </p>
-                  )}
-
-                  <motion.button
-                    className="mt-5 group/btn inline-flex items-center space-x-2 text-sm font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
-                    whileHover={{ x: 4 }}
-                  >
-                    <span>Learn more</span>
-                    <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                  </motion.button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+              {/* Dot indicators */}
+              <div className="flex justify-center gap-2 mt-6">
+                {partnerSolutions.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveTab(index)}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      index === activeTab
+                        ? 'w-8 bg-primary-500'
+                        : 'w-1.5 bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600'
+                    }`}
+                  />
+                ))}
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </section>
 
       {/* ── CURRENT LOCATIONS ── */}
       <section ref={locationsRef} className="py-24 bg-black relative overflow-hidden">
-        {/* Background grid */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
+        <div className="absolute inset-0 opacity-[0.07]"
           style={{
-            backgroundImage:
-              'linear-gradient(rgba(234,179,8,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(234,179,8,0.6) 1px, transparent 1px)',
-            backgroundSize: '50px 50px',
+            backgroundImage: 'radial-gradient(circle, rgba(234,179,8,0.8) 1px, transparent 1px)',
+            backgroundSize: '28px 28px',
           }}
         />
-        {/* Glow orbs */}
-        <div className="absolute top-20 right-20 w-80 h-80 bg-primary-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-20 left-10 w-60 h-60 bg-primary-500/8 rounded-full blur-3xl pointer-events-none" />
+        {/* Latitude-style horizontal lines */}
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(234,179,8,0.6) 1px, transparent 1px)',
+            backgroundSize: '100% 80px',
+          }}
+        />
+        {/* Ambient glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary-500/5 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={locationsInView ? { opacity: 1, y: 0 } : {}}
@@ -630,97 +697,110 @@ export const PartnersPage = () => {
             </p>
           </motion.div>
 
-          {/* Timeline */}
-          <div className="relative">
-            {/* Vertical line */}
-            <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary-500 via-primary-500/40 to-transparent -translate-x-1/2 hidden sm:block" />
+          {/* Pin card grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {locations.map((loc, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 40 }}
+                animate={locationsInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: index * 0.12 }}
+                className="group relative rounded-3xl overflow-hidden h-72 cursor-pointer"
+              >
+                {/* Photo */}
+                <img
+                  src={loc.image}
+                  alt={loc.city}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/10 group-hover:via-black/60 transition-all duration-300" />
 
-            <div className="space-y-10">
-              {locations.map((loc, index) => {
-                const isEven = index % 2 === 0;
-                return (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: isEven ? -30 : 30 }}
-                    animate={locationsInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ duration: 0.6, delay: index * 0.12 }}
-                    className={`flex flex-col sm:flex-row items-start sm:items-center gap-6 ${isEven ? 'sm:flex-row' : 'sm:flex-row-reverse'}`}
-                  >
-                    {/* Card */}
-                    <div className="w-full sm:w-[calc(50%-2.5rem)]">
-                      <div className="bg-navy-800 border border-white/10 rounded-2xl p-6 hover:border-primary-500/40 hover:shadow-lg hover:shadow-primary-500/5 transition-all duration-300">
-                        {/* Header row */}
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 bg-primary-500/10 border border-primary-500/30 rounded-xl flex items-center justify-center">
-                              <MapPin className="w-4 h-4 text-primary-400" />
-                            </div>
-                            <h3 className="text-lg font-bold font-display text-white">{loc.city}</h3>
-                          </div>
+                {/* Pulsing map pin — top left */}
+                <div className="absolute top-5 left-5 flex items-center gap-2">
+                  <div className="relative">
+                    <span className="absolute inset-0 rounded-full bg-primary-500 animate-ping opacity-40" />
+                    <div className="relative w-9 h-9 rounded-full bg-primary-500 flex items-center justify-center shadow-lg shadow-primary-500/40">
+                      <MapPin className="w-4 h-4 text-black fill-black" />
+                    </div>
+                  </div>
+                  <span className="text-xs font-bold text-primary-400 tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    Ontario, CA
+                  </span>
+                </div>
+
+                {/* Status badge — top right */}
+                <div className="absolute top-5 right-5">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-green-500/20 text-green-400 border border-green-500/30 backdrop-blur-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                    Active
+                  </span>
+                </div>
+
+                {/* Bottom content */}
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  {/* Highlights — slide up on hover */}
+                  <div className="overflow-hidden max-h-0 group-hover:max-h-28 transition-all duration-500 ease-in-out mb-0 group-hover:mb-3">
+                    <ul className="space-y-1">
+                      {loc.highlights.slice(0, 3).map((h, hi) => (
+                        <li key={hi} className="flex items-center gap-2 text-xs text-gray-300">
+                          <span className="w-1 h-1 rounded-full bg-primary-500 flex-shrink-0" />
+                          {h}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="flex items-end justify-between">
+                    <div>
+                      <h3 className="text-2xl font-bold font-display text-white leading-tight">
+                        {loc.city}
+                      </h3>
+                      <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                        <Clock className="w-3 h-3 text-gray-400" />
+                        <span className="text-xs text-gray-400">Since {loc.launched}</span>
+                        <span className="text-gray-600 mx-1">·</span>
+                        {loc.vehicles.map((v, vi) => (
                           <span
-                            className={`text-xs font-semibold px-3 py-1 rounded-full ${
-                              loc.status === 'active'
-                                ? 'bg-green-500/15 text-green-400 border border-green-500/30'
-                                : 'bg-gray-500/15 text-gray-400 border border-gray-500/30'
-                            }`}
+                            key={vi}
+                            className="inline-flex items-center gap-1 text-xs px-2 py-0.5 bg-primary-500/15 text-primary-400 rounded-full border border-primary-500/20"
                           >
-                            {loc.status === 'active' ? 'Active' : 'Upcoming'}
+                            <Bike className="w-2.5 h-2.5" />
+                            {v}
                           </span>
-                        </div>
-
-                        {/* Launch date */}
-                        <div className="flex items-center gap-1.5 text-xs text-gray-400 mb-4">
-                          <Clock className="w-3.5 h-3.5" />
-                          <span>{loc.status === 'upcoming' ? 'Launching' : 'Launched'} {loc.launched}</span>
-                        </div>
-
-                        {/* Vehicle badges */}
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {loc.vehicles.map((v, vi) => (
-                            <span
-                              key={vi}
-                              className="inline-flex items-center gap-1.5 text-xs px-3 py-1 bg-primary-500/10 text-primary-400 rounded-full border border-primary-500/20"
-                            >
-                              <Bike className="w-3 h-3" />
-                              {v}
-                            </span>
-                          ))}
-                        </div>
-
-                        {/* Highlights */}
-                        <ul className="space-y-1.5 mb-5">
-                          {loc.highlights.map((h, hi) => (
-                            <li key={hi} className="flex items-start gap-2 text-xs text-gray-400">
-                              <span className="w-1 h-1 rounded-full bg-primary-500 flex-shrink-0 mt-1.5" />
-                              {h}
-                            </li>
-                          ))}
-                        </ul>
-
-                        <Link to={`/partners/${loc.slug}`}>
-                          <motion.div
-                            className="inline-flex items-center gap-2 text-xs font-semibold text-primary-400 hover:text-primary-300 transition-colors group/cta"
-                            whileHover={{ x: 3 }}
-                          >
-                            <span>Read full article</span>
-                            <ArrowRight className="w-3.5 h-3.5 group-hover/cta:translate-x-1 transition-transform" />
-                          </motion.div>
-                        </Link>
+                        ))}
                       </div>
                     </div>
 
-                    {/* Center dot */}
-                    <div className="hidden sm:flex flex-shrink-0 w-10 h-10 rounded-full border-2 border-primary-500 bg-black items-center justify-center z-10 shadow-lg shadow-primary-500/30">
-                      <span className="w-3 h-3 rounded-full bg-primary-500" />
-                    </div>
-
-                    {/* Spacer on other side */}
-                    <div className="hidden sm:block w-[calc(50%-2.5rem)]" />
-                  </motion.div>
-                );
-              })}
-            </div>
+                    <Link to={`/partners/${loc.slug}`}>
+                      <motion.div
+                        className="flex-shrink-0 w-10 h-10 rounded-full bg-primary-500 flex items-center justify-center shadow-lg shadow-primary-500/30 group-hover:bg-primary-400 transition-colors"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <ArrowRight className="w-4 h-4 text-black" />
+                      </motion.div>
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
+
+          {/* "More coming soon" strip */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={locationsInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="mt-8 flex items-center justify-center gap-4"
+          >
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent to-white/10" />
+            <div className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
+              <span className="w-2 h-2 rounded-full bg-primary-500 animate-pulse" />
+              <span className="text-xs text-gray-400 font-medium">More cities coming soon</span>
+            </div>
+            <div className="h-px flex-1 bg-gradient-to-l from-transparent to-white/10" />
+          </motion.div>
         </div>
       </section>
 

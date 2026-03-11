@@ -9,6 +9,8 @@ const navigation = [
   { name: 'Riders', href: '/riders' },
   { name: 'Partners', href: '/partners' },
   { name: 'Technology', href: '/technology' },
+    { name: 'About Us', href: '/about' },
+
 ];
 
 export const Navbar = () => {
