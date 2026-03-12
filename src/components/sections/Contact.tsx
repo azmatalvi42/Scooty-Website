@@ -47,7 +47,7 @@ export const Contact = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4">
-            Partner with <span className="text-primary-500">Scooty</span>
+            Partner with <span className="text-primary-500">Us</span>
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
             Whether you're a city, operator, or investor — let's explore how Scooty can
@@ -63,69 +63,9 @@ export const Contact = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="space-y-8"
           >
-            <div className="bg-gray-50 dark:bg-navy-800 rounded-2xl p-8 border border-gray-200 dark:border-white/10">
-              <h3 className="text-2xl font-bold font-display text-gray-900 dark:text-white mb-6">
-                Get in Touch
-              </h3>
-
-              <div className="space-y-6">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center">
-                    <Mail className="w-6 h-6 text-black" />
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white">Email</h4>
-                    <p className="text-gray-600 dark:text-gray-400">partnerships@scooty.ai</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center">
-                    <Phone className="w-6 h-6 text-black" />
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white">Phone</h4>
-                    <p className="text-gray-600 dark:text-gray-400">+1 (415) 555-0199</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center">
-                    <MapPin className="w-6 h-6 text-black" />
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white">HQ</h4>
-                    <p className="text-gray-600 dark:text-gray-400">548 Market St, San Francisco, CA 94104</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            
 
             {/* Company socials */}
-            <div className="bg-gray-50 dark:bg-navy-800 rounded-2xl p-8 border border-gray-200 dark:border-white/10">
-              <h3 className="text-xl font-bold font-display text-gray-900 dark:text-white mb-6">
-                Follow Scooty
-              </h3>
-
-              <div className="flex space-x-4">
-                {[
-                  { icon: Linkedin, href: 'https://linkedin.com/company/scooty' },
-                  { icon: Twitter, href: 'https://twitter.com/scootyai' },
-                ].map((social, index) => (
-                  <motion.a
-                    key={index}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center text-black hover:bg-primary-400 transition-all duration-300"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <social.icon className="w-6 h-6" />
-                  </motion.a>
-                ))}
-              </div>
-            </div>
           </motion.div>
 
           {/* Contact Form */}

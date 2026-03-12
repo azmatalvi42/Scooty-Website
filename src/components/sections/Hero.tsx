@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, ArrowDown } from 'lucide-react';
 
 const stats = [
-  { number: '50+', label: 'Cities' },
+  { number: '5+', label: 'Canadian Cities' },
   { number: '10M+', label: 'Rides' },
   { number: '99.9%', label: 'Uptime' },
   { number: '40%', label: 'Cost Reduction' },
@@ -69,17 +69,7 @@ export const Hero = () => {
           transition={{ duration: 0.8 }}
           className="space-y-8"
         >
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center px-4 py-2 bg-primary-500/15 border border-primary-500/30 rounded-full backdrop-blur-sm"
-          >
-            <span className="text-sm font-medium text-primary-400">
-              AI-Powered Micro Mobility Platform
-            </span>
-          </motion.div>
+
 
           {/* Heading */}
           <motion.h1
@@ -99,7 +89,8 @@ export const Hero = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto"
           >
-SCOOTY connects on-demand mobility, digital payments, and AI transit intelligence to modernize public transportation for communities across Canada          </motion.p>
+We integrate on-demand mobility, digital payments and AI-powered transit intelligence with existing transit infrastructure to make daily commuting smooth, simple and efficient. 
+</motion.p>
 
           {/* CTA buttons */}
           <motion.div

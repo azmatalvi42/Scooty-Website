@@ -17,14 +17,11 @@ const perks = [
   {
     icon: Shield,
     title: 'Ride Safe, Ride Smart',
-    description: 'Built-in safety features, helmet reminders, and dedicated support — every trip, every time.',
+    description: 'Up-to-date technology, built-in safety features and 24/7 multi-lingual support.',
   },
 ];
 
-const floatingCards = [
-  { label: 'Active Riders', value: '12,400+', sub: 'across Canada', delay: 0 },
-  { label: 'Cities Served', value: '50+', sub: 'and growing', delay: 0.15 },
-];
+
 
 export const ChatbotDemo = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -146,26 +143,6 @@ export const ChatbotDemo = () => {
               </div>
             </div>
 
-            {/* Floating stat cards */}
-            {floatingCards.map((card, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.6 + card.delay }}
-                className={`absolute bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-2xl px-4 py-3 shadow-xl ${
-                  i === 0
-                    ? '-top-4 -left-6'
-                    : i === 1
-                    ? 'top-1/2 -right-6 -translate-y-1/2'
-                    : '-bottom-4 -left-6'
-                }`}
-              >
-                <div className="text-xl font-bold font-display text-primary-500">{card.value}</div>
-                <div className="text-xs font-medium text-gray-700 dark:text-gray-300">{card.label}</div>
-                <div className="text-xs text-gray-400">{card.sub}</div>
-              </motion.div>
-            ))}
           </motion.div>
 
         </div>

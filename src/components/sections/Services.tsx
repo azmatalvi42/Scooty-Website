@@ -13,18 +13,18 @@ const solutions = [
   {
     title: 'SCOOTY PAY',
     description:
-      'Seamlessly integrated, secure, and scalable payment processing for transit ticketing and 3rd party mobility services through a unified MaaS platform.',
+      'Integrated, secure, and scalable payment processing for transit ticketing and 3rd party mobility services bringing one fare, one platform and many ways to move.',
     image: 'https://images.pexels.com/photos/4386431/pexels-photo-4386431.jpeg?auto=compress&cs=tinysrgb&w=1200',
   },
   {
     title: 'SCOOTY AI RideGuide',
     description:
-      'Using trained AI and machine learning to enable transit agencies to offer real-time service updates, dynamic routing, and conversational customer support bringing transparency and improved reliability for daily commuters.',
+      'Using conversational AI, real-time service updates, dynamic routing and customer support to enhance the daily transit commuting experience.',
     image: 'https://images.pexels.com/photos/8386434/pexels-photo-8386434.jpeg?auto=compress&cs=tinysrgb&w=1200',
   },
 ];
 
-const AUTO_INTERVAL = 5000;
+const AUTO_INTERVAL = 10000;
 
 export const Services = () => {
   const [active, setActive] = useState(0);

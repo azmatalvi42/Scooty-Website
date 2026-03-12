@@ -14,7 +14,7 @@ import { Footer } from './components/layout/Footer';
 import { Hero } from './components/sections/Hero';
 import { Services } from './components/sections/Services';
 import { Projects } from './components/sections/Projects';
-import { Team } from './components/sections/Team';
+import { About } from './components/sections/About';
 import { Contact } from './components/sections/Contact';
 import { ChatbotDemo } from './components/sections/ChatbotDemo';
 import { RidersPage } from './pages/RidersPage';
@@ -32,7 +32,7 @@ const HomePage = () => (
       <Services />
       <ChatbotDemo />
       <Projects />
-      <Team />
+      <About />
       <Contact />
     </div>
   </>
