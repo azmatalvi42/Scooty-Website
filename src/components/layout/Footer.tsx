@@ -21,7 +21,7 @@ export const Footer = () => {
         <ArrowUp className="w-6 h-6" />
       </motion.button>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
@@ -125,7 +125,7 @@ export const Footer = () => {
               &copy; 2024 Scooty. All rights reserved.
             </div>
 
-            <div className="flex space-x-6">
+            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
               <a href="#" className="text-gray-500 hover:text-white transition-colors duration-300 text-sm">
                 Privacy Policy
               </a>

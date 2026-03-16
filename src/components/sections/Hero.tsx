@@ -69,9 +69,7 @@ export const Hero = () => {
           transition={{ duration: 0.8 }}
           className="space-y-8"
         >
-
-
-          {/* Heading */}
+          {/* Heading - Removed the large pb-20 to keep centering clean */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -87,48 +85,31 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto"
+            className="text-sm sm:text-base md:text-lg text-white/70 max-w-3xl mx-auto px-2"
           >
-We integrate on-demand mobility, digital payments and AI-powered transit intelligence with existing transit infrastructure to make daily commuting smooth, simple and efficient. 
-</motion.p>
-
-          {/* CTA buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-          >
-            <motion.button
-              onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
-              className="group px-8 py-4 bg-primary-500 text-black rounded-full font-semibold flex items-center space-x-2 shadow-lg shadow-primary-500/25"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span>Learn More</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </motion.button>
-
-            <motion.button
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-4 backdrop-blur-sm bg-white/10 border border-white/25 text-white rounded-full font-medium hover:border-primary-500/60 hover:bg-white/15 transition-all duration-300"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Get Help
-            </motion.button>
-          </motion.div>
-
-          
+            We integrate on-demand mobility, digital payments and AI-powered transit intelligence with existing transit infrastructure to make daily commuting smooth, simple and efficient.
+          </motion.p>
         </motion.div>
       </div>
+
+      {/* ── Bottom Sentence - Pinned to the section bottom ── */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 1 }}
+        className="absolute bottom-20 left-0 right-0 text-center px-4"
+      >
+        <p className="text-sm sm:text-base md:text-xl text-primary-400 font-display tracking-wide font-bold">
+          <span className="text-white">We’re on a mission to  </span>power how cities move people.
+        </p>
+      </motion.div>
 
       {/* ── Scroll nudge ── */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4, duration: 0.8 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 px-10"
       >
         <motion.div
           animate={{ y: [0, 8, 0] }}

@@ -133,7 +133,7 @@ export const Projects = () => {
   const current = partnerTypes[active];
 
   return (
-    <section id="impact" ref={ref} className="relative py-20 bg-gray-50 dark:bg-navy-800 overflow-hidden">
+    <section id="impact" ref={ref} className="relative py-12 sm:py-20 bg-gray-50 dark:bg-navy-800 overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ── Our Partners heading ── */}
@@ -141,14 +141,13 @@ export const Projects = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-8 sm:mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4">
             Our <span className="text-primary-500">Partners</span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            Measurable results in cities across Ontario. Every ride makes urban transportation
-            smarter and more sustainable.
+          <p className="text-base sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+            Building Communities Together
           </p>
         </motion.div>
 
@@ -157,7 +156,7 @@ export const Projects = () => {
           initial={{ opacity: 0, y: 40 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="mb-20"
+          className="mb-10 sm:mb-20"
         >
           {/* Yellow bar + heading */}
           <div className="text-center mb-10">
@@ -178,11 +177,14 @@ export const Projects = () => {
                 <div className="rounded-3xl overflow-hidden border border-gray-200 dark:border-white/10 bg-white dark:bg-navy-800">
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
                     {/* Left — Text */}
-                    <div className="p-8 md:p-14 flex flex-col justify-center">
-                      <h4 className="text-3xl md:text-4xl font-bold font-display text-gray-900 dark:text-white mb-6 leading-tight">
+                    <div className="p-6 sm:p-8 md:p-14 flex flex-col justify-center">
+                      <span className="inline-block px-4 py-1.5 bg-primary-500 text-black text-xs font-bold rounded-full mb-5 tracking-wide uppercase w-fit"
+                      >Our Partners</span>
+
+                      <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display text-gray-900 dark:text-white mb-4 sm:mb-6 leading-tight">
                         {current.title}
                       </h4>
-                      <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-lg mb-10">
+                      <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-base sm:text-lg mb-6 sm:mb-10">
                         {current.description}
                       </p>
                       <Link
@@ -195,7 +197,7 @@ export const Projects = () => {
                     </div>
 
                     {/* Right — Image */}
-                    <div className="relative min-h-[300px] lg:min-h-[480px]">
+                    <div className="relative min-h-[220px] sm:min-h-[300px] lg:min-h-[460px]">
                       <img
                         src={current.image}
                         alt={current.title}
@@ -248,7 +250,7 @@ export const Projects = () => {
             ))}
           </div>
         </motion.div>
-        
+
 
         {/* ── Case Studies ── */}
         <motion.div

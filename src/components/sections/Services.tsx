@@ -65,19 +65,19 @@ export const Services = () => {
   const current = solutions[active];
 
   return (
-    <section id="services" ref={ref} className="relative py-20 bg-white dark:bg-black overflow-hidden">
+    <section id="services" ref={ref} className="relative py-12 sm:py-20 bg-white dark:bg-black overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-14"
+          className="text-center mb-8 sm:mb-14"
         >
-          <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4">
             Our <span className="text-primary-500">Solutions</span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+          <p className="text-base sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
             End-to-end technology platform powering the next generation of urban mobility.
           </p>
         </motion.div>
@@ -97,12 +97,12 @@ export const Services = () => {
               <div className="rounded-3xl overflow-hidden border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-navy-800">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
                   {/* Left — Text */}
-                  <div className="p-8 md:p-14 flex flex-col justify-center">
-                    <h3 className="text-3xl md:text-4xl font-bold font-display text-gray-900 dark:text-white mb-6 leading-tight">
+                  <div className="p-6 sm:p-8 md:p-14 flex flex-col justify-center">
+                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display text-gray-900 dark:text-white mb-4 sm:mb-6 leading-tight">
                       {current.title}
                     </h3>
 
-                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-lg mb-10">
+                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-base sm:text-lg mb-6 sm:mb-10">
                       {current.description}
                     </p>
 
@@ -120,7 +120,7 @@ export const Services = () => {
                   </div>
 
                   {/* Right — Image */}
-                  <div className="relative min-h-[300px] lg:min-h-[480px]">
+                  <div className="relative min-h-[220px] sm:min-h-[300px] lg:min-h-[460px]">
                     <img
                       src={current.image}
                       alt={current.title}

@@ -48,24 +48,43 @@ const TikTokIcon = ({ className }: { className?: string }) => (
 
 const useSection = () => useInView({ triggerOnce: true, threshold: 0.1 });
 
+const linkClass = 'text-primary-500 underline underline-offset-2 hover:text-primary-400 transition-colors duration-200';
+
 const coreValues = [
   {
     icon: Shield,
     title: 'Safety',
-    description:
-      'Safety is a fundamental right for everyone. Inspired by Vision Zero principles, SCOOTY\'s commitment to safety is the foundation of our company; expressed and demonstrated in our branding, our technology, and our daily operations to make SCOOTY the safest option for all members of a community.',
+    description: (
+      <>
+        Safety is a fundamental right for everyone. Inspired by{' '}
+        <a href="https://visionzero.ca/" target="_blank" rel="noopener noreferrer" className={linkClass}>
+          Vision Zero
+        </a>{' '}
+        principles and{' '}
+        <a href="https://www.roadsafetystrategy.ca/en/" target="_blank" rel="noopener noreferrer" className={linkClass}>
+          Canada&apos;s Road Safety Strategy
+        </a>
+        , SCOOTY&apos;s commitment to safety is the foundation of our company; expressed and demonstrated in our branding, our technology, and our daily operations to make SCOOTY the safest option for all members of a community.
+      </>
+    ),
   },
   {
     icon: Heart,
     title: 'Courtesy',
-    description:
-      'Courtesy is critical in making shared mobility work for everyone. We encompass courtesy as a design thinking principle and implement it into our planning process, operational best practices and communication awareness.',
+    description: (
+      <>
+        Courtesy is critical in making shared mobility work for everyone. We encompass courtesy as a design thinking principle and implement it into our planning process, operational best practices and communication awareness.
+      </>
+    ),
   },
   {
     icon: Handshake,
     title: 'Partnership',
-    description:
-      'SCOOTY plans, designs and delivers mobility solutions through our community partnerships network. Our plans are guided by the collective domain knowledge and expertise of our partners, tailored to your community\'s needs and carefully aligned with municipal vision, goals, strategies, plans and policies.',
+    description: (
+      <>
+        SCOOTY plans, designs and delivers mobility solutions through our community partnerships network. Our plans are guided by the collective domain knowledge and expertise of our partners, tailored to your community&apos;s needs and carefully aligned with municipal vision, goals, strategies, plans and policies.
+      </>
+    ),
   },
 ];
 
@@ -79,37 +98,27 @@ export const About = () => {
     <section id="about" className="bg-white dark:bg-black">
 
       {/* ── BUILT PROUDLY IN ONTARIO ── */}
-      <div ref={headerRef} className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div ref={headerRef} className="py-8 sm:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={headerInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-6"
         >
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white">
+          <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white">
               Built Proudly in <span className="text-red-500">Ontario</span>
             </h2>
-            <MapleLeafSVG className="w-10 h-11 text-red-500 dark:text-white flex-shrink-0" />
+            <MapleLeafSVG className="w-8 h-9 sm:w-10 sm:h-11 text-red-500 dark:text-white flex-shrink-0" />
           </div>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed pb-10">
+          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed pb-5">
             SCOOTY is a 100% owned and operated Canadian company built and developed with local talent that has world-class experience, here in Ontario. We live in the communities we serve so we have a deep sense of ownership and passion to bring the latest mobility solutions and technologies that meet the needs of our communities.
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            {['Brampton', 'Brampton HQ', 'Serving 5+ Cities', 'Expanding Nationwide'].map((tag, i) => (
-              <span
-                key={i}
-                className="px-4 py-2 bg-[#fec001]/10 border border-[#fec001]/30 text-[#fec001] rounded-full text-sm font-medium"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
         </motion.div>
       </div>
 
       {/* ── CORE VALUES ── */}
-      <div ref={valuesRef} className="py-24 bg-gray-50 dark:bg-navy-900">
+      <div ref={valuesRef} className="py-8 sm:py-12 bg-gray-50 dark:bg-navy-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -117,10 +126,10 @@ export const About = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-6"
           >
-            <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4">
               SCOOTY <span className="text-primary-500">Core Values</span>
             </h2>
-            <div className="flex justify-center items-center gap-6 text-lg font-semibold text-gray-500 dark:text-gray-400 tracking-widest uppercase">
+            <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-6 text-base sm:text-lg font-semibold text-gray-500 dark:text-gray-400 tracking-widest uppercase">
               <span>Safety</span>
               <span className="text-primary-500">·</span>
               <span>Courtesy</span>
@@ -129,14 +138,14 @@ export const About = () => {
             </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-14">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 sm:mt-14">
             {coreValues.map((v, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 30 }}
                 animate={valuesInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.2 + i * 0.15 }}
-                className="bg-white dark:bg-navy-800 rounded-2xl p-8 border border-gray-200 dark:border-white/10 hover:border-primary-500/30 hover:shadow-lg transition-all duration-300 group"
+                className="bg-white dark:bg-navy-800 rounded-2xl p-6 sm:p-8 border border-gray-200 dark:border-white/10 hover:border-primary-500/30 hover:shadow-lg transition-all duration-300 group"
               >
                 <div className="w-12 h-12 bg-primary-500/10 border border-primary-500/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary-500 group-hover:border-primary-500 transition-all duration-300">
                   <v.icon className="w-6 h-6 text-primary-500 group-hover:text-black transition-colors duration-300" />
@@ -146,21 +155,13 @@ export const About = () => {
               </motion.div>
             ))}
           </div>
-
-          <div className="flex justify-center mt-10">
-            <a
-              href="/about"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary-500 text-black rounded-full font-semibold hover:bg-primary-400 transition-all duration-300"
-            >
-              Learn More <span>→</span>
-            </a>
-          </div>
         </div>
       </div>
 
       {/* ── MADE IN CANADA ── */}
-      <div ref={canadaRef} className="py-24 bg-black relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.04]"
+      <div ref={canadaRef} className="py-16 sm:py-24 bg-black relative overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-[0.04]"
           style={{
             backgroundImage: 'radial-gradient(circle, rgba(234,179,8,0.8) 1px, transparent 1px)',
             backgroundSize: '28px 28px',
@@ -175,23 +176,18 @@ export const About = () => {
             animate={canadaInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8 }}
           >
-
-
-
-
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={canadaInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.85 }}
               className="flex flex-wrap justify-center gap-3"
-            >
-            </motion.div>
+            />
           </motion.div>
         </div>
       </div>
 
       {/* ── SOCIALS ── */}
-      <div ref={socialsRef} className="py-24 bg-gray-50 dark:bg-navy-900">
+      <div ref={socialsRef} className="py-8 sm:py-12 bg-gray-50 dark:bg-navy-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -199,10 +195,10 @@ export const About = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-14"
           >
-            <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4">
               Follow the <span className="text-primary-500">Journey</span>
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">
+            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">
               Stay connected with SCOOTY — real stories, city launches, and the future of transit, live from our community.
             </p>
             <div className="flex justify-center space-x-4">

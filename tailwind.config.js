@@ -48,8 +48,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Onest', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Avenir', 'Avenir Next', 'Nunito Sans', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        display: ['Avenir', 'Avenir Next', 'Nunito Sans', 'Helvetica Neue', 'Arial', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

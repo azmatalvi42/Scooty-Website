@@ -12,7 +12,7 @@ const perks = [
   {
     icon: Zap,
     title: 'Instant Unlocking',
-    description: 'Scan, tap, and go. Unlock any SCOOTY in seconds straight from the app.',
+    description: 'Scan and go! Unlock any SCOOTY in seconds straight from the app.',
   },
   {
     icon: Shield,
@@ -28,9 +28,9 @@ export const ChatbotDemo = () => {
   const navigate = useNavigate();
 
   return (
-    <section id="riders" ref={ref} className="relative py-24 bg-gray-50 dark:bg-navy-800 overflow-hidden">
+    <section id="riders" ref={ref} className="relative py-12 sm:py-24 bg-gray-50 dark:bg-navy-800 overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
           {/* ── Left — Text ── */}
           <motion.div
@@ -48,7 +48,7 @@ export const ChatbotDemo = () => {
               SCOOTY Micromobility Rideshare
             </motion.span>
 
-            <h2 className="text-5xl md:text-6xl font-bold font-display text-gray-900 dark:text-white mb-6 leading-tight">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold font-display text-gray-900 dark:text-white mb-6 leading-tight">
               Riders
             </h2>
 
@@ -96,7 +96,7 @@ export const ChatbotDemo = () => {
 
               <motion.button
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                className="group inline-flex items-center gap-2 px-7 py-3.5 bg-white dark:bg-black border border-gray-200 dark:border-white/15 text-gray-900 dark:text-white rounded-full font-semibold hover:border-primary-500/60 hover:text-primary-500 transition-all duration-300"
+                className="group inline-flex items-center gap-2 px-7 py-3.5 bg-white dark:bg-black border border-primary-500 text-primary-500 rounded-full font-semibold hover:border-primary-400 hover:text-primary-400 transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -123,7 +123,7 @@ export const ChatbotDemo = () => {
               <img
                 src="https://images.pexels.com/photos/7129713/pexels-photo-7129713.jpeg?auto=compress&cs=tinysrgb&w=800"
                 alt="SCOOTY rider"
-                className="w-full h-[420px] object-cover"
+                className="w-full h-[260px] sm:h-[360px] md:h-[420px] object-cover"
               />
               {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
