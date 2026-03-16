@@ -133,7 +133,7 @@ export const Projects = () => {
   const current = partnerTypes[active];
 
   return (
-    <section id="impact" ref={ref} className="relative py-12 sm:py-20 bg-gray-50 dark:bg-navy-800 overflow-hidden">
+    <section id="impact" ref={ref} className="relative py-10 sm:py-20 ls:py-6 bg-gray-50 dark:bg-navy-800 overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ── Our Partners heading ── */}
@@ -197,7 +197,7 @@ export const Projects = () => {
                     </div>
 
                     {/* Right — Image */}
-                    <div className="relative min-h-[220px] sm:min-h-[300px] lg:min-h-[460px]">
+                    <div className="relative min-h-[180px] sm:min-h-[280px] lg:min-h-[460px] ls:min-h-[150px]">
                       <img
                         src={current.image}
                         alt={current.title}

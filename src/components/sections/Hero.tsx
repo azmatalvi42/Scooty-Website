@@ -85,7 +85,7 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-sm sm:text-base md:text-lg text-white/70 max-w-3xl mx-auto px-2"
+            className="text-2xl md:text-lg text-white/70 max-w-3xl mx-auto"
           >
             We integrate on-demand mobility, digital payments and AI-powered transit intelligence with existing transit infrastructure to make daily commuting smooth, simple and efficient.
           </motion.p>
@@ -99,7 +99,7 @@ export const Hero = () => {
         transition={{ delay: 1, duration: 1 }}
         className="absolute bottom-20 left-0 right-0 text-center px-4"
       >
-        <p className="text-sm sm:text-base md:text-xl text-primary-400 font-display tracking-wide font-bold">
+        <p className="text-xl text-primary-400 font-display tracking-wide font-bold pb-5">
           <span className="text-white">We’re on a mission to  </span>power how cities move people.
         </p>
       </motion.div>

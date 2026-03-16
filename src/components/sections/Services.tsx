@@ -65,8 +65,9 @@ export const Services = () => {
   const current = solutions[active];
 
   return (
-    <section id="services" ref={ref} className="relative py-12 sm:py-20 bg-white dark:bg-black overflow-hidden">
+    <section id="services" ref={ref} className="relative py-10 sm:py-20 ls:py-6 bg-white dark:bg-black overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -98,6 +99,9 @@ export const Services = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
                   {/* Left — Text */}
                   <div className="p-6 sm:p-8 md:p-14 flex flex-col justify-center">
+                    <span className="inline-block px-4 py-1.5 bg-primary-500 text-black text-xs font-bold rounded-full mb-5 tracking-wide uppercase w-fit">
+                      Scooty Transit Platform
+                    </span>
                     <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display text-gray-900 dark:text-white mb-4 sm:mb-6 leading-tight">
                       {current.title}
                     </h3>
@@ -120,7 +124,7 @@ export const Services = () => {
                   </div>
 
                   {/* Right — Image */}
-                  <div className="relative min-h-[220px] sm:min-h-[300px] lg:min-h-[460px]">
+                  <div className="relative min-h-[180px] sm:min-h-[280px] lg:min-h-[460px] ls:min-h-[150px]">
                     <img
                       src={current.image}
                       alt={current.title}

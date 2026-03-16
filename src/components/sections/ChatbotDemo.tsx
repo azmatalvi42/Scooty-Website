@@ -7,7 +7,7 @@ const perks = [
   {
     icon: MapPin,
     title: 'Find a Ride Near You',
-    description: 'Locate available SCOOTY vehicles and transit connections in real time across your city.',
+    description: 'Locate SCOOTY vehicles and transit connections in real time across your city.',
   },
   {
     icon: Zap,
@@ -17,7 +17,7 @@ const perks = [
   {
     icon: Shield,
     title: 'Ride Safe, Ride Smart',
-    description: 'Up-to-date technology, built-in safety features and 24/7 multi-lingual support.',
+    description: 'Up-to-date technology, built-in safety features and 24/7 multilingual support.',
   },
 ];
 
@@ -28,9 +28,9 @@ export const ChatbotDemo = () => {
   const navigate = useNavigate();
 
   return (
-    <section id="riders" ref={ref} className="relative py-12 sm:py-24 bg-gray-50 dark:bg-navy-800 overflow-hidden">
+    <section id="riders" ref={ref} className="relative py-10 sm:py-24 ls:py-6 bg-gray-50 dark:bg-navy-800 overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 ls:gap-6 items-center">
 
           {/* ── Left — Text ── */}
           <motion.div
@@ -123,7 +123,7 @@ export const ChatbotDemo = () => {
               <img
                 src="https://images.pexels.com/photos/7129713/pexels-photo-7129713.jpeg?auto=compress&cs=tinysrgb&w=800"
                 alt="SCOOTY rider"
-                className="w-full h-[260px] sm:h-[360px] md:h-[420px] object-cover"
+                className="w-full h-[220px] sm:h-[340px] md:h-[420px] ls:h-[180px] object-cover"
               />
               {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
