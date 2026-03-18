@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Shield, Heart, Handshake, Linkedin, Twitter, Instagram, Facebook } from 'lucide-react';
+import { Linkedin, Twitter, Instagram, Facebook } from 'lucide-react';
 
 const OntarioFlag = ({ className = '' }: { className?: string }) => (
   <svg viewBox="0 0 120 60" className={className} xmlns="http://www.w3.org/2000/svg">
@@ -48,30 +48,9 @@ const TikTokIcon = ({ className }: { className?: string }) => (
 
 const useSection = () => useInView({ triggerOnce: true, threshold: 0.1 });
 
-const coreValues = [
-  {
-    icon: Shield,
-    title: 'Safety',
-    description:
-      'Safety is a fundamental right for everyone. Inspired by Vision Zero principles, SCOOTY\'s commitment to safety is the foundation of our company; expressed and demonstrated in our branding, our technology, and our daily operations to make SCOOTY the safest option for all members of a community.',
-  },
-  {
-    icon: Heart,
-    title: 'Courtesy',
-    description:
-      'Courtesy is critical in making shared mobility work for everyone. We encompass courtesy as a design thinking principle and implement it into our planning process, operational best practices and communication awareness.',
-  },
-  {
-    icon: Handshake,
-    title: 'Partnership',
-    description:
-      'SCOOTY plans, designs and delivers mobility solutions through our community partnerships network. Our plans are guided by the collective domain knowledge and expertise of our partners, tailored to your community\'s needs and carefully aligned with municipal vision, goals, strategies, plans and policies.',
-  },
-];
 
 export const About = () => {
   const [headerRef, headerInView] = useSection();
-  const [valuesRef, valuesInView] = useSection();
   const [canadaRef, canadaInView] = useSection();
   const [socialsRef, socialsInView] = useSection();
 
@@ -79,7 +58,7 @@ export const About = () => {
     <section id="about" className="bg-white dark:bg-black">
 
       {/* ── BUILT PROUDLY IN ONTARIO ── */}
-      <div ref={headerRef} className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div ref={headerRef} className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={headerInView ? { opacity: 1, y: 0 } : {}}
@@ -87,56 +66,15 @@ export const About = () => {
           className="text-center mb-16"
         >
           <div className="flex items-center justify-center gap-4 mb-6">
-            <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white">
-              Built Proudly in <span className="text-red-500">Ontario</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white">
+              Built Proudly in <span className="text-yellow-500">Ontario</span>
             </h2>
             <MapleLeafSVG className="w-10 h-11 text-red-500 dark:text-white flex-shrink-0" />
           </div>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed pb-5">
+          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-4xl mx-auto leading-relaxed pb-5">
             SCOOTY is a 100% owned and operated Canadian company built and developed with local talent that has world-class experience, here in Ontario. We live in the communities we serve so we have a deep sense of ownership and passion to bring the latest mobility solutions and technologies that meet the needs of our communities.
           </p>
         </motion.div>
-      </div>
-
-      {/* ── CORE VALUES ── */}
-      <div ref={valuesRef} className="py-24 bg-gray-50 dark:bg-navy-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={valuesInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-6"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4">
-              SCOOTY <span className="text-primary-500">Core Values</span>
-            </h2>
-            <div className="flex justify-center items-center gap-6 text-lg font-semibold text-gray-500 dark:text-gray-400 tracking-widest uppercase">
-              <span>Safety</span>
-              <span className="text-primary-500">·</span>
-              <span>Courtesy</span>
-              <span className="text-primary-500">·</span>
-              <span>Partnership</span>
-            </div>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-14">
-            {coreValues.map((v, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                animate={valuesInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.2 + i * 0.15 }}
-                className="bg-white dark:bg-navy-800 rounded-2xl p-8 border border-gray-200 dark:border-white/10 hover:border-primary-500/30 hover:shadow-lg transition-all duration-300 group"
-              >
-                <div className="w-12 h-12 bg-primary-500/10 border border-primary-500/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary-500 group-hover:border-primary-500 transition-all duration-300">
-                  <v.icon className="w-6 h-6 text-primary-500 group-hover:text-black transition-colors duration-300" />
-                </div>
-                <h3 className="text-xl font-bold font-display text-gray-900 dark:text-white mb-3">{v.title}</h3>
-                <p className="text-white-600 dark:text-gray-400 text-m leading-relaxed">{v.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
       </div>
 
       {/* ── MADE IN CANADA ── */}
@@ -168,7 +106,7 @@ export const About = () => {
       </div>
 
       {/* ── SOCIALS ── */}
-      <div ref={socialsRef} className="py-5 bg-gray-50 dark:bg-navy-900">
+      <div ref={socialsRef} className="py-0 bg-gray-50 dark:bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -176,8 +114,8 @@ export const About = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-14"
           >
-            <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4">
-              Follow the <span className="text-primary-500">Journey</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4">
+              Stay in Motion with <span className="text-primary-500">SCOOTY</span>
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">
               Stay connected with SCOOTY — real stories, city launches, and the future of transit, live from our community.

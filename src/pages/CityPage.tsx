@@ -242,10 +242,61 @@ const cityData: Record<string, {
     community:
       'Burlington is a city that takes pride in its natural beauty, active lifestyle, and commitment to sustainable growth. SCOOTY\'s partnership with the City of Burlington reflects a shared vision for reducing car dependence and making active transportation more accessible. The Centennial Trail program is a natural extension of Burlington\'s investment in cycling and pedestrian infrastructure, and SCOOTY is proud to be part of that story.',
     prevCity: 'markham',
+    nextCity: 'metrolinx',
+  },
+
+  metrolinx: {
+    name: 'Metrolinx',
+    slug: 'metrolinx',
+    launched: '2024',
+    tagline: 'Proud partners with Metrolinx, innovating transit across the Greater Toronto and Hamilton Area.',
+    overview:
+      'SCOOTY is proud to partner with Metrolinx — the Crown agency responsible for regional transit across the Greater Toronto and Hamilton Area — to help reimagine how people connect to and from the GO Transit network. Our partnership focuses on closing the first-and-last-mile gap that prevents riders from choosing transit over the car. By integrating SCOOTY\'s on-demand micromobility and AI-powered RideGuide technology with Metrolinx\'s regional network, we are making it easier than ever for commuters across Ontario to choose sustainable, connected transit.',
+    heroImage:
+      'https://images.pexels.com/photos/3278015/pexels-photo-3278015.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    vehicles: ['E-Scooters', 'E-Bikes'],
+    stats: [
+      { label: 'Partner Type', value: 'Transit Agency' },
+      { label: 'Service Region', value: 'GTHA' },
+      { label: 'Network', value: 'GO Transit' },
+      { label: 'Focus', value: 'First & Last Mile' },
+    ],
+    serviceArea: {
+      title: 'GTHA-Wide First & Last Mile',
+      description:
+        'Our Metrolinx partnership extends SCOOTY\'s reach across the entire GTHA, placing shared mobility where riders need it most — at GO stations, bus terminals, and transit hubs throughout the region.',
+      rules: [
+        'SCOOTY vehicles stationed at key GO Transit stations across the GTHA',
+        'Seamless connection between SCOOTY trips and GO Train / GO Bus services',
+        'Integrated digital payments through a single platform',
+        'Real-time availability and trip planning through SCOOTY AI RideGuide',
+        'Geofenced service zones aligned with Metrolinx station boundaries',
+      ],
+    },
+    highlights: [
+      'Official mobility partner of Metrolinx across the Greater Toronto and Hamilton Area',
+      'Closing the first-and-last-mile gap at GO Transit stations region-wide',
+      'Integrated with Metrolinx\'s digital fare and transit planning systems',
+      'Supporting Ontario\'s broader transit ridership and emissions reduction goals',
+      'Bringing AI-powered transit support to millions of GO Transit commuters',
+    ],
+    transit: {
+      description:
+        'The SCOOTY–Metrolinx partnership is built around seamless transit integration. Riders can connect from their neighbourhood to a GO station, and continue onward — all within a single, connected mobility ecosystem.',
+      connections: [
+        'GO Train network across the GTHA',
+        'GO Bus regional routes',
+        'UP Express airport link connectivity',
+        'Local transit agency cross-connections',
+      ],
+    },
+    community:
+      'Metrolinx serves millions of transit riders across the Greater Toronto and Hamilton Area every year. SCOOTY\'s partnership with Metrolinx reflects our shared belief that a truly connected transit network means meeting riders at every step of their journey — not just at the platform. Together, we are working to reduce car dependence, lower emissions, and make regional transit a more accessible, attractive choice for everyone in Ontario.',
+    prevCity: 'burlington',
   },
 };
 
-const cityOrder = ['brampton', 'barrie', 'markham', 'burlington'];
+const cityOrder = ['brampton', 'barrie', 'markham', 'burlington', 'metrolinx'];
 
 /* ─────────────────────────────────────── COMPONENT ─── */
 

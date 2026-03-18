@@ -28,7 +28,7 @@ export const ChatbotDemo = () => {
   const navigate = useNavigate();
 
   return (
-    <section id="riders" ref={ref} className="relative py-10 sm:py-24 ls:py-6 bg-gray-50 dark:bg-navy-800 overflow-hidden">
+    <section id="riders" ref={ref} className="relative py-10 sm:py-24 ls:py-6 bg-gray-50 dark:bg-black overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 ls:gap-6 items-center">
 
@@ -48,7 +48,7 @@ export const ChatbotDemo = () => {
               SCOOTY Micromobility Rideshare
             </motion.span>
 
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold font-display text-gray-900 dark:text-white mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-6 leading-tight">
               Riders
             </h2>
 

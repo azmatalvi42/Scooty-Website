@@ -95,7 +95,7 @@ export const Services = () => {
               exit="exit"
               transition={{ duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
-              <div className="rounded-3xl overflow-hidden border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-navy-800">
+              <div className="rounded-3xl overflow-hidden border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
                   {/* Left — Text */}
                   <div className="p-6 sm:p-8 md:p-14 flex flex-col justify-center">

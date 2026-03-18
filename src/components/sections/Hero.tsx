@@ -99,7 +99,7 @@ export const Hero = () => {
         transition={{ delay: 1, duration: 1 }}
         className="absolute bottom-20 left-0 right-0 text-center px-4"
       >
-        <p className="text-xl text-primary-400 font-display tracking-wide font-bold pb-5">
+        <p className="text-2xl text-primary-400 font-display tracking-wide font-bold pb-20">
           <span className="text-white">We’re on a mission to  </span>power how cities move people.
         </p>
       </motion.div>

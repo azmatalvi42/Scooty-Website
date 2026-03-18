@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import logo from '../../assets/LOGO - TM.png';
 import { Link, useLocation } from 'react-router-dom';
 import { ThemeToggle } from '../ui/ThemeToggle';
 
 
+
+const announcements = [
+  { text: '🛴 SCOOTY is now live in Brampton, Barrie & Burlington', linkText: 'Learn More', href: '/partners' },
+  { text: '🤝 Proud partners with Metrolinx — innovating transit across Ontario', linkText: 'See the Partnership', href: '/partners/metrolinx' },
+  { text: '⚡ First & last-mile transit solutions powered by AI', linkText: 'Explore Technology', href: '/technology' },
+  { text: '🍁 100% Canadian — built and operated right here in Ontario', linkText: 'About Us', href: '/about' },
+];
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -18,6 +25,8 @@ const navigation = [
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [announcementVisible, setAnnouncementVisible] = useState(true);
+  const [announcementIndex, setAnnouncementIndex] = useState(0);
   const location = useLocation();
 
   useEffect(() => {
@@ -29,6 +38,14 @@ export const Navbar = () => {
   useEffect(() => {
     setIsOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (!announcementVisible) return;
+    const timer = setInterval(() => {
+      setAnnouncementIndex(i => (i + 1) % announcements.length);
+    }, 7000);
+    return () => clearInterval(timer);
+  }, [announcementVisible]);
 
   const handleTalkToUs = () => {
     setIsOpen(false);
@@ -44,10 +61,49 @@ export const Navbar = () => {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white/90 dark:bg-black/90 backdrop-blur-lg shadow-lg' : 'bg-transparent'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 dark:bg-black/90 backdrop-blur-lg shadow-lg' : 'bg-transparent'
+        }`}
     >
+      {/* ── Announcement Bar ── */}
+      <AnimatePresence>
+        {announcementVisible && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden bg-primary-500 text-black"
+          >
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1 flex items-center justify-center text-xs font-semibold relative overflow-hidden h-6">
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={announcementIndex}
+                  initial={{ y: '100%', opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: '-100%', opacity: 0 }}
+                  transition={{ duration: 0.4, ease: 'easeInOut' }}
+                  className="absolute inset-0 flex items-center justify-center gap-1.5"
+                >
+                  <span>{announcements[announcementIndex].text} —</span>
+                  <Link
+                    to={announcements[announcementIndex].href}
+                    className="underline underline-offset-2 hover:opacity-75 transition-opacity"
+                  >
+                    {announcements[announcementIndex].linkText}
+                  </Link>
+                </motion.span>
+              </AnimatePresence>
+              <button
+                onClick={() => setAnnouncementVisible(false)}
+                className="absolute right-4 sm:right-6 lg:right-8 top-1/2 -translate-y-1/2 hover:opacity-75 transition-opacity z-10"
+                aria-label="Dismiss announcement"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
@@ -70,11 +126,10 @@ export const Navbar = () => {
                 <motion.div key={item.name} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link
                     to={item.href}
-                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                      isActive
-                        ? 'text-primary-600 dark:text-primary-400'
-                        : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-primary-400'
-                    }`}
+                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${isActive
+                      ? 'text-primary-600 dark:text-primary-400'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-primary-400'
+                      }`}
                   >
                     {item.name}
                   </Link>
@@ -92,7 +147,7 @@ export const Navbar = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Talk to Us
+              Download the App
             </motion.button>
             <div className="md:hidden">
               <motion.button
@@ -122,11 +177,10 @@ export const Navbar = () => {
               <Link
                 key={item.name}
                 to={item.href}
-                className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-200 ${
-                  isActive
-                    ? 'text-primary-600 dark:text-primary-400 bg-primary-500/5'
-                    : 'text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-white/5'
-                }`}
+                className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-200 ${isActive
+                  ? 'text-primary-600 dark:text-primary-400 bg-primary-500/5'
+                  : 'text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-white/5'
+                  }`}
               >
                 {item.name}
               </Link>
