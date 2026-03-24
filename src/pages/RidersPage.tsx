@@ -65,14 +65,13 @@ const TABS = [
   },
   {
     icon: ParkingSquare,
-    label: 'Parking',
+    label: 'Park Like a Pro',
     slug: 'parking',
     subtitle: 'Park responsibly',
     description: 'Find designated parking zones in the app. Park upright and take a photo.',
     features: ['Find Zones', 'Park Upright', 'Take Photo', 'End Ride'],
     highlights: [
-      { value: 'Blue P', label: 'Parking icon' },
-      { value: 'Free', label: 'At zones' },
+      { value: 'Free Parking', label: 'At Designated Zones' },
     ],
     image: 'https://images.pexels.com/photos/5386754/pexels-photo-5386754.jpeg?auto=compress&cs=tinysrgb&w=800',
   },
@@ -288,16 +287,16 @@ export const RidersPage = () => {
                     </div>
 
                     {/* Stats */}
-                    <div className={`flex gap-2.5 mb-6 flex-wrap ${isCentered ? 'justify-center' : 'justify-start'}`}>
+                    <div className={`flex gap-2.5 mb-6 flex-wrap justify-center`}>
                       {current.highlights.map((h, i) => (
-                        <div key={i} className={`px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-navy-700 border border-gray-100 dark:border-navy-700 ${isCentered ? 'text-center' : ''}`}>
-                          <div className="text-lg font-black font-display text-primary-500 leading-none">{h.value}</div>
+                        <div key={i} className={`w-36 px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-navy-700 border border-primary-500 text-center`}>
+                          <div className="text-lg font-black font-display text-primary-500 leading-none h-[20px] flex items-center justify-center">{h.value}</div>
                           <div className="text-xs text-gray-500 mt-0.5">{h.label}</div>
                         </div>
                       ))}
                       {showHelmet && (
-                        <div className={`px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-navy-700 border border-primary-500/20 ${isCentered ? 'text-center' : ''}`}>
-                          <HardHat className={`w-5 h-5 text-primary-500 ${isCentered ? 'mx-auto' : ''}`} />
+                        <div className={`w-36 px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-navy-700 border border-primary-500 text-center`}>
+                          <HardHat className="w-5 h-5 text-primary-500 mx-auto" />
                           <div className="text-xs text-gray-500 mt-0.5">Helmet required</div>
                         </div>
                       )}
