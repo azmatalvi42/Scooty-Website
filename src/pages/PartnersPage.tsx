@@ -347,13 +347,6 @@ export const PartnersPage = () => {
                   <span>Become a Partner</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </motion.button>
-                <motion.button
-                  className="px-8 py-4 border border-gray-300 dark:border-white/20 text-gray-700 dark:text-gray-300 rounded-full font-medium hover:border-primary-500 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Work with a local partner that understands your community.
-                </motion.button>
               </motion.div>
             </div>
 

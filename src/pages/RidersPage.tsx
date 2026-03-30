@@ -13,6 +13,8 @@ import {
   Play,
   ArrowRight,
   HardHat,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 
 // ─── Tab config ───────────────────────────────────────────────────────────────
@@ -42,7 +44,7 @@ const TABS = [
       { value: '5', label: 'Easy Steps' },
       { value: 'Beginner', label: 'Friendly' },
     ],
-    image: 'https://images.pexels.com/photos/4543833/pexels-photo-4543833.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: 'src/assets/Riders/Carousel/riders-carousel-ride.png',
   },
   {
     icon: MapPin,
@@ -52,16 +54,16 @@ const TABS = [
     description: 'Check the map in the SCOOTY app and know the different speed control riding and parking zones.',
     features: ['Clear = 20 km/h', 'Yellow = 15 km/h', 'Red = 0 km/h', 'Blue = Designated Parking', 'Purple = Mandatory Parking'],
     featureColors: [
-      'bg-white dark:bg-gray-100 border-gray-300 text-gray-800',
-      'bg-yellow-400 border-yellow-500 text-black',
-      'bg-red-500 border-red-600 text-white',
-      'bg-blue-500 border-blue-600 text-white',
-      'bg-purple-600 border-purple-700 text-white',
+      'bg-gray-100/60 border-gray-300/60 text-gray-700',
+      'bg-yellow-400/30 border-yellow-500/50 text-yellow-700 dark:text-yellow-400',
+      'bg-red-500/25 border-red-500/50 text-red-600 dark:text-red-400',
+      'bg-blue-500/25 border-blue-500/50 text-blue-600 dark:text-blue-400',
+      'bg-purple-600/25 border-purple-600/50 text-purple-600 dark:text-purple-400',
     ],
     highlights: [
       { value: '20 km/h', label: 'Max speed' },
     ],
-    image: 'https://images.pexels.com/photos/3894382/pexels-photo-3894382.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: 'src/assets/Riders/Carousel/riders-carousel-map.png',
   },
   {
     icon: ParkingSquare,
@@ -73,7 +75,7 @@ const TABS = [
     highlights: [
       { value: 'Free Parking', label: 'At Designated Zones' },
     ],
-    image: 'https://images.pexels.com/photos/5386754/pexels-photo-5386754.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: 'src/assets/Riders/Carousel/riders-carousel-parking.png',
   },
   {
     icon: Shield,
@@ -86,7 +88,7 @@ const TABS = [
       { value: '100%', label: 'Helmet rate goal' },
       { value: '0', label: 'Sidewalk riding' },
     ],
-    image: 'https://images.pexels.com/photos/5386755/pexels-photo-5386755.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: 'src/assets/Riders/Carousel/riders-carousel-safety.png',
   },
   {
     icon: Bike,
@@ -99,7 +101,7 @@ const TABS = [
       { value: '2', label: 'Vehicle types' },
       { value: '20 km/h', label: 'Top speed' },
     ],
-    image: 'https://images.pexels.com/photos/4543837/pexels-photo-4543837.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: 'src/assets/Riders/Carousel/riders-carousel-vehicles.png',
   },
 ];
 
@@ -221,7 +223,24 @@ export const RidersPage = () => {
       <section ref={contentRef} className="py-10 bg-gray-50 dark:bg-navy-900">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          {/* Card */}
+          {/* Card + arrows */}
+          <div className="relative">
+            {/* Left arrow */}
+            <button
+              onClick={() => goToTab((activeTab - 1 + TABS.length) % TABS.length)}
+              className="absolute -left-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-navy-800 border border-yellow-500/30 shadow-md hover:bg-primary-500 hover:border-primary-500 hover:text-black text-gray-600 dark:text-gray-300 transition-all duration-200"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+
+            {/* Right arrow */}
+            <button
+              onClick={() => goToTab((activeTab + 1) % TABS.length)}
+              className="absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-navy-800 border border-yellow-500/30 shadow-md hover:bg-primary-500 hover:border-primary-500 hover:text-black text-gray-600 dark:text-gray-300 transition-all duration-200"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
@@ -316,10 +335,6 @@ export const RidersPage = () => {
                       <current.icon className="w-3 h-3 text-primary-400" />
                       {current.label}
                     </div>
-                    {/* Step counter */}
-                    <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-primary-500 text-black text-xs font-bold px-3 py-1.5 rounded-full">
-                      {activeTab + 1} / {TABS.length}
-                    </div>
                   </div>
                 </div>
               </div>
@@ -340,6 +355,7 @@ export const RidersPage = () => {
               </div>
             </motion.div>
           </AnimatePresence>
+          </div>
         </div>
       </section>
     </div>
