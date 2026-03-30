@@ -8,7 +8,7 @@ const solutions = [
     title: 'SCOOTY On-Demand Mobility',
     description:
       'Improving the reach of regional transit by resolving the first-and-last-km service gap through on-demand mobility (Transit to Your Doorstep\u00ae).',
-    image: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    image: 'src/assets/mainPage/our-solutions-carousel/on-demand-mobility.png',
   },
   {
     title: 'SCOOTY PAY',

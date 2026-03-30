@@ -83,7 +83,11 @@ export default {
       backdropBlur: {
         xs: '2px',
       },
+      backgroundImage: {
+        hero: "url('/src/assets/Riders/Carousel/Download the SCOOTY App Use the app to search for the nearest SCOOTY..gif')",
+      },
     },
   },
   plugins: [],
 };
+
