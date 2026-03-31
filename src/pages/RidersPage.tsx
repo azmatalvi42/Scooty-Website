@@ -31,7 +31,7 @@ const TABS = [
       { value: '2 min', label: 'Setup time' },
       { value: '16+', label: 'Age required' },
     ],
-    image: "src/assets/Riders/Carousel/riders-carousel.gif"
+    image: "/assets/Riders/Carousel/riders-carousel.gif"
   },
   {
     icon: Navigation,
@@ -44,7 +44,7 @@ const TABS = [
       { value: '5', label: 'Easy Steps' },
       { value: 'Beginner', label: 'Friendly' },
     ],
-    image: 'src/assets/Riders/Carousel/riders-carousel-ride.png',
+    image: '/assets/Riders/Carousel/riders-carousel-ride.png',
   },
   {
     icon: MapPin,
@@ -63,7 +63,7 @@ const TABS = [
     highlights: [
       { value: '20 km/h', label: 'Max speed' },
     ],
-    image: 'src/assets/Riders/Carousel/riders-carousel-map.png',
+    image: '/assets/Riders/Carousel/riders-carousel-map.png',
   },
   {
     icon: ParkingSquare,
@@ -75,7 +75,7 @@ const TABS = [
     highlights: [
       { value: 'Free Parking', label: 'At Designated Zones' },
     ],
-    image: 'src/assets/Riders/Carousel/riders-carousel-parking.png',
+    image: '/assets/Riders/Carousel/riders-carousel-parking.png',
   },
   {
     icon: Shield,
@@ -88,7 +88,7 @@ const TABS = [
       { value: '100%', label: 'Helmet rate goal' },
       { value: '0', label: 'Sidewalk riding' },
     ],
-    image: 'src/assets/Riders/Carousel/riders-carousel-safety.png',
+    image: '/assets/Riders/Carousel/riders-carousel-safety.png',
   },
   {
     icon: Bike,
@@ -101,7 +101,7 @@ const TABS = [
       { value: '2', label: 'Vehicle types' },
       { value: '20 km/h', label: 'Top speed' },
     ],
-    image: 'src/assets/Riders/Carousel/riders-carousel-vehicles.png',
+    image: '/assets/Riders/Carousel/riders-carousel-vehicles.png',
   },
 ];
 
@@ -128,7 +128,7 @@ export const RidersPage = () => {
       <section className="relative overflow-hidden">
         {/* Background image */}
         <img
-          src="src/assets/Riders/riders-page-hero.png"
+          src="/assets/Riders/riders-page-hero.png"
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
         />

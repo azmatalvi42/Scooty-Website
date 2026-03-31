@@ -58,31 +58,31 @@ const governmentQuotes = [
     quote: 'I am pleased to see SCOOTY expand and offer more options to keep commuters moving. Transit-Integrated Micromobility is critical to allow more people to use transit for longer-distance trips across the region. Our government is protecting Ontario by supporting businesses, municipalities and transit providers in implementing innovative transportation solutions, like SCOOTY’s new micromobility technology, to make life more affordable for commuters and grow our economy.',
     name: "Honourable Prabmeet Sarkaria",
     title: "Minister of Transportation for Ontario",
-    image: "src/assets/QuotesImages/DSC_4516.jpg",
+    image: "/assets/QuotesImages/DSC_4516.jpg",
   },
   {
     quote: "The integration of new, innovative technologies like SCOOTY into our transportation network is an essential step in ensuring workers, families, and students across our province are supported in their day-to-day activities.",
     name: "Vic Fedeli",
     title: "Minister of Economic Development, Job Creation and Trade",
-    image: "src/assets/QuotesImages/DSC_4553 (1).jpg",
+    image: "/assets/QuotesImages/DSC_4553 (1).jpg",
   },
   {
     quote: "I have been pleased to watch Brampton’s SCOOTY demonstrate their tech-focused, partnership-based approach to local mobility and connections to transit. Great transit makes for thriving communities, and SCOOTY is a great part of our transit mix.",
     name: "Patrick Brown",
     title: "Mayor, City of Brampton",
-    image: "src/assets/QuotesImages/DSC_1837.jpg",
+    image: "/assets/QuotesImages/DSC_1837.jpg",
   },
   {
     quote: "The city has been pleased with our work with SCOOTY to support the needs of transit riders and improve connections to and from transit stops across the city. Having multi-modal commuting options connected through a unified transit fare is essential to encourage residents and visitors of Brampton to use transit, attracting investment and promoting economic activity.",
     name: "Councillor Gurpartap Singh Toor",
     title: "Chair of Economic Development and Regional Councillor of Wards 9 & 10, City of Brampton",
-    image: "src/assets/QuotesImages/City Hall Group Shot - Brampton Launch Photo (2).JPG",
+    image: "/assets/QuotesImages/City Hall Group Shot - Brampton Launch Photo (2).JPG",
   },
   {
     quote: "SCOOTY will help improve the first and last kilometre connectivity by providing another transportation option for people travelling to and from the City of Markham’s downtown district. We want to make sure that when you arrive here, that you get to your destination as easily, as efficiently and as accessible as possible, and that’s what SCOOTY does.",
     name: "Frank Scarpitti",
     title: "Mayor of Markham",
-    image: "src/assets/QuotesImages/2024MarkhamOVINScootyDemo-048.jpg",
+    image: "/assets/QuotesImages/2024MarkhamOVINScootyDemo-048.jpg",
   },
 ];
 
