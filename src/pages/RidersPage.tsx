@@ -131,6 +131,9 @@ export const RidersPage = () => {
           src="/assets/Riders/riders-page-hero.png"
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
         />
         {/* Overlay fades to section bg at the bottom */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/40 to-gray-50 dark:to-navy-900" />
@@ -327,6 +330,8 @@ export const RidersPage = () => {
                       src={current.image}
                       alt={current.label}
                       className="absolute inset-0 w-full h-full object-cover"
+                      loading="lazy"
+                      decoding="async"
                     />
                     {/* Gradient blends into card on desktop */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent lg:bg-gradient-to-r lg:from-yellow-950/30 lg:via-transparent lg:to-transparent" />

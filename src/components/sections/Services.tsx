@@ -8,7 +8,7 @@ const solutions = [
     title: 'SCOOTY On-Demand Mobility',
     description:
       'Improving the reach of regional transit by resolving the first-and-last-km service gap through on-demand mobility (Transit to Your Doorstep\u00ae).',
-    image: '/assets/mainPage/our-solutions-carousel/on-demand-mobility.png',
+    image: '/assets/mainPage/our-solutions-carousel/Gemini_Generated_Image_tnpy9stnpy9stnpy.png',
   },
   {
     title: 'SCOOTY PAY',
@@ -20,7 +20,7 @@ const solutions = [
     title: 'SCOOTY AI RideGuide',
     description:
       'Using conversational AI, real-time service updates, dynamic routing and customer support to enhance the daily transit commuting experience.',
-    image: 'https://images.pexels.com/photos/8386434/pexels-photo-8386434.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    image: '/assets/mainPage/our-solutions-carousel/ai-ride-guide.png',
   },
 ];
 
@@ -129,6 +129,8 @@ export const Services = () => {
                       src={current.image}
                       alt={current.title}
                       className="absolute inset-0 w-full h-full object-cover"
+                      loading="lazy"
+                      decoding="async"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-white/30 dark:from-navy-800/50 to-transparent lg:from-transparent" />
                   </div>

@@ -91,13 +91,13 @@ const partnerTypes = [
     title: 'Cities',
     description:
       'No two cities are the same. Partner with SCOOTY to bring the latest transit technology and mobility services to meet the needs of your community.',
-    image: 'https://images.pexels.com/photos/1486222/pexels-photo-1486222.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    image: 'public/assets/mainPage/partners-carousel/toronto-skyline.png',
   },
   {
     title: 'Transit',
     description:
       'Reimagine how daily commuting looks for your riders. Partner with SCOOTY to integrate digital payments, real-time updates, schedule delays and AI-powered customer support within your existing operations.',
-    image: 'https://images.pexels.com/photos/3278015/pexels-photo-3278015.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    image: 'public/assets/mainPage/main-pg-transit.jpeg',
   },
   {
     title: 'Real Estate',
@@ -109,7 +109,7 @@ const partnerTypes = [
     title: 'Non-Profit',
     description:
       'Enhance mobility access and engagement for your local community. Partner with SCOOTY to bring shared, zero-emission transportation and innovative mobility programs to campuses, events, tourism destinations, and local organizations.',
-    image: 'https://images.pexels.com/photos/6646918/pexels-photo-6646918.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    image: '',
   },
 ];
 
@@ -191,6 +191,8 @@ const QuoteImageCard = ({
       src={q.image}
       alt={q.name}
       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+      loading="lazy"
+      decoding="async"
     />
     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
     <div className="absolute inset-0 rounded-2xl ring-2 ring-transparent group-hover:ring-primary-500 transition-all duration-300" />
@@ -442,6 +444,8 @@ export const Projects = () => {
                   src={governmentQuotes[selectedQuote].image}
                   alt={governmentQuotes[selectedQuote].name}
                   className="absolute inset-0 w-full h-full object-cover object-top"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/70" />
                 {/* Close button */}
@@ -555,6 +559,8 @@ export const Projects = () => {
                         src={current.image}
                         alt={current.title}
                         className="absolute inset-0 w-full h-full object-cover"
+                        loading="lazy"
+                        decoding="async"
                       />
                       <div className="absolute inset-0 bg-gradient-to-r from-white/30 dark:from-navy-800/50 to-transparent lg:from-transparent" />
                     </div>
@@ -633,6 +639,8 @@ export const Projects = () => {
                       src={study.image}
                       alt={study.city}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   <div className="p-6">

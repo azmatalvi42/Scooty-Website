@@ -343,6 +343,9 @@ export const CityPage = () => {
           src={data.heroImage}
           alt={data.name}
           className="absolute inset-0 w-full h-full object-cover"
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/10" />
 

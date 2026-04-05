@@ -215,6 +215,8 @@ export const ProjectDetail = () => {
                 src={project.image}
                 alt={project.title}
                 className="w-full h-64 lg:h-80 object-cover rounded-xl shadow-lg"
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl" />
             </div>
@@ -301,6 +303,8 @@ export const ProjectDetail = () => {
               src={project.screenshots[currentImageIndex]}
               alt={`${project.title} screenshot ${currentImageIndex + 1}`}
               className="w-full h-64 md:h-96 object-cover rounded-xl shadow-lg"
+              loading="lazy"
+              decoding="async"
             />
             
             {project.screenshots.length > 1 && (

@@ -336,6 +336,9 @@ export const TechnologyPage = () => {
             src="https://images.pexels.com/photos/1031698/pexels-photo-1031698.jpeg?auto=compress&cs=tinysrgb&w=1920"
             alt=""
             className="w-full h-full object-cover"
+            fetchPriority="high"
+            loading="eager"
+            decoding="async"
           />
         </motion.div>
         <div className="absolute inset-0 bg-black/65" />

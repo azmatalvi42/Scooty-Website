@@ -25,6 +25,8 @@ import {
   Clock,
   Network,
   Star,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 
 /* ─────────────────────────────────────────── DATA ─── */
@@ -110,7 +112,7 @@ const partnerSolutions = [
     icon: Building2,
     title: 'Cities',
     subtitle: 'Municipality Programs',
-    image: 'https://images.pexels.com/photos/1486222/pexels-photo-1486222.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: '/assets/Partners/brampton-partnership.JPG',
     description:
       'Work with a Canadian mobility provider that understands how municipalities operate. SCOOTY collaborates closely with city teams to design programs aligned with transportation strategies, sustainability goals, and urban planning initiatives.',
     features: [
@@ -120,12 +122,16 @@ const partnerSolutions = [
       'Transit integration',
       'Community engagement programs',
     ],
+    highlights: [
+      { value: '4+', label: 'Active Cities' },
+      { value: '100%', label: 'Canadian' },
+    ],
   },
   {
     icon: Briefcase,
-    title: 'Businesses & Property Owners',
+    title: 'Businesses',
     subtitle: 'Commercial Partners',
-    image: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: '/assets/Partners/partners-carousel-business.jpg',
     description:
       'Shared mobility can become a competitive advantage. By integrating micromobility into retail, commercial, and mixed-use developments, businesses can attract more visitors, improve accessibility, and enhance customer experiences.',
     features: [
@@ -134,10 +140,14 @@ const partnerSolutions = [
       'Support sustainable development goals',
       'Attract tenants and customers',
     ],
+    highlights: [
+      { value: '↑', label: 'Foot Traffic' },
+      { value: 'TDM', label: 'Compliant' },
+    ],
   },
   {
     icon: GraduationCap,
-    title: 'Campuses',
+    title: 'Transit',
     subtitle: 'Academic Programs',
     image: 'https://images.pexels.com/photos/1462009/pexels-photo-1462009.jpeg?auto=compress&cs=tinysrgb&w=800',
     description:
@@ -148,12 +158,16 @@ const partnerSolutions = [
       'Campus-wide operational support',
       'Next-generation mobility insights',
     ],
+    highlights: [
+      { value: 'Turnkey', label: 'Program' },
+      { value: 'Research', label: 'Ready' },
+    ],
   },
   {
     icon: Home,
     title: 'Developers',
     subtitle: 'Real Estate & Development',
-    image: 'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: '/assets/Partners/partners-carousel-developer.png',
     description:
       'Build communities designed for the future of transportation. SCOOTY helps developers create connected neighborhoods where residents can live, work, and move sustainably.',
     features: [
@@ -161,6 +175,10 @@ const partnerSolutions = [
       'Mixed-use community integration',
       'Residential connectivity programs',
       'Sustainable infrastructure support',
+    ],
+    highlights: [
+      { value: 'Net Zero', label: 'Mobility' },
+      { value: 'Future', label: 'Ready' },
     ],
   },
 ];
@@ -172,7 +190,7 @@ const locations = [
     launched: 'April 2023',
     status: 'active',
     vehicles: ['E-Scooters'],
-    image: 'https://images.pexels.com/photos/1486222/pexels-photo-1486222.jpeg?auto=compress&cs=tinysrgb&w=900',
+    image: '/assets/Partners/cities-brampton.png',
     highlights: [
       'Service area covering the entire city',
       'Riding on roads ≤ 50 km/h',
@@ -186,7 +204,7 @@ const locations = [
     launched: 'June 2024',
     status: 'active',
     vehicles: ['E-Bikes'],
-    image: 'https://images.pexels.com/photos/1000445/pexels-photo-1000445.jpeg?auto=compress&cs=tinysrgb&w=900',
+    image: '/assets/Partners/cities-barrie.png',
     highlights: [
       'Waterfront service area',
       'Riding permitted on local trails',
@@ -199,7 +217,7 @@ const locations = [
     launched: 'August 2024',
     status: 'active',
     vehicles: ['E-Scooters', 'E-Bikes'],
-    image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=900',
+    image: '/assets/Partners/cities-markham-2.jpg',
     highlights: [
       'Riding on roads ≤ 50 km/h',
       'Designated parking zones',
@@ -212,7 +230,7 @@ const locations = [
     launched: 'June 2025',
     status: 'active',
     vehicles: ['E-Scooters'],
-    image: 'https://images.pexels.com/photos/1139556/pexels-photo-1139556.jpeg?auto=compress&cs=tinysrgb&w=900',
+    image: '/assets/Partners/cities-burlington.png',
     highlights: [
       '7 km trail corridor',
       'Designated parking zones',
@@ -234,161 +252,241 @@ const safetyFeatures = [
 
 export const PartnersPage = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const [direction, setDirection] = useState(1);
+
+  const goToTab = (index: number) => {
+    setDirection(index > activeTab ? 1 : -1);
+    setActiveTab(index);
+  };
+
   const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [contentRef, contentInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [valuesRef, valuesInView] = useInView({ triggerOnce: true, threshold: 0.05 });
   const [bringRef, bringInView] = useInView({ triggerOnce: true, threshold: 0.05 });
-  const [solutionsRef, solutionsInView] = useInView({ triggerOnce: true, threshold: 0.05 });
   const [locationsRef, locationsInView] = useInView({ triggerOnce: true, threshold: 0.05 });
   const [safetyRef, safetyInView] = useInView({ triggerOnce: true, threshold: 0.05 });
 
-  const currentSolution = partnerSolutions[activeTab];
+  const current = partnerSolutions[activeTab];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black overflow-x-hidden">
-
-      {/* ── HERO ── */}
-      <section className="relative pt-32 pb-24 overflow-hidden">
-        {/* Backgrounds */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-primary-50/30 dark:from-black dark:via-navy-800 dark:to-black" />
-        <div
-          className="absolute inset-0 opacity-[0.035] dark:opacity-[0.045]"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(234,179,8,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(234,179,8,0.5) 1px, transparent 1px)',
-            backgroundSize: '60px 60px',
-          }}
+    <div className="min-h-screen bg-white dark:bg-black">
+      {/* ── HERO + TAB NAV ── */}
+      <section className="relative overflow-hidden">
+        {/* Background image */}
+        <img
+          src="/assets/Partners/partner-img.jpg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
         />
+        {/* Overlay fades to section bg at the bottom */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/40 to-gray-50 dark:to-navy-900" />
 
-        {/* Floating orbs */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Hero text */}
+        <div ref={heroRef} className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-14">
           <motion.div
-            className="absolute top-16 left-8 w-64 h-64 bg-primary-500/15 rounded-full blur-3xl"
-            animate={{ y: [0, -30, 0], x: [0, 10, 0] }}
-            transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-          />
+            initial={{ opacity: 0, y: 20 }}
+            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center px-4 py-2 bg-primary-500/20 border border-primary-500/40 rounded-full mb-6"
+          >
+            <Globe className="w-3.5 h-3.5 text-primary-400 mr-2" />
+            <span className="text-sm font-medium text-primary-400">For Partners</span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="text-5xl md:text-7xl font-bold font-display leading-tight mb-6"
+          >
+            <span className="block text-white">Partner With</span>
+            <span className="block text-primary-500 mt-2">SCOOTY</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="text-xl text-gray-200 mb-10"
+          >
+            Building the future of mobility together.
+          </motion.p>
+
+          {/* CTA */}
           <motion.div
-            className="absolute top-32 right-16 w-48 h-48 bg-primary-400/10 rounded-full blur-3xl"
-            animate={{ y: [0, 25, 0], x: [0, -10, 0] }}
-            transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-          />
-          <motion.div
-            className="absolute bottom-16 left-1/3 w-40 h-40 bg-accent-500/10 rounded-full blur-3xl"
-            animate={{ y: [0, -20, 0] }}
-            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          />
+            initial={{ opacity: 0, y: 20 }}
+            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.5 }}
+          >
+            <motion.button
+              className="inline-flex items-center gap-3 px-6 py-5 bg-primary-500 text-black rounded-2xl font-bold text-lg shadow-lg shadow-primary-500/30 hover:bg-primary-400 transition-colors"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              <span>Become a Partner</span>
+              <ArrowRight className="w-5 h-5" />
+            </motion.button>
+          </motion.div>
         </div>
 
-        <div ref={heroRef} className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left — copy */}
-            <div>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={heroInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5 }}
-                className="inline-flex items-center px-4 py-2 bg-primary-500/10 border border-primary-500/30 rounded-full mb-6"
-              >
-                <Globe className="w-3.5 h-3.5 text-primary-600 dark:text-primary-400 mr-2" />
-                <span className="text-sm font-medium text-primary-600 dark:text-primary-400">
-                  Canadian Micromobility Partner
-                </span>
-              </motion.div>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={heroInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.1 }}
-                className="text-4xl md:text-6xl font-bold font-display leading-tight mb-6"
-              >
-                <span className="block text-gray-900 dark:text-white">Partner With</span>
-                <span className="block text-primary-500">SCOOTY</span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={heroInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.25 }}
-                className="text-xl text-gray-600 dark:text-gray-300 mb-4 font-medium"
-              >
-                Building the future of mobility together.
-              </motion.p>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={heroInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.35 }}
-                className="text-base text-gray-500 dark:text-gray-400 mb-4 leading-relaxed max-w-xl"
-              >
-                SCOOTY is a Canadian micromobility company delivering safe, sustainable transportation
-                solutions to cities, campuses, businesses, and communities across Ontario.
-              </motion.p>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={heroInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.45 }}
-                className="text-base text-gray-500 dark:text-gray-400 mb-8 leading-relaxed max-w-xl"
-              >
-                Through strong partnerships and innovative technology, we help communities improve
-                mobility, reduce emissions, and create more connected urban environments.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={heroInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.55 }}
-                className="flex flex-col sm:flex-row gap-4"
-              >
-                <motion.button
-                  className="group px-8 py-4 bg-primary-500 text-black rounded-full font-semibold flex items-center justify-center space-x-2 shadow-lg shadow-primary-500/20"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <span>Become a Partner</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </motion.button>
-              </motion.div>
-            </div>
-
-            {/* Right — visual */}
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={heroInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.9, delay: 0.3 }}
-              className="hidden lg:block relative"
-            >
-              <div className="relative rounded-3xl overflow-hidden aspect-[4/3] border border-gray-200 dark:border-white/10 shadow-2xl">
-                <img
-                  src="https://images.pexels.com/photos/3184639/pexels-photo-3184639.jpeg?auto=compress&cs=tinysrgb&w=900"
-                  alt="SCOOTY Community Partnership"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-tr from-black/50 via-black/10 to-transparent" />
-                {/* Floating stat cards */}
-                <motion.div
-                  className="absolute bottom-6 left-6 bg-white dark:bg-navy-800 rounded-2xl px-5 py-4 shadow-xl border border-gray-100 dark:border-white/10"
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                >
-                  <div className="text-2xl font-bold font-display text-primary-500">5+</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">Ontario Cities</div>
-                </motion.div>
-                <motion.div
-                  className="absolute top-6 right-6 bg-primary-500 rounded-2xl px-5 py-4 shadow-xl"
-                  animate={{ y: [0, 6, 0] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                >
-                  <div className="text-2xl font-bold font-display text-black">2023</div>
-                  <div className="text-xs text-black/70">First Launch</div>
-                </motion.div>
+        {/* Tab nav — bottom of hero */}
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.65 }}
+          >
+            <div className="overflow-x-auto pb-1 flex justify-start sm:justify-center scrollbar-hide">
+              <div className="inline-flex gap-2 bg-white/10 backdrop-blur-md rounded-2xl p-2 border border-white/20 shadow-lg shrink-0">
+                {partnerSolutions.map((sol, index) => {
+                  const isActive = index === activeTab;
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => goToTab(index)}
+                      className={`relative flex flex-col items-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl text-xs font-medium transition-all duration-200 min-w-[64px] sm:min-w-[76px] ${
+                        isActive
+                          ? 'bg-primary-500 text-black shadow-md shadow-primary-500/40'
+                          : 'text-white/70 hover:text-white hover:bg-white/15'
+                      }`}
+                    >
+                      <sol.icon className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <span className="whitespace-nowrap text-[10px] sm:text-[11px] font-semibold leading-tight text-center">{sol.title}</span>
+                    </button>
+                  );
+                })}
               </div>
-            </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── TAB CARDS ── */}
+      <section ref={contentRef} className="py-10 bg-gray-50 dark:bg-navy-900">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative">
+            {/* Left arrow */}
+            <button
+              onClick={() => goToTab((activeTab - 1 + partnerSolutions.length) % partnerSolutions.length)}
+              className="absolute -left-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-navy-800 border border-yellow-500/30 shadow-md hover:bg-primary-500 hover:border-primary-500 hover:text-black text-gray-600 dark:text-gray-300 transition-all duration-200"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+
+            {/* Right arrow */}
+            <button
+              onClick={() => goToTab((activeTab + 1) % partnerSolutions.length)}
+              className="absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-navy-800 border border-yellow-500/30 shadow-md hover:bg-primary-500 hover:border-primary-500 hover:text-black text-gray-600 dark:text-gray-300 transition-all duration-200"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="relative overflow-hidden bg-gradient-to-br from-yellow-500/15 via-yellow-500/5 to-transparent border border-yellow-500/25 rounded-3xl shadow-lg">
+                  {/* Top accent */}
+                  <div className="h-1 w-full bg-gradient-to-r from-primary-500 via-primary-400 to-primary-500/30" />
+
+                  <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px]">
+                    {/* Left — Text */}
+                    <div className="p-7 sm:p-9 lg:p-12 flex flex-col justify-center">
+                      {/* Badge */}
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold mb-5 w-fit bg-primary-500/10 border border-primary-500/20 text-primary-600 dark:text-primary-400">
+                        <current.icon className="w-3 h-3" />
+                        {current.subtitle}
+                      </div>
+
+                      <h3 className="text-3xl sm:text-4xl font-bold font-display text-gray-900 dark:text-white mb-3">
+                        {current.title}
+                      </h3>
+
+                      <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-6 max-w-sm">
+                        {current.description}
+                      </p>
+
+                      {/* Features */}
+                      <div className="flex flex-col gap-2 mb-7">
+                        {current.features.map((feature, i) => (
+                          <div key={i} className="flex items-center gap-3 py-1">
+                            <span className="w-5 h-5 rounded-full bg-primary-500 text-black text-[10px] font-bold flex items-center justify-center flex-shrink-0">{i + 1}</span>
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-200">{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Stats row */}
+                      <div className="flex gap-3 mb-7 flex-wrap">
+                        {current.highlights.map((h, i) => (
+                          <div key={i} className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-navy-700/50 border border-yellow-500 dark:border-navy-600/60 backdrop-blur-sm text-center min-w-[100px]">
+                            <div className="text-base font-black font-display text-primary-500 leading-none">{h.value}</div>
+                            <div className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">{h.label}</div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* CTA */}
+                      <div>
+                        <motion.button
+                          className="group inline-flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-black rounded-full text-sm font-semibold hover:bg-primary-400 transition-all duration-300 w-fit shadow-md shadow-primary-500/25 hover:shadow-lg hover:shadow-primary-500/35"
+                          whileHover={{ scale: 1.04 }}
+                          whileTap={{ scale: 0.97 }}
+                        >
+                          <span>Learn More</span>
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </motion.button>
+                      </div>
+                    </div>
+
+                    {/* Right — Image */}
+                    <div className="relative overflow-hidden min-h-[240px] sm:min-h-[300px] lg:min-h-0 rounded-b-3xl lg:rounded-b-none lg:rounded-r-3xl">
+                      <img
+                        src={current.image}
+                        alt={current.title}
+                        className="absolute inset-0 w-full h-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent lg:bg-gradient-to-r lg:from-yellow-950/30 lg:via-transparent lg:to-transparent" />
+                      {/* Label pill */}
+                      <div className="absolute bottom-4 right-4 flex items-center gap-1.5 bg-black/55 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-white/15">
+                        <current.icon className="w-3 h-3 text-primary-400" />
+                        {current.title}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Dots */}
+                <div className="flex justify-center gap-2 mt-5">
+                  {partnerSolutions.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => goToTab(index)}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        index === activeTab
+                          ? 'w-8 bg-primary-500'
+                          : 'w-1.5 bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </section>
 
       {/* ── CORE VALUES ── */}
-      <section ref={valuesRef} className="py-24 bg-gray-50 dark:bg-navy-900">
+      <section ref={valuesRef} className="py-24 bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -417,18 +515,15 @@ export const PartnersPage = () => {
                 transition={{ duration: 0.7, delay: index * 0.15 }}
                 className={`relative bg-gradient-to-b ${value.color} border ${value.border} rounded-3xl p-8 flex flex-col hover:shadow-xl hover:shadow-primary-500/5 transition-all duration-300 group`}
               >
-                {/* Icon */}
                 <div className="w-14 h-14 bg-primary-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-primary-500/30 group-hover:scale-110 transition-transform duration-300">
                   <value.icon className="w-7 h-7 text-black" />
                 </div>
-
                 <h3 className="text-2xl font-bold font-display text-gray-900 dark:text-white mb-3">
                   {value.title}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-6">
                   {value.description}
                 </p>
-
                 <ul className="space-y-2.5 flex-1">
                   {value.features.map((feat, fi) => (
                     <li key={fi} className="flex items-start space-x-2.5 text-sm">
@@ -437,7 +532,6 @@ export const PartnersPage = () => {
                     </li>
                   ))}
                 </ul>
-
                 {value.note && (
                   <div className="mt-6 pt-5 border-t border-gray-200 dark:border-white/10">
                     <p className="text-xs text-gray-500 dark:text-gray-400 italic leading-relaxed">
@@ -452,7 +546,7 @@ export const PartnersPage = () => {
       </section>
 
       {/* ── WHAT WE BRING ── */}
-      <section ref={bringRef} className="py-24 bg-white dark:bg-black">
+      <section ref={bringRef} className="py-24 bg-gray-50 dark:bg-navy-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -479,7 +573,7 @@ export const PartnersPage = () => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={bringInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: index * 0.12 }}
-                className="bg-gray-50 dark:bg-navy-800 rounded-3xl p-8 border border-gray-200 dark:border-white/10 hover:border-primary-500/30 hover:shadow-lg transition-all duration-300 group"
+                className="bg-white dark:bg-navy-800 rounded-3xl p-8 border border-gray-200 dark:border-white/10 hover:border-primary-500/30 hover:shadow-lg transition-all duration-300 group"
               >
                 <div className="flex items-start gap-5">
                   <div className="w-12 h-12 bg-primary-500/10 border border-primary-500/20 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:bg-primary-500 group-hover:border-primary-500 transition-all duration-300">
@@ -492,162 +586,11 @@ export const PartnersPage = () => {
                     <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                       {item.description}
                     </p>
-                    {item.sublist && (
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {item.sublist.map((tag, ti) => (
-                          <span
-                            key={ti}
-                            className="text-xs px-3 py-1 bg-primary-500/10 text-primary-700 dark:text-primary-400 rounded-full border border-primary-500/20"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
                   </div>
                 </div>
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ── PARTNER SOLUTIONS ── */}
-      <section ref={solutionsRef} className="py-24 bg-gray-50 dark:bg-navy-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={solutionsInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <div className="inline-flex items-center px-4 py-2 bg-primary-500/10 border border-primary-500/20 rounded-full mb-4">
-              <Handshake className="w-3.5 h-3.5 text-primary-500 mr-2" />
-              <span className="text-sm font-medium text-primary-600 dark:text-primary-400">Partnership Options</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4">
-              Partner <span className="text-primary-500">Solutions</span>
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Tailored programs designed for the unique needs of every type of community partner.
-            </p>
-          </motion.div>
-
-          {/* Icon tab bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={solutionsInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex justify-center mb-12"
-          >
-            <div className="inline-flex flex-wrap justify-center gap-2 sm:gap-3 bg-white dark:bg-navy-800 backdrop-blur-sm rounded-2xl p-2 border border-gray-200 dark:border-white/10 max-w-full">
-              {partnerSolutions.map((sol, index) => {
-                const isActive = index === activeTab;
-                return (
-                  <button
-                    key={index}
-                    onClick={() => setActiveTab(index)}
-                    className={`relative flex flex-col items-center gap-1 px-3 py-3 rounded-xl text-xs font-medium transition-all duration-300 min-w-[72px] ${
-                      isActive
-                        ? 'bg-gray-100 dark:bg-black shadow-lg text-black dark:text-primary-400'
-                        : 'text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-black/50'
-                    }`}
-                  >
-                    <div
-                      className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 ${
-                        isActive
-                          ? 'bg-primary-500 text-black scale-110'
-                          : 'bg-gray-200 dark:bg-secondary-800 text-gray-500 dark:text-gray-500'
-                      }`}
-                    >
-                      <sol.icon className="w-5 h-5" />
-                    </div>
-                    <span className="hidden sm:block whitespace-nowrap">{sol.title}</span>
-                    {isActive && (
-                      <motion.div
-                        layoutId="partner-active-dot"
-                        className="sm:hidden w-1.5 h-1.5 rounded-full bg-primary-500"
-                      />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </motion.div>
-
-          {/* Slide content */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeTab}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
-            >
-              <div className="rounded-3xl overflow-hidden border border-gray-200 dark:border-white/10 bg-white dark:bg-navy-800">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-                  {/* Left — Text */}
-                  <div className="p-8 md:p-12 flex flex-col justify-center">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-6 w-fit bg-primary-500 text-black">
-                      <currentSolution.icon className="w-3.5 h-3.5" />
-                      {currentSolution.subtitle}
-                    </div>
-
-                    <h3 className="text-3xl md:text-4xl font-bold font-display text-gray-900 dark:text-white mb-4">
-                      {currentSolution.title}
-                    </h3>
-
-                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
-                      {currentSolution.description}
-                    </p>
-
-                    <div className="grid grid-cols-2 gap-3 mb-8">
-                      {currentSolution.features.map((feature, i) => (
-                        <div key={i} className="flex items-center space-x-2">
-                          <CheckCircle className="w-4 h-4 text-primary-500 flex-shrink-0" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <motion.button
-                      className="group inline-flex items-center space-x-2 px-6 py-3 bg-primary-500 text-black rounded-full font-semibold hover:bg-primary-400 transition-all duration-300 w-fit"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <span>Learn More</span>
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </motion.button>
-                  </div>
-
-                  {/* Right — Image */}
-                  <div className="relative min-h-[300px] lg:min-h-0">
-                    <img
-                      src={currentSolution.image}
-                      alt={currentSolution.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-white/40 dark:from-navy-800/60 to-transparent lg:from-transparent" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Dot indicators */}
-              <div className="flex justify-center gap-2 mt-6">
-                {partnerSolutions.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setActiveTab(index)}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
-                      index === activeTab
-                        ? 'w-8 bg-primary-500'
-                        : 'w-1.5 bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600'
-                    }`}
-                  />
-                ))}
-              </div>
-            </motion.div>
-          </AnimatePresence>
         </div>
       </section>
 
@@ -659,7 +602,6 @@ export const PartnersPage = () => {
             backgroundSize: '28px 28px',
           }}
         />
-        {/* Latitude-style horizontal lines */}
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
@@ -667,11 +609,9 @@ export const PartnersPage = () => {
             backgroundSize: '100% 80px',
           }}
         />
-        {/* Ambient glow */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary-500/5 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={locationsInView ? { opacity: 1, y: 0 } : {}}
@@ -690,7 +630,6 @@ export const PartnersPage = () => {
             </p>
           </motion.div>
 
-          {/* Pin card grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {locations.map((loc, index) => (
               <motion.div
@@ -700,16 +639,15 @@ export const PartnersPage = () => {
                 transition={{ duration: 0.6, delay: index * 0.12 }}
                 className="group relative rounded-3xl overflow-hidden h-72 cursor-pointer"
               >
-                {/* Photo */}
                 <img
                   src={loc.image}
                   alt={loc.city}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                  decoding="async"
                 />
-                {/* Gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/10 group-hover:via-black/60 transition-all duration-300" />
 
-                {/* Pulsing map pin — top left */}
                 <div className="absolute top-5 left-5 flex items-center gap-2">
                   <div className="relative">
                     <span className="absolute inset-0 rounded-full bg-primary-500 animate-ping opacity-40" />
@@ -722,7 +660,6 @@ export const PartnersPage = () => {
                   </span>
                 </div>
 
-                {/* Status badge — top right */}
                 <div className="absolute top-5 right-5">
                   <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-green-500/20 text-green-400 border border-green-500/30 backdrop-blur-sm">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
@@ -730,9 +667,7 @@ export const PartnersPage = () => {
                   </span>
                 </div>
 
-                {/* Bottom content */}
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  {/* Highlights — slide up on hover */}
                   <div className="overflow-hidden max-h-0 group-hover:max-h-28 transition-all duration-500 ease-in-out mb-0 group-hover:mb-3">
                     <ul className="space-y-1">
                       {loc.highlights.slice(0, 3).map((h, hi) => (
@@ -780,7 +715,6 @@ export const PartnersPage = () => {
             ))}
           </div>
 
-          {/* "More coming soon" strip */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={locationsInView ? { opacity: 1 } : {}}
@@ -801,7 +735,6 @@ export const PartnersPage = () => {
       <section ref={safetyRef} className="py-24 bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Left — text */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={safetyInView ? { opacity: 1, x: 0 } : {}}
@@ -829,7 +762,6 @@ export const PartnersPage = () => {
               </p>
             </motion.div>
 
-            {/* Right — feature grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {safetyFeatures.map((feat, index) => (
                 <motion.div
@@ -853,7 +785,6 @@ export const PartnersPage = () => {
 
       {/* ── CTA ── */}
       <section className="py-24 bg-primary-500 relative overflow-hidden">
-        {/* Background texture */}
         <div
           className="absolute inset-0 opacity-[0.06]"
           style={{
@@ -862,7 +793,6 @@ export const PartnersPage = () => {
             backgroundSize: '40px 40px',
           }}
         />
-        {/* Orbs */}
         <motion.div
           className="absolute top-10 left-10 w-60 h-60 bg-white/10 rounded-full blur-3xl pointer-events-none"
           animate={{ scale: [1, 1.2, 1] }}

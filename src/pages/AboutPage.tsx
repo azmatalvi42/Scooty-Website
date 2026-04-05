@@ -1,8 +1,106 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Heart, Globe, Zap, Instagram, Linkedin, Twitter, Facebook, Youtube, ExternalLink } from 'lucide-react';
+import {
+  Heart,
+  Globe,
+  Zap,
+  Instagram,
+  Linkedin,
+  Twitter,
+  Facebook,
+  Youtube,
+  ExternalLink,
+  Users,
+  Flag,
+  ChevronLeft,
+  ChevronRight,
+  ArrowRight,
+} from 'lucide-react';
 
-const useSection = () => useInView({ triggerOnce: true, threshold: 0.1 });
+/* ─── Tab config ──────────────────────────────────────────────────────────── */
+
+const TABS = [
+  {
+    icon: Users,
+    label: 'Who We Are',
+    slug: 'who-we-are',
+    subtitle: 'Our story',
+    description:
+      'SCOOTY is a Canadian mobility company delivering safe, sustainable, and intelligent transportation solutions to cities, campuses, businesses, and communities across Ontario.',
+    features: [
+      'On-Demand Mobility platform',
+      'SCOOTY PAY integrated payments',
+      'AI RideGuide commuter assistant',
+      'Active in 5+ Ontario cities',
+    ],
+    highlights: [
+      { value: '2023', label: 'Founded' },
+      { value: '100%', label: 'Canadian' },
+    ],
+    image: '/assets/QuotesImages/DSC_1837.jpg',
+  },
+  {
+    icon: Zap,
+    label: 'Our Mission',
+    slug: 'our-mission',
+    subtitle: 'Why we exist',
+    description:
+      'We believe every person deserves a reliable, connected way to get where they\'re going — regardless of where they live or how far they are from a transit stop.',
+    features: [
+      'Close the first-and-last-km gap',
+      'Connect communities to regional transit',
+      'Serve people first, technology second',
+      'Modernize public transit across Canada',
+    ],
+    highlights: [
+      { value: '3', label: 'Core Products' },
+      { value: '5+', label: 'Cities Served' },
+    ],
+    image: '/assets/QuotesImages/2024MarkhamOVINScootyDemo-048.jpg',
+  },
+  {
+    icon: Flag,
+    label: 'Made in Canada',
+    slug: 'made-in-canada',
+    subtitle: 'Proudly Canadian',
+    description:
+      'SCOOTY was founded in Ontario with a simple belief: Canadians deserve world-class mobility technology built right here at home — by a team that understands our cities, winters, and communities.',
+    features: [
+      'Headquartered in Brampton, Ontario',
+      'Built for Canadian winters & cities',
+      'Expanding to cities across the country',
+      'Partnering with Canadian transit agencies',
+    ],
+    highlights: [
+      { value: 'Ontario', label: 'Home Base' },
+      { value: 'Canada', label: 'Born & Built' },
+    ],
+    image: '/assets/QuotesImages/City Hall Group Shot - Brampton Launch Photo (2).JPG',
+  },
+  {
+    icon: Globe,
+    label: 'Follow Us',
+    slug: 'follow-us',
+    subtitle: 'Stay connected',
+    description:
+      'Stay connected with SCOOTY — real stories, city launches, and the future of transit, live from our community across every platform.',
+    features: [
+      'Instagram: @scootymobility',
+      'LinkedIn: SCOOTY Inc.',
+      'X / Twitter: @scootymobility',
+      'Facebook: SCOOTY',
+      'YouTube: SCOOTY Mobility',
+    ],
+    highlights: [
+      { value: '5', label: 'Platforms' },
+      { value: 'Daily', label: 'Updates' },
+    ],
+    image: '/assets/Partners/brampton-partnership.JPG',
+  },
+];
+
+/* ─── Data ────────────────────────────────────────────────────────────────── */
 
 const missions = [
   {
@@ -81,48 +179,51 @@ const MapleLeaf = ({ className = '' }: { className?: string }) => (
   </svg>
 );
 
+/* ─── Page ────────────────────────────────────────────────────────────────── */
+
 export const AboutPage = () => {
-  const [heroRef, heroInView] = useSection();
-  const [storyRef, storyInView] = useSection();
-  const [missionRef, missionInView] = useSection();
-  const [canadaRef, canadaInView] = useSection();
-  const [socialsRef, socialsInView] = useSection();
+  const [activeTab, setActiveTab] = useState(0);
+  const [direction, setDirection] = useState(1);
+
+  const goToTab = (index: number) => {
+    setDirection(index > activeTab ? 1 : -1);
+    setActiveTab(index);
+  };
+
+  const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [contentRef, contentInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [missionRef, missionInView] = useInView({ triggerOnce: true, threshold: 0.05 });
+  const [canadaRef, canadaInView] = useInView({ triggerOnce: true, threshold: 0.05 });
+  const [socialsRef, socialsInView] = useInView({ triggerOnce: true, threshold: 0.05 });
+
+  const current = TABS[activeTab];
 
   return (
     <div className="min-h-screen bg-white dark:bg-black">
 
-      {/* ── HERO ── */}
-      <section className="relative pt-32 pb-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-50 via-white to-white dark:from-black dark:via-navy-800 dark:to-black" />
-        <div
-          className="absolute inset-0 opacity-[0.03] dark:opacity-[0.04]"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(234,179,8,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(234,179,8,0.4) 1px, transparent 1px)',
-            backgroundSize: '60px 60px',
-          }}
+      {/* ── HERO + TAB NAV ── */}
+      <section className="relative overflow-hidden">
+        {/* Background image */}
+        <img
+          src="https://images.pexels.com/photos/31003268/pexels-photo-31003268.jpeg?auto=compress&cs=tinysrgb&w=1920"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
         />
-        <div className="absolute inset-0 pointer-events-none">
-          <motion.div
-            className="absolute top-20 right-10 w-40 h-40 bg-primary-500/20 rounded-full blur-2xl"
-            animate={{ y: [0, -20, 0] }}
-            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          />
-          <motion.div
-            className="absolute bottom-10 left-20 w-28 h-28 bg-red-500/10 rounded-full blur-2xl"
-            animate={{ y: [0, 20, 0] }}
-            transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-          />
-        </div>
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/40 to-gray-50 dark:to-navy-900" />
 
-        <div ref={heroRef} className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        {/* Hero text */}
+        <div ref={heroRef} className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-14">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={heroInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center px-4 py-2 bg-primary-500/10 border border-primary-500/20 rounded-full mb-6"
+            className="inline-flex items-center px-4 py-2 bg-primary-500/20 border border-primary-500/40 rounded-full mb-6"
           >
-            <span className="text-sm font-medium text-primary-600 dark:text-primary-400">About Us</span>
+            <span className="text-sm font-medium text-primary-400">About Us</span>
           </motion.div>
 
           <motion.h1
@@ -131,71 +232,175 @@ export const AboutPage = () => {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="text-5xl md:text-7xl font-bold font-display leading-tight mb-6"
           >
-            <span className="block text-gray-900 dark:text-white">Built in Canada.</span>
-            <span className="block text-primary-500">For Every Community.</span>
+            <span className="block text-white">Built in Canada.</span>
+            <span className="block text-primary-500 mt-2">For Every Community.</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={heroInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-xl text-gray-600 dark:text-gray-400"
+            className="text-xl text-gray-200 mb-10"
           >
             A Canadian mobility company on a mission to modernize public transit — one community at a time.
           </motion.p>
         </div>
+
+        {/* Tab nav */}
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.55 }}
+          >
+            <div className="overflow-x-auto pb-1 flex justify-start sm:justify-center scrollbar-hide">
+              <div className="inline-flex gap-2 bg-white/10 backdrop-blur-md rounded-2xl p-2 border border-white/20 shadow-lg shrink-0">
+                {TABS.map((tab, index) => {
+                  const isActive = index === activeTab;
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => goToTab(index)}
+                      className={`relative flex flex-col items-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl text-xs font-medium transition-all duration-200 min-w-[64px] sm:min-w-[76px] ${
+                        isActive
+                          ? 'bg-primary-500 text-black shadow-md shadow-primary-500/40'
+                          : 'text-white/70 hover:text-white hover:bg-white/15'
+                      }`}
+                    >
+                      <tab.icon className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <span className="whitespace-nowrap text-[10px] sm:text-[11px] font-semibold leading-tight text-center">{tab.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </section>
 
-      {/* ── WHO WE ARE ── */}
-      <section ref={storyRef} className="py-20 bg-white dark:bg-black">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              animate={storyInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8 }}
+      {/* ── TAB CARDS ── */}
+      <section ref={contentRef} className="py-10 bg-gray-50 dark:bg-navy-900">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative">
+            {/* Left arrow */}
+            <button
+              onClick={() => goToTab((activeTab - 1 + TABS.length) % TABS.length)}
+              className="absolute -left-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-navy-800 border border-yellow-500/30 shadow-md hover:bg-primary-500 hover:border-primary-500 hover:text-black text-gray-600 dark:text-gray-300 transition-all duration-200"
             >
-              <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-6">
-                Who We <span className="text-primary-500">Are</span>
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-4 text-lg">
-                SCOOTY is a Canadian mobility company delivering safe, sustainable, and intelligent transportation solutions to cities, campuses, businesses, and communities across Ontario.
-              </p>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-lg">
-                Through three integrated products — On-Demand Mobility, SCOOTY PAY, and AI RideGuide — we connect riders to regional transit, simplify how people pay for their journeys, and use AI to make every commute smarter and more reliable.
-              </p>
-            </motion.div>
+              <ChevronLeft className="w-5 h-5" />
+            </button>
 
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={storyInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="grid grid-cols-2 gap-4"
+            {/* Right arrow */}
+            <button
+              onClick={() => goToTab((activeTab + 1) % TABS.length)}
+              className="absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-navy-800 border border-yellow-500/30 shadow-md hover:bg-primary-500 hover:border-primary-500 hover:text-black text-gray-600 dark:text-gray-300 transition-all duration-200"
             >
-              {[
-                { value: '2023', label: 'Founded in Ontario' },
-                { value: '5+', label: 'Cities Active' },
-                { value: '3', label: 'Core Products' },
-                { value: '100%', label: 'Canadian-Built' },
-              ].map((stat, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={storyInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
-                  className="bg-gray-50 dark:bg-navy-800 rounded-2xl p-6 border border-gray-200 dark:border-white/10 hover:border-primary-500/30 transition-all duration-300"
-                >
-                  <div className="text-3xl font-bold font-display text-primary-500 mb-1">{stat.value}</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">{stat.label}</div>
-                </motion.div>
-              ))}
-            </motion.div>
+              <ChevronRight className="w-5 h-5" />
+            </button>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="relative overflow-hidden bg-gradient-to-br from-yellow-500/15 via-yellow-500/5 to-transparent border border-yellow-500/25 rounded-3xl shadow-lg">
+                  {/* Top accent */}
+                  <div className="h-1 w-full bg-gradient-to-r from-primary-500 via-primary-400 to-primary-500/30" />
+
+                  <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px]">
+                    {/* Left — Text */}
+                    <div className="p-7 sm:p-9 lg:p-12 flex flex-col justify-center">
+                      {/* Badge */}
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold mb-5 w-fit bg-primary-500/10 border border-primary-500/20 text-primary-600 dark:text-primary-400">
+                        <current.icon className="w-3 h-3" />
+                        {current.subtitle}
+                      </div>
+
+                      <h3 className="text-3xl sm:text-4xl font-bold font-display text-gray-900 dark:text-white mb-3">
+                        {current.label}
+                      </h3>
+
+                      <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-6 max-w-sm">
+                        {current.description}
+                      </p>
+
+                      {/* Features */}
+                      <div className="flex flex-col gap-2 mb-7">
+                        {current.features.map((feature, i) => (
+                          <div key={i} className="flex items-center gap-3 py-1">
+                            <span className="w-5 h-5 rounded-full bg-primary-500 text-black text-[10px] font-bold flex items-center justify-center flex-shrink-0">{i + 1}</span>
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-200">{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Stats row */}
+                      <div className="flex gap-3 mb-7 flex-wrap">
+                        {current.highlights.map((h, i) => (
+                          <div key={i} className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-navy-700/50 border border-yellow-500 dark:border-navy-600/60 backdrop-blur-sm text-center min-w-[100px]">
+                            <div className="text-base font-black font-display text-primary-500 leading-none">{h.value}</div>
+                            <div className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">{h.label}</div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* CTA */}
+                      <div>
+                        <motion.button
+                          className="group inline-flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-black rounded-full text-sm font-semibold hover:bg-primary-400 transition-all duration-300 w-fit shadow-md shadow-primary-500/25 hover:shadow-lg hover:shadow-primary-500/35"
+                          whileHover={{ scale: 1.04 }}
+                          whileTap={{ scale: 0.97 }}
+                        >
+                          <span>Learn More</span>
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </motion.button>
+                      </div>
+                    </div>
+
+                    {/* Right — Image */}
+                    <div className="relative overflow-hidden min-h-[240px] sm:min-h-[300px] lg:min-h-0 rounded-b-3xl lg:rounded-b-none lg:rounded-r-3xl">
+                      <img
+                        src={current.image}
+                        alt={current.label}
+                        className="absolute inset-0 w-full h-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent lg:bg-gradient-to-r lg:from-yellow-950/30 lg:via-transparent lg:to-transparent" />
+                      {/* Label pill */}
+                      <div className="absolute bottom-4 right-4 flex items-center gap-1.5 bg-black/55 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-white/15">
+                        <current.icon className="w-3 h-3 text-primary-400" />
+                        {current.label}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Dots */}
+                <div className="flex justify-center gap-2 mt-5">
+                  {TABS.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => goToTab(index)}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        index === activeTab
+                          ? 'w-8 bg-primary-500'
+                          : 'w-1.5 bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </section>
 
       {/* ── OUR MISSION ── */}
-      <section ref={missionRef} className="py-24 bg-gray-50 dark:bg-navy-900">
+      <section ref={missionRef} className="py-24 bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -228,7 +433,7 @@ export const AboutPage = () => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={missionInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.2 + i * 0.15 }}
-                className="bg-white dark:bg-navy-800 rounded-2xl p-8 border border-gray-200 dark:border-white/10 hover:border-primary-500/30 hover:shadow-lg transition-all duration-300 group"
+                className="bg-gray-50 dark:bg-navy-800 rounded-2xl p-8 border border-gray-200 dark:border-white/10 hover:border-primary-500/30 hover:shadow-lg transition-all duration-300 group"
               >
                 <div className="w-12 h-12 bg-primary-500/10 border border-primary-500/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary-500 group-hover:border-primary-500 transition-all duration-300">
                   <m.icon className="w-6 h-6 text-primary-500 group-hover:text-black transition-colors duration-300" />
@@ -293,7 +498,6 @@ export const AboutPage = () => {
             SCOOTY was founded in Ontario with a simple belief: Canadians deserve world-class mobility technology built right here at home — by a team that understands our cities, our winters, and our communities.
           </motion.p>
 
-          {/* Canadian flag */}
           <motion.div
             initial={{ opacity: 0, scaleX: 0 }}
             animate={canadaInView ? { opacity: 1, scaleX: 1 } : {}}

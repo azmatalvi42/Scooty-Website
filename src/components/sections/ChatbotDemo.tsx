@@ -121,7 +121,7 @@ export const ChatbotDemo = () => {
             {/* Main image card */}
             <div className="relative w-full max-w-md rounded-3xl overflow-hidden shadow-2xl border border-gray-200 dark:border-white/10">
               <img
-                src="https://images.pexels.com/photos/7129713/pexels-photo-7129713.jpeg?auto=compress&cs=tinysrgb&w=800"
+                src="public/assets/mainPage/main-pg-riders.png"
                 alt="SCOOTY rider"
                 className="w-full h-[220px] sm:h-[340px] md:h-[420px] ls:h-[180px] object-cover"
               />

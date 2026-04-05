@@ -19,7 +19,6 @@ export const Hero = () => {
         loop
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
-        poster="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=1920"
       >
         {/* Primary — close-up scooter riding */}
         <source

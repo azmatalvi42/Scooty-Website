@@ -110,7 +110,7 @@ export const Navbar = () => {
           {/* Logo */}
           <motion.div className="flex items-center" whileHover={{ scale: 1.02 }}>
             <Link to="/" className="flex items-center gap-2">
-              <img src="/assets/LOGO - TM.png" alt="Scooty" className="h-10 w-auto" />
+              <img src="/assets/LOGO - TM.png" alt="Scooty" className="h-10 w-auto" fetchPriority="high" decoding="async" />
               {/* Badge — desktop only */}
               <span className="hidden md:inline-flex items-center px-2.5 py-1 bg-[#fec001]/10 border border-[#fec001]/30 rounded-full text-xs font-semibold text-[#fec001]">
                 Proudly Canadian · Made in Ontario
