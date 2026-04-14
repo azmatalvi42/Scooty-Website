@@ -7,7 +7,6 @@ import {
   Heart,
   Handshake,
   Leaf,
-  Globe,
   SlidersHorizontal,
   Building2,
   Briefcase,
@@ -248,6 +247,163 @@ const safetyFeatures = [
   { icon: Bike, title: 'Swappable Batteries', description: 'Designed for operational efficiency and reduced vehicle downtime.' },
 ];
 
+/* ─────────────────────────────────────────── PROUD PARTNERS ─── */
+
+const proudPartners = [
+  {
+    name: 'City of Brampton',
+    img: '/assets/Partners/Marquee/brampton.webp',
+    abbr: 'BRM',
+    tagline: 'Municipality Partner',
+    accent: '#8B0000',
+    bg: 'linear-gradient(135deg, rgba(139,0,0,0.12) 0%, rgba(139,0,0,0.04) 100%)',
+    border: 'rgba(139,0,0,0.2)',
+  },
+  {
+    name: 'City of Markham',
+    img: '/assets/Partners/Marquee/markham-logo.jpg',
+    abbr: 'MKM',
+    tagline: 'Municipality Partner',
+    accent: '#00509E',
+    bg: 'linear-gradient(135deg, rgba(0,80,158,0.12) 0%, rgba(0,80,158,0.04) 100%)',
+    border: 'rgba(0,80,158,0.2)',
+  },
+  {
+    name: 'Metrolinx',
+    img: '/assets/Partners/Marquee/metrolinx-logo.jpg',
+    abbr: 'MLX',
+    tagline: 'Transit Partner',
+    accent: '#006E51',
+    bg: 'linear-gradient(135deg, rgba(0,110,81,0.12) 0%, rgba(0,110,81,0.04) 100%)',
+    border: 'rgba(0,110,81,0.2)',
+  },
+  {
+    name: 'City of Barrie',
+    img: '/assets/Partners/Marquee/barrie-logo.jpg',
+    abbr: 'BRR',
+    tagline: 'Municipality Partner',
+    accent: '#1A4A7A',
+    bg: 'linear-gradient(135deg, rgba(26,74,122,0.12) 0%, rgba(26,74,122,0.04) 100%)',
+    border: 'rgba(26,74,122,0.2)',
+  },
+  {
+    name: 'City of Burlington',
+    img: '/assets/Partners/Marquee/burlington-logo.png',
+    abbr: 'BRL',
+    tagline: 'Municipality Partner',
+    accent: '#006B3C',
+    bg: 'linear-gradient(135deg, rgba(0,107,60,0.12) 0%, rgba(0,107,60,0.04) 100%)',
+    border: 'rgba(0,107,60,0.2)',
+  },
+  {
+    name: 'TMU',
+    img: '/assets/Partners/Marquee/tmu-logo.jpg',
+    abbr: 'TMU',
+    tagline: 'Academic Partner',
+    accent: '#002B5C',
+    bg: 'linear-gradient(135deg, rgba(0,43,92,0.12) 0%, rgba(0,43,92,0.04) 100%)',
+    border: 'rgba(0,43,92,0.2)',
+  },
+  {
+    name: 'Ontario Tech University',
+    img: '/assets/Partners/Marquee/otu-logo.webp',
+    abbr: 'OTU',
+    tagline: 'Academic Partner',
+    accent: '#2255A4',
+    bg: 'linear-gradient(135deg, rgba(34,85,164,0.12) 0%, rgba(34,85,164,0.04) 100%)',
+    border: 'rgba(34,85,164,0.2)',
+  },
+];
+
+const ProudPartnersMarquee = () => {
+  // Double the array for seamless infinite loop (CSS translateX -50%)
+  const track = [...proudPartners, ...proudPartners];
+
+  return (
+    <section className="relative z-10 py-14 sm:py-20 bg-gray-50 dark:bg-black border-t border-gray-100 dark:border-white/[0.05] overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none opacity-0 dark:opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle, rgba(234,179,8,0.8) 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
+      {/* Heading */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 sm:mb-12 text-center">
+        <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
+          Trusted By
+        </p>
+        <h2 className="text-3xl sm:text-4xl font-bold font-display text-gray-900 dark:text-white tracking-tight">
+          Our Proud <span className="text-[#FEC001]">Partners</span>
+        </h2>
+        <p className="mt-3 text-sm sm:text-base text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+          Working alongside leading municipalities, transit agencies, and academic institutions across Ontario.
+        </p>
+      </div>
+
+      {/* Marquee track */}
+      <div className="relative">
+        {/* Left fade edge */}
+        <div
+          className="absolute left-0 top-0 bottom-0 w-24 sm:w-40 z-10 pointer-events-none"
+          style={{ background: 'linear-gradient(to right, var(--fade-bg), transparent)' }}
+        />
+        {/* Right fade edge */}
+        <div
+          className="absolute right-0 top-0 bottom-0 w-24 sm:w-40 z-10 pointer-events-none"
+          style={{ background: 'linear-gradient(to left, var(--fade-bg), transparent)' }}
+        />
+
+        {/* We use two wrapper divs — one for light mode, one for dark — to manage the fade colour */}
+        <style>{`
+          :root { --fade-bg: #F9FAFB; }
+          .dark { --fade-bg: #000000; }
+        `}</style>
+
+        <div
+          className="flex w-max animate-marquee"
+          style={{ gap: '20px', paddingInline: '10px' }}
+          onMouseEnter={e => (e.currentTarget.style.animationPlayState = 'paused')}
+          onMouseLeave={e => (e.currentTarget.style.animationPlayState = 'running')}
+        >
+          {track.map((partner, i) => (
+            <div
+              key={i}
+              className="flex-shrink-0 flex items-center gap-4 px-5 sm:px-6 py-4 sm:py-5 rounded-2xl border backdrop-blur-sm select-none"
+              style={{
+                background: partner.bg,
+                borderColor: partner.border,
+                minWidth: '220px',
+              }}
+            >
+              {/* Logo */}
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex-shrink-0 overflow-hidden bg-white flex items-center justify-center">
+                <img
+                  src={partner.img}
+                  alt={partner.name}
+                  className="w-full h-full object-contain p-1"
+                />
+              </div>
+
+              {/* Text */}
+              <div className="min-w-0">
+                <p className="text-sm sm:text-base font-bold text-gray-900 dark:text-white leading-tight whitespace-nowrap">
+                  {partner.name}
+                </p>
+                <p
+                  className="text-[10px] sm:text-xs font-semibold mt-0.5 uppercase tracking-wider"
+                  style={{ color: partner.accent, opacity: 0.8 }}
+                >
+                  {partner.tagline}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom note */}
+      <p className="text-center text-xs text-gray-400 dark:text-gray-600 mt-8 tracking-wide">
+        🍁 &nbsp;Proud to serve communities across Ontario
+      </p>
+    </section>
+  );
+};
+
 /* ─────────────────────────────────────────── COMPONENT ─── */
 
 export const PartnersPage = () => {
@@ -269,9 +425,9 @@ export const PartnersPage = () => {
   const current = partnerSolutions[activeTab];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black">
+    <div className="relative min-h-screen bg-white dark:bg-black">
       {/* ── HERO + TAB NAV ── */}
-      <section className="relative overflow-hidden">
+      <section className="relative z-10 overflow-hidden">
         {/* Background image */}
         <img
           src="/assets/Partners/partner-img.jpg"
@@ -281,49 +437,40 @@ export const PartnersPage = () => {
           loading="eager"
           decoding="async"
         />
-        {/* Overlay fades to section bg at the bottom */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/40 to-gray-50 dark:to-navy-900" />
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/50 to-gray-50 dark:to-navy-900" />
+        <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-black/80 to-transparent" />
 
         {/* Hero text */}
         <div ref={heroRef} className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-14">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center px-4 py-2 bg-primary-500/20 border border-primary-500/40 rounded-full mb-6"
-          >
-            <Globe className="w-3.5 h-3.5 text-primary-400 mr-2" />
-            <span className="text-sm font-medium text-primary-400">For Partners</span>
-          </motion.div>
-
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 0, x: -32 }}
+            animate={heroInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-5xl md:text-7xl font-bold font-display leading-tight mb-6"
+            className="text-5xl sm:text-6xl md:text-7xl font-bold font-display leading-[1.05] tracking-tight mb-5 [filter:drop-shadow(0_2px_20px_rgba(0,0,0,0.9))]"
           >
             <span className="block text-white">Partner With</span>
-            <span className="block text-primary-500 mt-2">SCOOTY</span>
+            <span className="block text-[#FEC001] mt-2">SCOOTY</span>
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 0, x: -24 }}
+            animate={heroInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-xl text-gray-200 mb-10"
+            className="text-base sm:text-lg md:text-xl text-white/90 max-w-xl mx-auto leading-relaxed mb-7 [filter:drop-shadow(0_1px_8px_rgba(0,0,0,0.8))]"
           >
             Building the future of mobility together.
           </motion.p>
 
           {/* CTA */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 0, x: -24 }}
+            animate={heroInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.5 }}
           >
             <motion.button
-              className="inline-flex items-center gap-3 px-6 py-5 bg-primary-500 text-black rounded-2xl font-bold text-lg shadow-lg shadow-primary-500/30 hover:bg-primary-400 transition-colors"
-              whileHover={{ scale: 1.04 }}
+              className="inline-flex items-center gap-3 px-7 py-4 bg-[#FEC001] text-black rounded-full font-bold text-base shadow-lg shadow-[#FEC001]/30 hover:bg-[#FFD00F] transition-colors"
+              whileHover={{ scale: 1.04, boxShadow: '0 0 32px rgba(254,192,1,0.45)' }}
               whileTap={{ scale: 0.97 }}
             >
               <span>Become a Partner</span>
@@ -335,8 +482,8 @@ export const PartnersPage = () => {
         {/* Tab nav — bottom of hero */}
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 0, x: -24 }}
+            animate={heroInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.65 }}
           >
             <div className="overflow-x-auto pb-1 flex justify-start sm:justify-center scrollbar-hide">
@@ -365,7 +512,8 @@ export const PartnersPage = () => {
       </section>
 
       {/* ── TAB CARDS ── */}
-      <section ref={contentRef} className="py-10 bg-gray-50 dark:bg-navy-900">
+      <section ref={contentRef} className="relative z-10 py-10 bg-gray-50 dark:bg-black overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none opacity-0 dark:opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle, rgba(234,179,8,0.8) 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative">
             {/* Left arrow */}
@@ -387,9 +535,9 @@ export const PartnersPage = () => {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -40 }}
                 transition={{ duration: 0.3 }}
               >
                 <div className="relative overflow-hidden bg-gradient-to-br from-yellow-500/15 via-yellow-500/5 to-transparent border border-yellow-500/25 rounded-3xl shadow-lg">
@@ -485,8 +633,12 @@ export const PartnersPage = () => {
         </div>
       </section>
 
+      {/* ── OUR PROUD PARTNERS ── */}
+      <ProudPartnersMarquee />
+
       {/* ── CORE VALUES ── */}
-      <section ref={valuesRef} className="py-24 bg-white dark:bg-black">
+      <section ref={valuesRef} className="relative z-10 py-24 bg-white dark:bg-black overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none opacity-0 dark:opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle, rgba(234,179,8,0.8) 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -546,7 +698,8 @@ export const PartnersPage = () => {
       </section>
 
       {/* ── WHAT WE BRING ── */}
-      <section ref={bringRef} className="py-24 bg-gray-50 dark:bg-navy-900">
+      <section ref={bringRef} className="relative z-10 py-24 bg-gray-50 dark:bg-black overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none opacity-0 dark:opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle, rgba(234,179,8,0.8) 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -595,7 +748,7 @@ export const PartnersPage = () => {
       </section>
 
       {/* ── CURRENT LOCATIONS ── */}
-      <section ref={locationsRef} className="py-24 bg-black relative overflow-hidden">
+      <section ref={locationsRef} className="relative z-10 py-24 bg-black overflow-hidden">
         <div className="absolute inset-0 opacity-[0.07]"
           style={{
             backgroundImage: 'radial-gradient(circle, rgba(234,179,8,0.8) 1px, transparent 1px)',
@@ -732,7 +885,8 @@ export const PartnersPage = () => {
       </section>
 
       {/* ── SAFETY & OPERATIONS ── */}
-      <section ref={safetyRef} className="py-24 bg-white dark:bg-black">
+      <section ref={safetyRef} className="relative z-10 py-24 bg-white dark:bg-black overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none opacity-0 dark:opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle, rgba(234,179,8,0.8) 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <motion.div
@@ -784,7 +938,7 @@ export const PartnersPage = () => {
       </section>
 
       {/* ── CTA ── */}
-      <section className="py-24 bg-primary-500 relative overflow-hidden">
+      <section className="relative z-10 py-24 bg-primary-500 overflow-hidden">
         <div
           className="absolute inset-0 opacity-[0.06]"
           style={{

@@ -14,20 +14,22 @@ export default {
     },
     extend: {
       colors: {
+        // Primary brand yellow — Scooty #FEC001
         primary: {
-          50: '#FFFBEB',
-          100: '#FEF3C7',
-          200: '#FDE68A',
-          300: '#FCD34D',
-          400: '#FBBF24',
-          500: '#EAB308',
-          600: '#CA8A04',
-          700: '#A16207',
-          800: '#854D0E',
-          900: '#713F12',
+          50:  '#FFFDE0',
+          100: '#FFF9B3',
+          200: '#FFF280',
+          300: '#FFE540',
+          400: '#FFD00F',
+          500: '#FEC001',   // ← Scooty brand yellow
+          600: '#DFA400',
+          700: '#B88400',
+          800: '#8A6400',
+          900: '#5C4200',
         },
+        // Neutral / surface greys
         secondary: {
-          50: '#FAFAFA',
+          50:  '#FAFAFA',
           100: '#F5F5F5',
           200: '#E5E5E5',
           300: '#D4D4D4',
@@ -38,56 +40,89 @@ export default {
           800: '#262626',
           900: '#171717',
         },
-        accent: {
-          50: '#FFFBEB',
-          100: '#FEF3C7',
-          200: '#FDE68A',
-          300: '#FCD34D',
-          400: '#FBBF24',
-          500: '#F59E0B',
-          600: '#D97706',
-          700: '#B45309',
-          800: '#92400E',
-          900: '#78350F',
+        // Brand accent palette — use ONLY for gradients / hovers / glows
+        brand: {
+          yellow:     '#FEC001',
+          turquoise:  '#01FEC0',
+          ultramarine:'#4101FE',
+          purple:     '#C001FE',
+          sky:        '#01BDFE',
+          green:      '#01FE01',
+          orange:     '#FE4601',
+          pink:       '#FE01BE',
+          red:        '#FE0101',
         },
+        // Dark surface hierarchy
         navy: {
           900: '#000000',
           800: '#0A0A0A',
-          700: '#141414',
+          700: '#111111',
+          600: '#141414',
         },
       },
       fontFamily: {
-        sans: ['Avenir', 'Avenir Next', 'Nunito Sans', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        sans:    ['Avenir', 'Avenir Next', 'Nunito Sans', 'Helvetica Neue', 'Arial', 'sans-serif'],
         display: ['Avenir', 'Avenir Next', 'Nunito Sans', 'Helvetica Neue', 'Arial', 'sans-serif'],
       },
       animation: {
-        'fade-in': 'fadeIn 0.5s ease-in-out',
-        'slide-up': 'slideUp 0.5s ease-out',
-        'bounce-slow': 'bounce 2s infinite',
-        'counter': 'counter 2s ease-out forwards',
+        'fade-in':      'fadeIn 0.4s ease-out',
+        'slide-up':     'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+        'bounce-slow':  'bounce 2.5s infinite',
+        'counter':      'counter 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'float':        'float 6s ease-in-out infinite',
+        'shimmer':      'shimmer 2.2s linear infinite',
+        'pulse-subtle': 'pulseSubtle 3s ease-in-out infinite',
+        'glow-pulse':   'glowPulse 2.5s ease-in-out infinite',
+        'marquee':      'marquee 32s linear infinite',
+        'marquee-slow': 'marquee 48s linear infinite',
       },
       keyframes: {
         fadeIn: {
-          '0%': { opacity: '0' },
+          '0%':   { opacity: '0' },
           '100%': { opacity: '1' },
         },
         slideUp: {
-          '0%': { transform: 'translateY(100%)' },
-          '100%': { transform: 'translateY(0)' },
+          '0%':   { transform: 'translateY(20px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)',    opacity: '1' },
         },
         counter: {
-          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '0%':   { opacity: '0', transform: 'translateY(8px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%':      { transform: 'translateY(-10px)' },
+        },
+        shimmer: {
+          '0%':   { backgroundPosition: '-400px 0' },
+          '100%': { backgroundPosition: '400px 0' },
+        },
+        pulseSubtle: {
+          '0%, 100%': { opacity: '1' },
+          '50%':      { opacity: '0.5' },
+        },
+        glowPulse: {
+          '0%, 100%': { boxShadow: '0 0 20px rgba(254,192,1,0.3)' },
+          '50%':      { boxShadow: '0 0 40px rgba(254,192,1,0.6)' },
+        },
+        marquee: {
+          '0%':   { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
       },
       backdropBlur: {
         xs: '2px',
       },
-      backgroundImage: {
-        hero: "url('/src/assets/Riders/Carousel/Download the SCOOTY App Use the app to search for the nearest SCOOTY..gif')",
+      transitionTimingFunction: {
+        'expo-out':   'cubic-bezier(0.16, 1, 0.3, 1)',
+        'bounce-soft':'cubic-bezier(0.34, 1.56, 0.64, 1)',
+      },
+      boxShadow: {
+        'brand':   '0 0 32px rgba(254,192,1,0.25)',
+        'brand-lg':'0 0 56px rgba(254,192,1,0.35)',
+        'glow-sm': '0 0 16px rgba(254,192,1,0.2)',
       },
     },
   },
   plugins: [],
 };
-

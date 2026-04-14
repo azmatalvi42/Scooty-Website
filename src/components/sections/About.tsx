@@ -2,37 +2,6 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Linkedin, Twitter, Instagram, Facebook } from 'lucide-react';
 
-const OntarioFlag = ({ className = '' }: { className?: string }) => (
-  <svg viewBox="0 0 120 60" className={className} xmlns="http://www.w3.org/2000/svg">
-    <rect width="120" height="60" fill="#CF142B" />
-    <rect width="60" height="30" fill="#012169" />
-    <line x1="0" y1="0" x2="60" y2="30" stroke="white" strokeWidth="10" />
-    <line x1="60" y1="0" x2="0" y2="30" stroke="white" strokeWidth="10" />
-    <polygon points="30,12 60,0 60,5 35,15" fill="#CF142B" />
-    <polygon points="0,25 25,15 0,30" fill="#CF142B" />
-    <polygon points="30,18 60,25 60,30 55,30" fill="#CF142B" />
-    <polygon points="0,0 5,0 30,12" fill="#CF142B" />
-    <rect x="24" y="0" width="12" height="30" fill="white" />
-    <rect x="0" y="12" width="60" height="6" fill="white" />
-    <rect x="26" y="0" width="8" height="30" fill="#CF142B" />
-    <rect x="0" y="13" width="60" height="4" fill="#CF142B" />
-    <path d="M78,7 L108,7 L108,42 L93,55 L78,42 Z" fill="white" />
-    <path d="M78,7 L108,7 L108,23 L78,23 Z" fill="#CF142B" />
-    <rect x="89" y="7" width="9" height="16" fill="#FFD700" />
-    <rect x="78" y="14" width="30" height="5" fill="#FFD700" />
-    <rect x="90.5" y="7" width="6" height="16" fill="#CF142B" />
-    <rect x="78" y="15" width="30" height="3" fill="#CF142B" />
-    <path d="M78,23 L108,23 L108,42 L93,55 L78,42 Z" fill="#215732" />
-    {[83, 93, 103].map((cx, i) => (
-      <path
-        key={i}
-        transform={`translate(${cx},36) scale(0.32)`}
-        d="M0,-14 C0,-14 -4,2 -7,4 C-10,6 -16,2 -19,3 C-22,4 -18,10 -18,13 C-18,16 -24,17 -24,20 C-24,23 -18,23 -16,26 C-14,29 -17,35 -15,36 C-13,37 -7,32 -4,33 L-4,46 L4,46 L4,33 C7,32 13,37 15,36 C17,35 14,29 16,26 C18,23 24,23 24,20 C24,17 18,16 18,13 C18,10 22,4 19,3 C16,2 10,6 7,4 C4,2 0,-14 0,-14 Z"
-        fill="#FFD700"
-      />
-    ))}
-  </svg>
-);
 
 const MapleLeafSVG = ({ className = '' }: { className?: string }) => (
   <svg viewBox="-2015 -2000 4030 4030" className={className} fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -46,104 +15,93 @@ const TikTokIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const useSection = () => useInView({ triggerOnce: true, threshold: 0.1 });
+const useSection = () => useInView({ triggerOnce: true, threshold: 0.08 });
+const EASING: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 
 export const About = () => {
   const [headerRef, headerInView] = useSection();
-  const [canadaRef, canadaInView] = useSection();
   const [socialsRef, socialsInView] = useSection();
 
   return (
-    <section id="about" className="bg-white dark:bg-black">
+    <section id="about" className="bg-white/70 dark:bg-black/35 ">
 
       {/* ── BUILT PROUDLY IN ONTARIO ── */}
-      <div ref={headerRef} className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div ref={headerRef} className="py-12 sm:py-16 ls:py-8 relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#FEC001]/[0.04] rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-red-500/[0.03] rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={headerInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          initial={{ opacity: 0, x: -28 }}
+          animate={headerInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.6, ease: EASING }}
+          className="text-center mb-10 sm:mb-12"
         >
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white">
+          <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
+            Our Story
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white tracking-tight">
               Built Proudly in <span className="text-yellow-500">Ontario</span>
             </h2>
-            <MapleLeafSVG className="w-10 h-11 text-red-500 dark:text-white flex-shrink-0" />
+            <MapleLeafSVG className="w-9 h-10 sm:w-11 sm:h-12 text-red-500 dark:text-red-400 flex-shrink-0" />
           </div>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-4xl mx-auto leading-relaxed pb-5">
-            SCOOTY is a 100% owned and operated Canadian company built and developed with local talent that has world-class experience, here in Ontario. We live in the communities we serve so we have a deep sense of ownership and passion to bring the latest mobility solutions and technologies that meet the needs of our communities.
+          <p className="text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
+            SCOOTY is a 100% owned and operated Canadian company built and developed with local talent that has world-class experience, right here in Ontario. We live in the communities we serve — so we have a deep sense of ownership and passion to bring the latest mobility solutions that meet the needs of our communities.
           </p>
         </motion.div>
-      </div>
 
-      {/* ── MADE IN CANADA ── */}
-      <div ref={canadaRef} className="py-24 bg-black relative overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: 'radial-gradient(circle, rgba(234,179,8,0.8) 1px, transparent 1px)',
-            backgroundSize: '28px 28px',
-          }}
-        />
-        <div className="absolute top-0 left-0 w-96 h-96 bg-red-600/8 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-primary-500/8 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={canadaInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={canadaInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.85 }}
-              className="flex flex-wrap justify-center gap-3"
-            />
-          </motion.div>
         </div>
-      </div>
+      </div>{/* /Built Proudly wrapper */}
 
       {/* ── SOCIALS ── */}
-      <div ref={socialsRef} className="py-0 bg-gray-50 dark:bg-black">
+      <div ref={socialsRef} className="py-16 sm:py-20 ls:py-8 bg-gray-50 dark:bg-[#040404]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={socialsInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-14"
+            initial={{ opacity: 0, x: -28 }}
+            animate={socialsInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, ease: EASING }}
+            className="text-center"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4">
-              Stay in Motion with <span className="text-primary-500">SCOOTY</span>
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">
-              Stay connected with SCOOTY — real stories, city launches, and the future of transit, live from our community.
+            <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
+              Follow Along
             </p>
-            <div className="flex justify-center space-x-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4 tracking-tight">
+              Stay in Motion with <span className="text-[#FEC001]">SCOOTY</span>
+            </h2>
+            <p className="text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-xl mx-auto mb-10">
+              Real stories, city launches, and the future of transit — live from our community.
+            </p>
+            <div className="flex justify-center flex-wrap gap-3 sm:gap-4">
               {[
-                { icon: Linkedin, href: 'https://linkedin.com/company/ridescooty' },
-                { icon: Twitter, href: 'https://twitter.com/ridescooty' },
-                { icon: Instagram, href: 'https://instagram.com/ridescooty' },
-                { icon: Facebook, href: 'https://facebook.com/ridescooty' },
-                { icon: TikTokIcon, href: 'https://tiktok.com/@ride.scooty' },
+                { icon: Linkedin, href: 'https://linkedin.com/company/ridescooty', label: 'LinkedIn' },
+                { icon: Twitter, href: 'https://twitter.com/ridescooty', label: 'Twitter' },
+                { icon: Instagram, href: 'https://instagram.com/ridescooty', label: 'Instagram' },
+                { icon: Facebook, href: 'https://facebook.com/ridescooty', label: 'Facebook' },
+                { icon: TikTokIcon, href: 'https://tiktok.com/@ride.scooty', label: 'TikTok' },
               ].map((social, index) => (
                 <motion.a
                   key={index}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center text-black hover:bg-primary-400 transition-all duration-300"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
+                  aria-label={social.label}
+                  className="w-11 h-11 sm:w-12 sm:h-12 bg-[#FEC001] rounded-xl flex items-center justify-center text-black hover:bg-[#FFD00F] transition-all duration-200"
+                  whileHover={{ scale: 1.1, y: -3, boxShadow: '0 0 24px rgba(254,192,1,0.45)' }}
+                  whileTap={{ scale: 0.93 }}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={socialsInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.4, delay: 0.1 + index * 0.07, ease: EASING }}
                 >
-                  <social.icon className="w-6 h-6" />
+                  <social.icon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </motion.a>
               ))}
             </div>
           </motion.div>
         </div>
-      </div>
+      </div>{/* /Socials */}
 
     </section>
   );

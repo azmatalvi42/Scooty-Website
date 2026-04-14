@@ -135,49 +135,41 @@ export const RidersPage = () => {
           loading="eager"
           decoding="async"
         />
-        {/* Overlay fades to section bg at the bottom */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/40 to-gray-50 dark:to-navy-900" />
+        {/* Overlay — light tint so the image stays vivid */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-gray-50 dark:to-navy-900" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/50 to-transparent" />
 
         {/* Hero text */}
         <div ref={heroRef} className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-14">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center px-4 py-2 bg-primary-500/20 border border-primary-500/40 rounded-full mb-6"
-          >
-            <span className="text-sm font-medium text-primary-400">For Riders</span>
-          </motion.div>
-
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 0, x: -32 }}
+            animate={heroInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-5xl md:text-7xl font-bold font-display leading-tight mb-6"
+            className="text-5xl sm:text-6xl md:text-7xl font-bold font-display leading-[1.05] tracking-tight mb-5 [filter:drop-shadow(0_2px_20px_rgba(0,0,0,0.9))]"
           >
             <span className="block text-white">Your City,</span>
-            <span className="block text-primary-500 mt-2">Your Ride</span>
+            <span className="block text-[#FEC001] mt-2">Your Ride</span>
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 0, x: -24 }}
+            animate={heroInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-xl text-gray-200 mb-10"
+            className="text-base sm:text-lg md:text-xl text-white/90 max-w-xl mx-auto leading-relaxed mb-7 [filter:drop-shadow(0_1px_8px_rgba(0,0,0,0.8))]"
           >
             Hop on a SCOOTY e-scooter or e-bike and ride through the city.
           </motion.p>
 
           {/* Download CTA */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 0, x: -24 }}
+            animate={heroInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.5 }}
           >
             <motion.a
               href="#"
-              className="inline-flex items-center gap-4 px-6 py-5 bg-primary-500 text-black rounded-2xl font-bold text-lg shadow-lg shadow-primary-500/30 hover:bg-primary-400 transition-colors"
-              whileHover={{ scale: 1.04 }}
+              className="inline-flex items-center gap-4 px-7 py-4 bg-[#FEC001] text-black rounded-full font-bold text-base shadow-lg shadow-[#FEC001]/30 hover:bg-[#FFD00F] transition-colors"
+              whileHover={{ scale: 1.04, boxShadow: '0 0 32px rgba(254,192,1,0.45)' }}
               whileTap={{ scale: 0.97 }}
             >
               <span>Download to start riding</span>
@@ -186,15 +178,15 @@ export const RidersPage = () => {
                 <Play className="w-4 h-4 fill-current" />
               </span>
             </motion.a>
-            <p className="text-s text-white mt-3 font">Available on iOS &amp; Android</p>
+            <p className="text-sm text-white/70 mt-3">Available on iOS &amp; Android</p>
           </motion.div>
         </div>
 
         {/* Tab nav — bottom of hero, over the fading overlay */}
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 0, x: -24 }}
+            animate={heroInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.65 }}
           >
             <div className="overflow-x-auto pb-1 flex justify-start sm:justify-center scrollbar-hide">
@@ -247,9 +239,9 @@ export const RidersPage = () => {
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -16 }}
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -40 }}
               transition={{ duration: 0.3 }}
             >
               <div className="relative overflow-hidden bg-gradient-to-br from-yellow-500/15 via-yellow-500/5 to-transparent border border-yellow-500/25 rounded-3xl shadow-lg">

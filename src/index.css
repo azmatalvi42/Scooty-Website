@@ -6,12 +6,19 @@
   html, body {
     overflow-x: hidden;
     max-width: 100vw;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   body {
     @apply bg-white dark:bg-black text-gray-900 dark:text-white;
   }
 
+  ::selection {
+    background-color: rgba(254, 192, 1, 0.18);
+    color: #FEC001;
+  }
 }
 
 @layer utilities {
@@ -19,32 +26,64 @@
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
   .bg-navy-gradient {
-    background: linear-gradient(135deg, #000000 0%, #141414 100%);
+    background: linear-gradient(135deg, #000000 0%, #111111 100%);
   }
 
   .bg-hero-gradient {
-    background: linear-gradient(180deg, #000000 0%, #0A0A0A 50%, #141414 100%);
+    background: linear-gradient(180deg, #000000 0%, #0A0A0A 50%, #111111 100%);
   }
 
+  /* Brand yellow → transparent gradient text */
   .text-gradient-brand {
-    @apply bg-gradient-to-r from-primary-400 to-accent-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[#FEC001] to-[#FFD00F] bg-clip-text text-transparent;
+  }
+
+  /* Subtle brand gradient for section dividers / accent lines */
+  .brand-line {
+    background: linear-gradient(90deg, transparent, #FEC001, transparent);
+    height: 1px;
+  }
+
+  /* Premium card surface */
+  .premium-card {
+    @apply bg-white dark:bg-[#0A0A0A] border border-gray-100 dark:border-white/[0.06];
+  }
+
+  /* Frosted glass surface */
+  .glass-card {
+    @apply backdrop-blur-xl bg-white/[0.06] border border-white/[0.08];
+  }
+
+  /* Section divider */
+  .section-divider {
+    @apply border-t border-gray-100 dark:border-white/[0.05];
+  }
+
+  /* Brand button — primary yellow */
+  .btn-brand {
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-[#FEC001] text-black font-bold rounded-full
+           hover:bg-[#FFD00F] transition-all duration-200;
+  }
+
+  /* Brand button — ghost / outline on dark */
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-white/[0.08] backdrop-blur-sm
+           border border-white/20 text-white font-semibold rounded-full
+           hover:bg-white/[0.14] hover:border-white/30 transition-all duration-200;
   }
 }
 
-/* Custom scrollbar */
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 5px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #000000;
+  background: #040404;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #EAB308;
-  border-radius: 4px;
+  background: #FEC001;
+  border-radius: 3px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #FBBF24;
+  background: #FFD00F;
 }

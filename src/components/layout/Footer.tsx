@@ -1,144 +1,99 @@
 import { motion } from 'framer-motion';
-import { Linkedin, Twitter, Mail, Phone, MapPin, ArrowUp, Zap } from 'lucide-react';
+import { Linkedin, Twitter, Mail } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-export const Footer = () => {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+const TikTokIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z" />
+  </svg>
+);
 
-  return (
-    <footer className="bg-black text-white relative">
-      {/* Scroll to top button */}
-      <motion.button
-        onClick={scrollToTop}
-        className="absolute -top-6 right-8 w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center text-black hover:bg-primary-400 transition-all duration-300 shadow-lg"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <ArrowUp className="w-6 h-6" />
-      </motion.button>
+const navLinks = [
+  { name: 'Home',       href: '/' },
+  { name: 'Riders',     href: '/riders' },
+  { name: 'Partners',   href: '/partners' },
+  { name: 'Technology', href: '/technology' },
+  { name: 'About',      href: '/about' },
+  { name: 'Contact',    href: '/#contact' },
+];
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 ls:py-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Company Info */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
-                <Zap className="w-5 h-5 text-black" />
-              </div>
-              <h3 className="text-2xl font-bold font-display text-white">
-                Scooty
-              </h3>
-            </div>
-            <p className="text-gray-500 leading-relaxed">
-              AI-powered micro-mobility platform transforming urban transportation in 50+ cities worldwide.
-            </p>
-            <div className="flex space-x-4">
-              {[
-                { icon: Linkedin, href: 'https://linkedin.com/company/scooty' },
-                { icon: Twitter, href: 'https://twitter.com/scootyai' },
-              ].map((social, index) => (
-                <motion.a
-                  key={index}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-500 hover:text-primary-400 transition-colors duration-300"
-                  whileHover={{ scale: 1.2 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <social.icon className="w-6 h-6" />
-                </motion.a>
-              ))}
-            </div>
-          </div>
+const socials = [
+  { icon: Linkedin,  href: 'https://linkedin.com/company/ridescooty', label: 'LinkedIn' },
+  { icon: Twitter,   href: 'https://twitter.com/ridescooty',          label: 'Twitter' },
+  { icon: TikTokIcon, href: 'https://tiktok.com/@ride.scooty',       label: 'TikTok' },
+  { icon: Mail,      href: 'mailto:partnerships@scooty.ca',           label: 'Email' },
+];
 
-          {/* Solutions */}
-          <div className="space-y-4">
-            <h4 className="text-lg font-semibold font-display">Solutions</h4>
-            <div className="space-y-2">
-              {[
-                'Fleet Intelligence',
-                'Route Optimization',
-                'Smart Operations',
-                'Rider Experience',
-                'City Dashboard',
-                'Safety & Compliance',
-              ].map((item) => (
-                <div key={item} className="text-gray-500 hover:text-primary-400 transition-colors duration-300 cursor-pointer">
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
+export const Footer = () => (
+  <footer className="bg-black border-t border-white/[0.05]">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
 
-          {/* Company */}
-          <div className="space-y-4">
-            <h4 className="text-lg font-semibold font-display">Company</h4>
-            <div className="space-y-2">
-              {[
-                { name: 'About', href: '#about' },
-                { name: 'Technology', href: '#technology' },
-                { name: 'Impact', href: '#impact' },
-                { name: 'Careers', href: '#careers' },
-                { name: 'Contact', href: '#contact' },
-              ].map((link) => (
-                <motion.button
-                  key={link.name}
-                  onClick={() => document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' })}
-                  className="block text-gray-500 hover:text-primary-400 transition-colors duration-300"
-                  whileHover={{ x: 5 }}
-                >
-                  {link.name}
-                </motion.button>
-              ))}
-            </div>
-          </div>
+      {/* Top row: logo + nav + socials */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-8">
 
-          {/* Contact Info */}
-          <div className="space-y-4">
-            <h4 className="text-lg font-semibold font-display">Contact</h4>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3">
-                <Mail className="w-5 h-5 text-primary-500" />
-                <span className="text-gray-500">partnerships@scooty.ai</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Phone className="w-5 h-5 text-primary-500" />
-                <span className="text-gray-500">+1 (415) 555-0199</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <MapPin className="w-5 h-5 text-primary-500" />
-                <span className="text-gray-500">548 Market St, San Francisco, CA</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Logo */}
+        <Link to="/" className="flex-shrink-0">
+          <img
+            src="/assets/scooty-logo-tm.png"
+            alt="SCOOTY"
+            className="h-7 w-auto brightness-0 invert opacity-80"
+            loading="lazy"
+            decoding="async"
+          />
+        </Link>
 
-        {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-secondary-800">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-gray-500 text-sm">
-              &copy; 2024 Scooty. All rights reserved.
-            </div>
+        {/* Nav links */}
+        <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+          {navLinks.map((item) => (
+            <Link
+              key={item.name}
+              to={item.href}
+              className="text-xs text-gray-500 hover:text-white transition-colors duration-200"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </nav>
 
-            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-              <a href="#" className="text-gray-500 hover:text-white transition-colors duration-300 text-sm">
-                Privacy Policy
-              </a>
-              <a href="#" className="text-gray-500 hover:text-white transition-colors duration-300 text-sm">
-                Terms of Service
-              </a>
-              <a href="#" className="text-gray-500 hover:text-white transition-colors duration-300 text-sm">
-                Cookie Policy
-              </a>
-            </div>
-          </div>
+        {/* Socials */}
+        <div className="flex items-center gap-2.5">
+          {socials.map((s, i) => (
+            <motion.a
+              key={i}
+              href={s.href}
+              target={s.href.startsWith('http') ? '_blank' : undefined}
+              rel={s.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              aria-label={s.label}
+              className="w-7 h-7 rounded-lg bg-white/[0.05] border border-white/[0.07] flex items-center justify-center text-gray-500 hover:text-[#FEC001] hover:border-[#FEC001]/25 hover:bg-[#FEC001]/08 transition-all duration-200"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.93 }}
+            >
+              <s.icon className="w-3 h-3" />
+            </motion.a>
+          ))}
         </div>
       </div>
-    </footer>
-  );
-};
+
+      {/* Divider */}
+      <div className="h-px bg-white/[0.04] mb-6" />
+
+      {/* Bottom row: copyright + legal */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p className="text-[11px] text-gray-600">
+          &copy; {new Date().getFullYear()} SCOOTY Technologies Inc. All rights reserved. · 🍁 Proudly Canadian
+        </p>
+        <div className="flex items-center gap-4">
+          {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((name) => (
+            <a
+              key={name}
+              href="#"
+              className="text-[11px] text-gray-600 hover:text-[#FEC001] transition-colors duration-200"
+            >
+              {name}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </footer>
+);

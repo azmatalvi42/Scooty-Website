@@ -7,7 +7,7 @@ const ScrollToTop = () => {
   return null;
 };
 import { LoadingSpinner } from './components/ui/LoadingSpinner';
-import { ParticleBackground } from './components/ui/ParticleBackground';
+import { NetworkCanvas } from './components/ui/NetworkCanvas';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
@@ -22,17 +22,13 @@ import { PartnersPage } from './pages/PartnersPage';
 import { TechnologyPage } from './pages/TechnologyPage';
 import { CityPage } from './pages/CityPage';
 import { AboutPage } from './pages/AboutPage';
-
 const HomePage = () => (
   <>
     <Hero />
-    <div className="relative">
-      <ParticleBackground absolute />
-      <Services />
-      <ChatbotDemo />
-      <Projects />
-      <About />
-    </div>
+    <Services />
+    <ChatbotDemo />
+    <Projects />
+    <About />
   </>
 );
 
@@ -56,11 +52,11 @@ function App() {
       <Router>
         <ScrollToTop />
         <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
-          <ParticleBackground />
+          <NetworkCanvas />
 
           <Navbar />
 
-          <main>
+          <main className="relative" style={{ zIndex: 1 }}>
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/riders" element={<RidersPage />} />

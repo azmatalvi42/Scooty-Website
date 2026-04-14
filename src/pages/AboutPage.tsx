@@ -38,7 +38,7 @@ const TABS = [
       { value: '2023', label: 'Founded' },
       { value: '100%', label: 'Canadian' },
     ],
-    image: '/assets/QuotesImages/DSC_1837.jpg',
+    image: '/assets/mainPage/QuotesImages/DSC_1837.jpg',
   },
   {
     icon: Zap,
@@ -57,7 +57,7 @@ const TABS = [
       { value: '3', label: 'Core Products' },
       { value: '5+', label: 'Cities Served' },
     ],
-    image: '/assets/QuotesImages/2024MarkhamOVINScootyDemo-048.jpg',
+    image: '/assets/mainPage/QuotesImages/2024MarkhamOVINScootyDemo-048.jpg',
   },
   {
     icon: Flag,
@@ -76,7 +76,7 @@ const TABS = [
       { value: 'Ontario', label: 'Home Base' },
       { value: 'Canada', label: 'Born & Built' },
     ],
-    image: '/assets/QuotesImages/City Hall Group Shot - Brampton Launch Photo (2).JPG',
+    image: '/assets/mainPage/QuotesImages/City Hall Group Shot - Brampton Launch Photo (2).JPG',
   },
   {
     icon: Globe,
@@ -205,42 +205,34 @@ export const AboutPage = () => {
       <section className="relative overflow-hidden">
         {/* Background image */}
         <img
-          src="https://images.pexels.com/photos/31003268/pexels-photo-31003268.jpeg?auto=compress&cs=tinysrgb&w=1920"
+          src="https://upload.wikimedia.org/wikipedia/commons/8/8a/The_Game_%28Unsplash%29.jpg"
           alt=""
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-center"
           fetchPriority="high"
           loading="eager"
           decoding="async"
         />
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/40 to-gray-50 dark:to-navy-900" />
+        {/* Overlay — very light tint so the drone shot stays vivid */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-gray-50 dark:to-navy-900" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/50 to-transparent" />
 
         {/* Hero text */}
         <div ref={heroRef} className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-14">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center px-4 py-2 bg-primary-500/20 border border-primary-500/40 rounded-full mb-6"
-          >
-            <span className="text-sm font-medium text-primary-400">About Us</span>
-          </motion.div>
-
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 0, x: -32 }}
+            animate={heroInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-5xl md:text-7xl font-bold font-display leading-tight mb-6"
+            className="text-5xl sm:text-6xl md:text-7xl font-bold font-display leading-[1.05] tracking-tight mb-5 [filter:drop-shadow(0_2px_20px_rgba(0,0,0,0.9))]"
           >
             <span className="block text-white">Built in Canada.</span>
-            <span className="block text-primary-500 mt-2">For Every Community.</span>
+            <span className="block text-[#FEC001] mt-2">For Every Community.</span>
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 0, x: -24 }}
+            animate={heroInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-xl text-gray-200 mb-10"
+            className="text-base sm:text-lg md:text-xl text-white/90 max-w-xl mx-auto leading-relaxed [filter:drop-shadow(0_1px_8px_rgba(0,0,0,0.8))]"
           >
             A Canadian mobility company on a mission to modernize public transit — one community at a time.
           </motion.p>
@@ -249,8 +241,8 @@ export const AboutPage = () => {
         {/* Tab nav */}
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 0, x: -24 }}
+            animate={heroInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.55 }}
           >
             <div className="overflow-x-auto pb-1 flex justify-start sm:justify-center scrollbar-hide">
@@ -301,9 +293,9 @@ export const AboutPage = () => {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -40 }}
                 transition={{ duration: 0.3 }}
               >
                 <div className="relative overflow-hidden bg-gradient-to-br from-yellow-500/15 via-yellow-500/5 to-transparent border border-yellow-500/25 rounded-3xl shadow-lg">

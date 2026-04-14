@@ -341,12 +341,13 @@ export const TechnologyPage = () => {
             decoding="async"
           />
         </motion.div>
-        <div className="absolute inset-0 bg-black/65" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black" />
+        <div className="absolute inset-0 bg-black/45" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/50 to-transparent" />
         {/* Grid */}
         <div className="absolute inset-0 opacity-[0.04]"
           style={{
-            backgroundImage: 'linear-gradient(rgba(234,179,8,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(234,179,8,0.6) 1px, transparent 1px)',
+            backgroundImage: 'linear-gradient(rgba(254,192,1,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(254,192,1,0.6) 1px, transparent 1px)',
             backgroundSize: '60px 60px',
           }}
         />
@@ -355,54 +356,45 @@ export const TechnologyPage = () => {
           style={{ opacity: heroOpacity }}
           className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6"
         >
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center px-4 py-2 bg-primary-500/15 border border-primary-500/30 rounded-full mb-6"
-          >
-            <span className="text-sm font-medium text-primary-400">Our Products</span>
-          </motion.div>
-
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -32 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.15 }}
-            className="text-5xl md:text-7xl font-bold font-display text-white leading-tight mb-6"
+            className="text-5xl sm:text-6xl md:text-7xl font-bold font-display text-white leading-[1.05] tracking-tight mb-5 [filter:drop-shadow(0_2px_20px_rgba(0,0,0,0.9))]"
           >
-            Built for the <span className="text-primary-500">Future</span>
+            Built for the <span className="text-[#FEC001]">Future</span>
             <br />of Transit
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -24 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-xl text-white/60 max-w-2xl mx-auto mb-10"
+            className="text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed mb-7 [filter:drop-shadow(0_1px_8px_rgba(0,0,0,0.8))]"
           >
             Three products. One platform. Connecting communities through on-demand mobility, seamless payments, and AI-powered transit intelligence.
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -24 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             <motion.button
               onClick={() => document.getElementById('on-demand')?.scrollIntoView({ behavior: 'smooth' })}
-              className="group px-8 py-4 bg-primary-500 text-black rounded-full font-semibold flex items-center justify-center gap-2 shadow-lg shadow-primary-500/25"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              className="group px-7 py-4 bg-[#FEC001] text-black rounded-full font-bold text-base flex items-center justify-center gap-2 shadow-lg shadow-[#FEC001]/25 hover:bg-[#FFD00F] transition-colors"
+              whileHover={{ scale: 1.04, boxShadow: '0 0 32px rgba(254,192,1,0.45)' }}
+              whileTap={{ scale: 0.96 }}
             >
               <span>Explore Products</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </motion.button>
             <motion.button
               onClick={() => navigate('/partners')}
-              className="px-8 py-4 border border-white/20 text-white rounded-full font-medium hover:border-primary-500/60 transition-all duration-300"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              className="px-7 py-4 bg-white/[0.12] backdrop-blur-sm border border-white/25 text-white rounded-full font-semibold text-base hover:bg-white/[0.20] hover:border-white/40 transition-all duration-200"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
             >
               Become a Partner
             </motion.button>
