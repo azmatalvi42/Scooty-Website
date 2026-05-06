@@ -22,7 +22,6 @@ import { PartnersPage } from './pages/PartnersPage';
 import { TechnologyPage } from './pages/TechnologyPage';
 import { CityPage } from './pages/CityPage';
 import { AboutPage } from './pages/AboutPage';
-import TestPage from './pages/TestPage';
 const HomePage = () => (
   <>
     <Hero />
@@ -66,7 +65,6 @@ function App() {
               <Route path="/partners/:city" element={<CityPage />} />
               <Route path="/technology" element={<TechnologyPage />} />
               <Route path="/about" element={<AboutPage />} />
-              <Route path="/test" element={<TestPage />} />
 
               <Route path="*" element={
                 <div className="min-h-screen bg-gray-50 dark:bg-black pt-20 flex items-center justify-center">

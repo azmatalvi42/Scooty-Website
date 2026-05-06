@@ -76,8 +76,8 @@ export const Hero = () => {
           >
           </motion.div>
           <p className="text-2xl text-primary-400 font-display tracking-wide font-bold pt-20">
-          <span className="text-white">We’re on a mission to  </span>power how cities move people.
-        </p>
+            <span className="text-white">We’re on a mission to  </span>power how cities move people.
+          </p>
 
         </motion.div>
       </div>

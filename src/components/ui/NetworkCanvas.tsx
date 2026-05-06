@@ -1,29 +1,28 @@
 /**
  * NetworkCanvas.tsx — Animated City Background
  *
- * Top-down city grid with e-scooters, bikes, skateboards and pedestrians
- * moving through the streets. Dark city aesthetic with Scooty yellow accents.
- * Pure Canvas 2D, 60 fps via requestAnimationFrame.
+ * Top-down city grid with cars, e-scooters and bikes moving through wide
+ * realistic roads. Pure Canvas 2D, 60 fps via requestAnimationFrame.
  */
 
 import { useEffect, useRef } from 'react';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type VehicleType = 'scooter' | 'bike' | 'skate' | 'person';
+type VehicleType = 'car' | 'scooter' | 'bike';
 
 interface Vehicle {
   axis:      'h' | 'v';
-  fixedPos:  number;                        // y for h-roads, x for v-roads
-  laneOff:   number;                        // lane offset from road centre-line
-  pos:       number;                        // along-axis position
-  vel:       number;                        // px / s, signed
+  fixedPos:  number;
+  laneOff:   number;
+  pos:       number;
+  vel:       number;
   type:      VehicleType;
   r: number; g: number; b: number;
-  len:       number;                        // body length along travel axis
-  wid:       number;                        // body width
+  len:       number;
+  wid:       number;
   trail:     { x: number; y: number }[];
-  phase:     number;                        // personal animation phase
+  phase:     number;
 }
 
 interface CityWindow {
@@ -34,14 +33,25 @@ interface CityWindow {
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const ROAD_W = 34;                          // road width in logical px
-const LANE   = ROAD_W * 0.25;              // distance from centre to lane centre
+const ROAD_W = 64;                          // wider, more realistic roads
+const LANE   = ROAD_W * 0.24;               // lane centre offset from road centre
 
-// Road positions as fractions of screen dimension
-const H_FRACS = [0.13, 0.27, 0.42, 0.56, 0.71, 0.85];
-const V_FRACS = [0.09, 0.21, 0.34, 0.50, 0.64, 0.77, 0.90];
+// Sparser grid — fewer roads, more breathing room
+const H_FRACS = [0.22, 0.50, 0.78];
+const V_FRACS = [0.14, 0.38, 0.62, 0.86];
 
 const rnd = (a: number, b: number) => a + Math.random() * (b - a);
+const pick = <T,>(arr: T[]) => arr[Math.floor(Math.random() * arr.length)];
+
+// Muted, realistic car colours
+const CAR_PALETTE: [number, number, number][] = [
+  [220, 222, 230],  // pale silver
+  [180, 184, 196],  // soft grey
+  [120, 128, 144],  // slate
+  [ 60,  72,  92],  // dark blue-grey
+  [ 90,  60,  70],  // muted maroon
+  [200, 180, 130],  // sand
+];
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -82,15 +92,12 @@ export const NetworkCanvas = () => {
       buildVehicles();
     }
 
-    // ── Building windows ──────────────────────────────────────────────────────
-    //
-    // Scatter tiny lit-window pixels throughout the building blocks.
-    // We reject positions that fall on a road.
+    // ── Building windows — sparse, calm ──────────────────────────────────────
 
     function buildWindows() {
       windows = [];
-      const half = ROAD_W / 2 + 2;
-      const density = Math.floor(W * H / 5500);
+      const half = ROAD_W / 2 + 3;
+      const density = Math.floor(W * H / 16000);
 
       for (let i = 0; i < density; i++) {
         const wx = rnd(0, W);
@@ -102,10 +109,10 @@ export const NetworkCanvas = () => {
 
         const roll = Math.random();
         const [wr, wg, wb] =
-          roll < 0.05 ? [253, 192,   2] :  // Scooty yellow (rare)
-          roll < 0.40 ? [255, 218, 120] :  // warm cream
-          roll < 0.70 ? [180, 210, 255] :  // cool blue
-                        [255, 185,  80];   // amber
+          roll < 0.06 ? [253, 192,   2] :
+          roll < 0.45 ? [255, 218, 130] :
+          roll < 0.75 ? [180, 210, 255] :
+                        [255, 190,  95];
 
         windows.push({ x: wx, y: wy, phase: rnd(0, Math.PI * 2), wr, wg, wb });
       }
@@ -117,42 +124,44 @@ export const NetworkCanvas = () => {
       vehicles = [];
 
       const typePool: VehicleType[] = [
-        'scooter', 'scooter', 'scooter', 'scooter',
-        'bike',    'bike',    'bike',
-        'skate',   'skate',
-        'person',
+        'car', 'car', 'car', 'car', 'car',
+        'scooter', 'scooter', 'scooter',
+        'bike',    'bike',
       ];
 
-      const colors: Record<VehicleType, [number, number, number]> = {
-        scooter: [253, 192,   2],
-        bike:    [  0, 205, 240],
-        skate:   [175,  70, 255],
-        person:  [175, 210, 255],
+      const sizes: Record<VehicleType, [number, number]> = {
+        car:     [30, 13],
+        scooter: [20,  6],
+        bike:    [18,  5],
       };
 
-      const sizes: Record<VehicleType, [number, number]> = {
-        scooter: [15, 5],
-        bike:    [14, 4],
-        skate:   [10, 4],
-        person:  [ 4, 4],
+      const speed: Record<VehicleType, [number, number]> = {
+        car:     [70, 130],
+        scooter: [55, 100],
+        bike:    [40,  75],
+      };
+
+      const colorFor = (t: VehicleType): [number, number, number] => {
+        if (t === 'car')     return pick(CAR_PALETTE);
+        if (t === 'scooter') return [253, 192, 2];
+        return [0, 205, 240];
       };
 
       const addVehicles = (axis: 'h' | 'v', fixedPos: number, screenLen: number) => {
-        const count = Math.floor(rnd(3, 6));
+        const count = Math.floor(rnd(2, 4));
         for (let i = 0; i < count; i++) {
-          const type  = typePool[Math.floor(Math.random() * typePool.length)];
-          const [r, g, b] = colors[type];
+          const type   = pick(typePool);
+          const [r, g, b] = colorFor(type);
           const [len, wid] = sizes[type];
-          const dir   = Math.random() < 0.5 ? 1 : -1;
-          const speed = type === 'person' ? rnd(16, 32) : rnd(55, 115);
-          const laneOff = type === 'person'
-            ? dir * ROAD_W * 0.38
-            : dir * LANE;
+          const dir    = Math.random() < 0.5 ? 1 : -1;
+          const [s0, s1] = speed[type];
+          const vel    = rnd(s0, s1) * dir;
+          const laneOff = dir * LANE;
 
           vehicles.push({
             axis, fixedPos, laneOff,
             pos:   rnd(0, screenLen),
-            vel:   speed * dir,
+            vel,
             type, r, g, b, len, wid,
             trail: [],
             phase: rnd(0, Math.PI * 2),
@@ -167,49 +176,25 @@ export const NetworkCanvas = () => {
     // ── Drawing: city layers ──────────────────────────────────────────────────
 
     function drawRoads() {
-      // Buildings
+      // Buildings / base
       ctx!.fillStyle = '#08080e';
       ctx!.fillRect(0, 0, W, H);
 
-      // Road surfaces
-      ctx!.fillStyle = '#111119';
+      // Asphalt
+      ctx!.fillStyle = '#1a1a22';
       for (const ry of hRoads) ctx!.fillRect(0, ry - ROAD_W / 2, W, ROAD_W);
       for (const rx of vRoads) ctx!.fillRect(rx - ROAD_W / 2, 0, ROAD_W, H);
 
-      // Intersection fills (clean overlapping corners)
+      // Intersection fills
       for (const ry of hRoads)
         for (const rx of vRoads)
           ctx!.fillRect(rx - ROAD_W / 2, ry - ROAD_W / 2, ROAD_W, ROAD_W);
     }
 
     function drawMarkings() {
-      const dashLen = 15, dashGap = 13;
-      const offset  = (time * 22) % (dashLen + dashGap);
-
-      ctx!.setLineDash([dashLen, dashGap]);
-      ctx!.lineWidth = 0.8;
-
-      // Centre dashes — Scooty yellow
-      ctx!.strokeStyle = 'rgba(253,192,2,0.20)';
-      for (const ry of hRoads) {
-        ctx!.lineDashOffset = -offset;
-        ctx!.beginPath();
-        ctx!.moveTo(0, ry);
-        ctx!.lineTo(W, ry);
-        ctx!.stroke();
-      }
-      for (const rx of vRoads) {
-        ctx!.lineDashOffset = -offset;
-        ctx!.beginPath();
-        ctx!.moveTo(rx, 0);
-        ctx!.lineTo(rx, H);
-        ctx!.stroke();
-      }
-      ctx!.setLineDash([]);
-
-      // Kerb lines — faint white
-      ctx!.strokeStyle = 'rgba(255,255,255,0.055)';
-      ctx!.lineWidth   = 0.5;
+      // Solid kerb edges
+      ctx!.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx!.lineWidth   = 1;
       for (const ry of hRoads) {
         for (const off of [-ROAD_W / 2, ROAD_W / 2]) {
           ctx!.beginPath();
@@ -226,178 +211,202 @@ export const NetworkCanvas = () => {
           ctx!.stroke();
         }
       }
-    }
 
-    function drawCrosswalks() {
-      const sw = 3, sg = 4, sh = ROAD_W * 0.42;
-      ctx!.fillStyle = 'rgba(255,255,255,0.065)';
+      // Dashed centre line — slow drift for life
+      const dashLen = 22, dashGap = 18;
+      const offset  = (time * 18) % (dashLen + dashGap);
+      ctx!.setLineDash([dashLen, dashGap]);
+      ctx!.lineWidth   = 1.4;
+      ctx!.strokeStyle = 'rgba(255,225,140,0.32)';
 
-      for (let hi = 0; hi < hRoads.length; hi++) {
-        for (let vi = 0; vi < vRoads.length; vi++) {
-          if ((hi + vi) % 2 !== 0) continue;
-          const ry = hRoads[hi], rx = vRoads[vi];
-
-          for (let s = 0; s < 4; s++) {
-            // left of intersection
-            const lx = rx - ROAD_W / 2 - (sw + sg) * (s + 1);
-            if (lx > 0) ctx!.fillRect(lx, ry - sh / 2, sw, sh);
-            // right
-            const rx2 = rx + ROAD_W / 2 + (sw + sg) * s;
-            if (rx2 + sw < W) ctx!.fillRect(rx2, ry - sh / 2, sw, sh);
-            // above
-            const ty = ry - ROAD_W / 2 - (sw + sg) * (s + 1);
-            if (ty > 0) ctx!.fillRect(rx - sh / 2, ty, sh, sw);
-            // below
-            const by = ry + ROAD_W / 2 + (sw + sg) * s;
-            if (by + sw < H) ctx!.fillRect(rx - sh / 2, by, sh, sw);
-          }
-        }
-      }
-    }
-
-    function drawIntersectionGlow() {
       for (const ry of hRoads) {
-        for (const rx of vRoads) {
-          const g = ctx!.createRadialGradient(rx, ry, 0, rx, ry, 48);
-          g.addColorStop(0, 'rgba(255,178,45,0.065)');
-          g.addColorStop(1, 'rgba(255,178,45,0)');
-          ctx!.beginPath();
-          ctx!.arc(rx, ry, 48, 0, Math.PI * 2);
-          ctx!.fillStyle = g;
-          ctx!.fill();
-        }
+        ctx!.lineDashOffset = -offset;
+        ctx!.beginPath();
+        ctx!.moveTo(0, ry);
+        ctx!.lineTo(W, ry);
+        ctx!.stroke();
       }
+      for (const rx of vRoads) {
+        ctx!.lineDashOffset = -offset;
+        ctx!.beginPath();
+        ctx!.moveTo(rx, 0);
+        ctx!.lineTo(rx, H);
+        ctx!.stroke();
+      }
+      ctx!.setLineDash([]);
     }
 
     function drawWindows() {
       for (const w of windows) {
-        // Slow, independent flicker per window
         const flicker = 0.55 + 0.45 * Math.sin(w.phase + time * (0.25 + w.phase * 0.15));
-        const alpha   = 0.10 + flicker * 0.22;
+        const alpha   = 0.08 + flicker * 0.18;
         ctx!.fillStyle = `rgba(${w.wr},${w.wg},${w.wb},${alpha})`;
         ctx!.fillRect(w.x - 1, w.y - 1, 2, 2);
       }
     }
 
-    // ── Drawing: vehicle shapes ───────────────────────────────────────────────
-    //
-    // All shapes are drawn in local space with the vehicle facing +x (right).
-    // The caller applies ctx.translate + ctx.rotate before calling these.
+    // ── Drawing: vehicle shapes (face +x) ────────────────────────────────────
+
+    function drawCar(len: number, wid: number, r: number, g: number, b: number) {
+      const a    = 0.92;
+      const body = `rgba(${r},${g},${b},${a})`;
+      const tint = `rgba(${Math.round(r * 0.35)},${Math.round(g * 0.35)},${Math.round(b * 0.4)},${a})`;
+      const glass = `rgba(20,28,40,0.78)`;
+
+      // Body shell
+      ctx!.fillStyle = body;
+      ctx!.beginPath();
+      ctx!.roundRect(-len * 0.5, -wid * 0.5, len, wid, 3.2);
+      ctx!.fill();
+
+      // Side trim (subtle darker outline along the long edges)
+      ctx!.strokeStyle = tint;
+      ctx!.lineWidth   = 0.6;
+      ctx!.beginPath();
+      ctx!.roundRect(-len * 0.5, -wid * 0.5, len, wid, 3.2);
+      ctx!.stroke();
+
+      // Windshield (front, large rake)
+      ctx!.fillStyle = glass;
+      ctx!.beginPath();
+      ctx!.roundRect(len * 0.06, -wid * 0.40, len * 0.22, wid * 0.80, 1.4);
+      ctx!.fill();
+
+      // Rear window
+      ctx!.beginPath();
+      ctx!.roundRect(-len * 0.30, -wid * 0.40, len * 0.18, wid * 0.80, 1.2);
+      ctx!.fill();
+
+      // Roof seam between the two
+      ctx!.fillStyle = tint;
+      ctx!.fillRect(-len * 0.10, -wid * 0.42, len * 0.16, wid * 0.84);
+
+      // Headlights
+      ctx!.fillStyle = 'rgba(255,240,200,0.95)';
+      ctx!.fillRect(len * 0.46, -wid * 0.40, len * 0.04, wid * 0.20);
+      ctx!.fillRect(len * 0.46,  wid * 0.20, len * 0.04, wid * 0.20);
+
+      // Taillights
+      ctx!.fillStyle = 'rgba(220,60,40,0.85)';
+      ctx!.fillRect(-len * 0.50, -wid * 0.40, len * 0.03, wid * 0.20);
+      ctx!.fillRect(-len * 0.50,  wid * 0.20, len * 0.03, wid * 0.20);
+    }
 
     function drawScooter(len: number, wid: number, r: number, g: number, b: number, pulse: number) {
-      const a  = 0.78 + pulse * 0.22;
-      const rc = `rgba(${r},${g},${b},${a})`;
-      const rd = `rgba(${Math.round(r * 0.45)},${Math.round(g * 0.45)},${Math.round(b * 0.45)},${a})`;
+      const a    = 0.88 + pulse * 0.12;
+      const body = `rgba(${r},${g},${b},${a})`;
+      const dark = `rgba(28,28,34,${a})`;
 
       // Deck
-      ctx!.fillStyle = rc;
+      ctx!.fillStyle = body;
       ctx!.beginPath();
-      ctx!.roundRect(-len * 0.42, -wid * 0.28, len * 0.84, wid * 0.56, 2);
+      ctx!.roundRect(-len * 0.42, -wid * 0.32, len * 0.84, wid * 0.64, 2);
       ctx!.fill();
 
-      // Stem (rear-to-handlebar, at front of scooter = +x side)
-      ctx!.fillStyle = rc;
-      ctx!.fillRect(len * 0.22, -wid * 0.9, wid * 0.38, wid * 0.9);
+      // Wheels (small black bars at each end seen from above)
+      ctx!.fillStyle = dark;
+      ctx!.fillRect(-len * 0.50, -wid * 0.45, len * 0.10, wid * 0.90);
+      ctx!.fillRect( len * 0.40, -wid * 0.45, len * 0.10, wid * 0.90);
 
-      // Handlebar cross-bar
-      ctx!.fillRect(len * 0.04, -wid * 1.05, wid * 1.35, wid * 0.28);
+      // T-stem (rises from front of deck)
+      ctx!.fillStyle = body;
+      ctx!.fillRect(len * 0.30, -wid * 0.18, wid * 0.55, wid * 0.36);
 
-      // Wheels
-      ctx!.fillStyle = rd;
+      // Handlebar
+      ctx!.fillRect(len * 0.30, -wid * 0.85, wid * 0.32, wid * 1.70);
+
+      // Rider torso (top-down — slight darker disk)
+      ctx!.fillStyle = `rgba(40,46,60,${a * 0.9})`;
       ctx!.beginPath();
-      ctx!.arc(-len * 0.33, 0, wid * 0.46, 0, Math.PI * 2);
+      ctx!.arc(0, 0, wid * 0.42, 0, Math.PI * 2);
       ctx!.fill();
+
+      // Rider head
+      ctx!.fillStyle = `rgba(220,200,170,${a})`;
       ctx!.beginPath();
-      ctx!.arc( len * 0.33, 0, wid * 0.46, 0, Math.PI * 2);
+      ctx!.arc(0, 0, wid * 0.22, 0, Math.PI * 2);
       ctx!.fill();
     }
 
     function drawBike(len: number, wid: number, r: number, g: number, b: number, pulse: number) {
-      const a  = 0.68 + pulse * 0.28;
-      const s  = `rgba(${r},${g},${b},${a})`;
-      ctx!.lineCap = 'round';
+      const a    = 0.82 + pulse * 0.18;
+      const body = `rgba(${r},${g},${b},${a})`;
+      const dark = `rgba(28,28,34,${a})`;
 
-      // Frame
-      ctx!.strokeStyle = s;
-      ctx!.lineWidth   = wid * 0.28;
-      ctx!.beginPath();
-      ctx!.moveTo(-len * 0.37, 0);
-      ctx!.lineTo(0, -wid * 0.55);
-      ctx!.lineTo( len * 0.37, 0);
-      ctx!.stroke();
+      // Front + rear wheels (thin top-down strips)
+      ctx!.fillStyle = dark;
+      ctx!.fillRect(-len * 0.50, -wid * 0.45, len * 0.10, wid * 0.90);
+      ctx!.fillRect( len * 0.40, -wid * 0.45, len * 0.10, wid * 0.90);
 
-      // Wheels
-      ctx!.lineWidth = wid * 0.28;
+      // Frame top tube
+      ctx!.strokeStyle = body;
+      ctx!.lineWidth   = wid * 0.20;
+      ctx!.lineCap     = 'round';
       ctx!.beginPath();
-      ctx!.arc(-len * 0.37, 0, wid * 0.62, 0, Math.PI * 2);
-      ctx!.stroke();
-      ctx!.beginPath();
-      ctx!.arc( len * 0.37, 0, wid * 0.62, 0, Math.PI * 2);
+      ctx!.moveTo(-len * 0.42, 0);
+      ctx!.lineTo( len * 0.42, 0);
       ctx!.stroke();
 
       // Handlebar
-      ctx!.lineWidth = wid * 0.22;
+      ctx!.lineWidth = wid * 0.18;
       ctx!.beginPath();
-      ctx!.moveTo(len * 0.22, -wid * 0.52);
-      ctx!.lineTo(len * 0.48, -wid * 0.20);
+      ctx!.moveTo(len * 0.32, -wid * 0.65);
+      ctx!.lineTo(len * 0.32,  wid * 0.65);
       ctx!.stroke();
-    }
 
-    function drawSkate(len: number, wid: number, r: number, g: number, b: number, pulse: number) {
-      const a  = 0.68 + pulse * 0.28;
-      const rd = `rgba(${Math.round(r * 0.55)},${Math.round(g * 0.55)},${Math.round(b * 0.55)},${a})`;
-
-      // Board
-      ctx!.fillStyle = `rgba(${r},${g},${b},${a})`;
+      // Saddle
+      ctx!.fillStyle = `rgba(30,30,38,${a})`;
       ctx!.beginPath();
-      ctx!.roundRect(-len * 0.46, -wid * 0.30, len * 0.92, wid * 0.60, 2.5);
+      ctx!.roundRect(-len * 0.08, -wid * 0.18, len * 0.18, wid * 0.36, 1);
       ctx!.fill();
 
-      // Trucks (axles)
-      ctx!.fillStyle = rd;
-      ctx!.fillRect(-len * 0.30 - 0.4, -wid * 0.52, 0.8, wid * 1.04);
-      ctx!.fillRect( len * 0.30 - 0.4, -wid * 0.52, 0.8, wid * 1.04);
-
-      // Wheels (four corners)
-      ctx!.fillStyle = `rgba(190,190,200,${a * 0.75})`;
-      for (const [wx, wy] of [
-        [-len * 0.30, -wid * 0.54],
-        [-len * 0.30,  wid * 0.54],
-        [ len * 0.30, -wid * 0.54],
-        [ len * 0.30,  wid * 0.54],
-      ]) {
-        ctx!.beginPath();
-        ctx!.arc(wx, wy, wid * 0.36, 0, Math.PI * 2);
-        ctx!.fill();
-      }
-    }
-
-    function drawPerson(wid: number, r: number, g: number, b: number, pulse: number) {
-      const a = 0.55 + pulse * 0.35;
-      // Body
+      // Rider
+      ctx!.fillStyle = `rgba(40,46,60,${a * 0.9})`;
       ctx!.beginPath();
-      ctx!.arc(0, wid * 0.22, wid * 0.52, 0, Math.PI * 2);
-      ctx!.fillStyle = `rgba(${r},${g},${b},${a * 0.65})`;
+      ctx!.arc(-len * 0.04, 0, wid * 0.40, 0, Math.PI * 2);
       ctx!.fill();
-      // Head
+      ctx!.fillStyle = `rgba(220,200,170,${a})`;
       ctx!.beginPath();
-      ctx!.arc(0, -wid * 0.42, wid * 0.38, 0, Math.PI * 2);
-      ctx!.fillStyle = `rgba(${r},${g},${b},${a})`;
+      ctx!.arc(-len * 0.04, 0, wid * 0.20, 0, Math.PI * 2);
       ctx!.fill();
     }
 
-    // ── Drawing: vehicle composite (trail + glow + body) ─────────────────────
+    // ── Vehicle composite (data-point glow + trail + headlight + body) ───────
 
     function drawVehicle(v: Vehicle) {
       const cx = v.axis === 'h' ? v.pos               : v.fixedPos + v.laneOff;
       const cy = v.axis === 'h' ? v.fixedPos + v.laneOff : v.pos;
 
-      // Trail recording
-      const TRAIL_MAX = v.type === 'person' ? 5 : 15;
+      // Data colour — cars use Scooty yellow so their pings stay visible
+      const [dr, dg, db] = v.type === 'car' ? [253, 192, 2] : [v.r, v.g, v.b];
+
+      // Ambient data-point halo (always-on soft node light)
+      const haloR = Math.max(v.len, v.wid) * 1.6;
+      const haloPulse = 0.65 + 0.35 * Math.sin(time * 1.8 + v.phase);
+      const halo = ctx!.createRadialGradient(cx, cy, 0, cx, cy, haloR);
+      halo.addColorStop(0, `rgba(${dr},${dg},${db},${0.22 * haloPulse})`);
+      halo.addColorStop(1, `rgba(${dr},${dg},${db},0)`);
+      ctx!.fillStyle = halo;
+      ctx!.beginPath();
+      ctx!.arc(cx, cy, haloR, 0, Math.PI * 2);
+      ctx!.fill();
+
+      // Periodic ping ring — expands outward and fades, like a data pulse
+      const pingPeriod = 2.6;
+      const pingT = ((time + v.phase * pingPeriod / (Math.PI * 2)) % pingPeriod) / pingPeriod;
+      const pingR = haloR * (0.4 + pingT * 2.4);
+      const pingAlpha = (1 - pingT) * 0.32;
+      ctx!.strokeStyle = `rgba(${dr},${dg},${db},${pingAlpha})`;
+      ctx!.lineWidth   = 1.2;
+      ctx!.beginPath();
+      ctx!.arc(cx, cy, pingR, 0, Math.PI * 2);
+      ctx!.stroke();
+
+      // Trail
+      const TRAIL_MAX = v.type === 'car' ? 8 : 12;
       v.trail.push({ x: cx, y: cy });
       if (v.trail.length > TRAIL_MAX) v.trail.shift();
 
-      // Trail drawing
       if (v.trail.length > 1) {
         ctx!.lineCap = 'round';
         for (let i = 1; i < v.trail.length; i++) {
@@ -405,27 +414,27 @@ export const NetworkCanvas = () => {
           ctx!.beginPath();
           ctx!.moveTo(v.trail[i - 1].x, v.trail[i - 1].y);
           ctx!.lineTo(v.trail[i].x,     v.trail[i].y);
-          ctx!.strokeStyle = `rgba(${v.r},${v.g},${v.b},${frac * 0.16})`;
-          ctx!.lineWidth   = frac * v.wid * 0.38;
+          ctx!.strokeStyle = `rgba(${v.r},${v.g},${v.b},${frac * 0.10})`;
+          ctx!.lineWidth   = frac * v.wid * 0.30;
           ctx!.stroke();
         }
       }
 
-      // Headlight glow (in front of vehicle)
-      if (v.type !== 'person') {
-        const sign = v.vel > 0 ? 1 : -1;
-        const fx   = v.axis === 'h' ? cx + sign * v.len * 0.6 : cx;
-        const fy   = v.axis === 'v' ? cy + sign * v.len * 0.6 : cy;
-        const gr   = ctx!.createRadialGradient(fx, fy, 0, fx, fy, v.len);
-        gr.addColorStop(0, `rgba(${v.r},${v.g},${v.b},0.24)`);
-        gr.addColorStop(1, `rgba(${v.r},${v.g},${v.b},0)`);
-        ctx!.beginPath();
-        ctx!.arc(fx, fy, v.len, 0, Math.PI * 2);
-        ctx!.fillStyle = gr;
-        ctx!.fill();
-      }
+      // Headlight glow
+      const sign = v.vel > 0 ? 1 : -1;
+      const fx   = v.axis === 'h' ? cx + sign * v.len * 0.7 : cx;
+      const fy   = v.axis === 'v' ? cy + sign * v.len * 0.7 : cy;
+      const glowR = v.len * 1.1;
+      const gr   = ctx!.createRadialGradient(fx, fy, 0, fx, fy, glowR);
+      const [gr_r, gr_g, gr_b] = v.type === 'car' ? [255, 240, 200] : [v.r, v.g, v.b];
+      gr.addColorStop(0, `rgba(${gr_r},${gr_g},${gr_b},0.20)`);
+      gr.addColorStop(1, `rgba(${gr_r},${gr_g},${gr_b},0)`);
+      ctx!.beginPath();
+      ctx!.arc(fx, fy, glowR, 0, Math.PI * 2);
+      ctx!.fillStyle = gr;
+      ctx!.fill();
 
-      // Body
+      // Orientation
       const angle =
         v.axis === 'h'
           ? (v.vel > 0 ? 0 : Math.PI)
@@ -438,10 +447,9 @@ export const NetworkCanvas = () => {
       ctx!.rotate(angle);
 
       switch (v.type) {
+        case 'car':     drawCar(    v.len, v.wid, v.r, v.g, v.b);        break;
         case 'scooter': drawScooter(v.len, v.wid, v.r, v.g, v.b, pulse); break;
         case 'bike':    drawBike(   v.len, v.wid, v.r, v.g, v.b, pulse); break;
-        case 'skate':   drawSkate(  v.len, v.wid, v.r, v.g, v.b, pulse); break;
-        case 'person':  drawPerson(        v.wid, v.r, v.g, v.b, pulse); break;
       }
 
       ctx!.restore();
@@ -459,14 +467,10 @@ export const NetworkCanvas = () => {
 
       ctx!.clearRect(0, 0, W, H);
 
-      // Static city layers
       drawRoads();
       drawMarkings();
-      drawCrosswalks();
-      drawIntersectionGlow();
       drawWindows();
 
-      // Vehicles
       for (const v of vehicles) {
         const limit = v.axis === 'h' ? W : H;
         v.pos += v.vel * dt;

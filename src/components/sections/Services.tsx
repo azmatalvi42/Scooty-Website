@@ -72,7 +72,7 @@ export const Services = () => {
   const current = solutions[active];
 
   return (
-    <section id="services" ref={ref} className="relative py-12 sm:py-16 ls:py-8 bg-gray-50 dark:bg-[#0A0A0A] overflow-hidden">
+    <section id="services" ref={ref} className="relative py-12 sm:py-16 ls:py-8 overflow-hidden">
 
       {/* Decorative background blobs */}
       <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-[#FEC001]/[0.04] rounded-full blur-3xl pointer-events-none" />
@@ -97,15 +97,21 @@ export const Services = () => {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-10 sm:mb-14"
         >
-          <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
-            Scooty Transit Platform
-          </p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4 tracking-tight">
-            Our <span className="text-[#FEC001]">Solutions</span>
-          </h2>
-          <p className="text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
-            End-to-end technology platform powering the next generation of urban mobility.
-          </p>
+          <div className="relative inline-block isolate">
+            <span
+              aria-hidden
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-[#FEC001]/20 to-transparent blur-2xl pointer-events-none -z-10"
+            />
+            <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
+              Scooty Transit Platform
+            </p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4 tracking-tight">
+              Our <span className="text-[#FEC001]">Solutions</span>
+            </h2>
+            <p className="text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+              End-to-end technology platform powering the next generation of urban mobility.
+            </p>
+          </div>
         </motion.div>
 
         {/* Tab selector — scrollable on mobile, no wrapping */}

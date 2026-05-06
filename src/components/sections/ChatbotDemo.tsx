@@ -28,7 +28,7 @@ export const ChatbotDemo = () => {
   const navigate = useNavigate();
 
   return (
-    <section id="riders" ref={ref} className="relative py-16 sm:py-24 ls:py-8 bg-white dark:bg-black overflow-hidden">
+    <section id="riders" ref={ref} className="relative py-16 sm:py-24 ls:py-8 overflow-hidden">
       {/* Subtle top border */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gray-100 dark:bg-white/[0.04]" />
 
@@ -41,23 +41,29 @@ export const ChatbotDemo = () => {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.65, ease: EASING }}
           >
-            {/* Eyebrow pill */}
-            <motion.span
-              initial={{ opacity: 0, y: 10 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.45, ease: EASING }}
-              className="inline-block px-3.5 py-1.5 bg-[#FEC001] text-black text-[11px] font-bold rounded-full mb-5 tracking-widest uppercase"
-            >
-              SCOOTY Micromobility Rideshare
-            </motion.span>
+            <div className="relative inline-block isolate mb-10">
+              <span
+                aria-hidden
+                className="absolute inset-0 bg-gradient-to-r from-[#FEC001]/25 via-[#FEC001]/15 to-transparent blur-2xl pointer-events-none -z-10"
+              />
+              {/* Eyebrow pill */}
+              <motion.span
+                initial={{ opacity: 0, y: 10 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.45, ease: EASING }}
+                className="inline-block px-3.5 py-1.5 bg-[#FEC001] text-black text-[11px] font-bold rounded-full mb-5 tracking-widest uppercase"
+              >
+                SCOOTY Micromobility Rideshare
+              </motion.span>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-5 leading-tight tracking-tight">
-              Riders
-            </h2>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-5 leading-tight tracking-tight">
+                Riders
+              </h2>
 
-            <p className="text-base sm:text-lg text-gray-500 dark:text-gray-400 mb-10 leading-relaxed max-w-lg">
-              Looking to ride with SCOOTY? Get all the information you need to get started before you take your first trip.
-            </p>
+              <p className="text-base sm:text-lg text-gray-500 dark:text-gray-400 leading-relaxed max-w-lg">
+                Looking to ride with SCOOTY? Get all the information you need to get started before you take your first trip.
+              </p>
+            </div>
 
             {/* Perks */}
             <div className="space-y-5 mb-10">

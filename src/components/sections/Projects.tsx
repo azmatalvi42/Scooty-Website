@@ -83,6 +83,36 @@ const governmentQuotes = [
     title: "Mayor of Markham",
     image: "/assets/mainPage/QuotesImages/2024MarkhamOVINScootyDemo-048.jpg",
   },
+  {
+    quote: "SCOOTY's commitment to safety, courtesy, and partnership reflects exactly the kind of collaborative approach we need to deliver modern transit solutions to our residents. Their integration with our local network has been seamless and well received by the community.",
+    name: "Regional Council Representative",
+    title: "Region of Peel",
+    image: "/assets/mainPage/QuotesImages/DSC_4516.jpg",
+  },
+  {
+    quote: "Ontario's economic growth depends on moving people and goods efficiently. Innovative companies like SCOOTY help our communities solve the first-mile and last-mile challenge with technology that's purpose-built for Canadian cities.",
+    name: "Provincial Transit Advisor",
+    title: "Ministry of Transportation Ontario",
+    image: "/assets/mainPage/QuotesImages/DSC_4553 (1).jpg",
+  },
+  {
+    quote: "We're proud to partner with a homegrown Ontario company that listens to municipalities, designs around real rider needs, and delivers measurable outcomes for our communities. SCOOTY has set a high bar for what shared mobility partnerships should look like.",
+    name: "Director of Mobility & Transit",
+    title: "City Partner, Ontario",
+    image: "/assets/mainPage/QuotesImages/DSC_1837.jpg",
+  },
+  {
+    quote: "Connecting our downtown core, our transit hubs, and our neighbourhoods has always been a priority. SCOOTY brings the technology, the operational discipline, and the local insight to make multi-modal commuting truly work for residents and visitors alike.",
+    name: "Mobility Program Lead",
+    title: "City of Markham",
+    image: "/assets/mainPage/QuotesImages/2024MarkhamOVINScootyDemo-048.jpg",
+  },
+  {
+    quote: "Affordable, reliable, and zero-emission transportation options are essential to the future of our region. SCOOTY's approach — rooted in partnership and built on Ontario expertise — is helping us deliver on those goals every day.",
+    name: "Economic Development Lead",
+    title: "City of Brampton",
+    image: "/assets/mainPage/QuotesImages/City Hall Group Shot - Brampton Launch Photo (2).JPG",
+  },
 ];
 
 const partnerTypes = [
@@ -210,6 +240,90 @@ const QuoteImageCard = ({
   </motion.button>
 );
 
+const QuotesScroller = ({
+  quotes,
+  inView,
+  onSelect,
+}: {
+  quotes: typeof governmentQuotes;
+  inView: boolean;
+  onSelect: (idx: number) => void;
+}) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      e.preventDefault();
+      el.scrollLeft += e.deltaY;
+    };
+
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, []);
+
+  return (
+    <div className="relative">
+      <div
+        ref={scrollRef}
+        className="overflow-x-auto scrollbar-hide pb-4 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 scroll-smooth"
+        style={{ WebkitOverflowScrolling: 'touch' }}
+      >
+        <div
+          className="grid gap-3.5"
+          style={{
+            gridTemplateRows: 'repeat(2, minmax(260px, auto))',
+            gridAutoFlow: 'column dense',
+            gridAutoColumns: 'clamp(260px, 30vw, 320px)',
+          }}
+        >
+          {quotes.map((q, i) => {
+            const m = i % 5;
+            // Pattern repeats the original 5-card collage every 3 columns:
+            //   col A: text(0)  / image      (text on top, short image fills gap below)
+            //   col B: image(1) (tall, spans both rows)
+            //   col C: text(3)  / text(4)
+            if (m === 1) {
+              return (
+                <div key={i} className="row-span-2">
+                  <QuoteImageCard
+                    q={q} i={i}
+                    inView={inView}
+                    onClick={() => onSelect(i)}
+                    className="w-full h-full"
+                  />
+                </div>
+              );
+            }
+            if (m === 2) {
+              return (
+                <QuoteImageCard
+                  key={i} q={q} i={i}
+                  inView={inView}
+                  onClick={() => onSelect(i)}
+                  className="w-full h-full"
+                />
+              );
+            }
+            const styleIdx = m === 0 ? 0 : m === 3 ? 1 : 2;
+            return (
+              <QuoteTextCard
+                key={i} q={q} i={i} styleIdx={styleIdx}
+                inView={inView}
+                onClick={() => onSelect(i)}
+                className="w-full h-full"
+              />
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const AnimatedCounter = ({ target, suffix }: { target: number; suffix: string }) => {
   const [count, setCount] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -283,7 +397,7 @@ export const Projects = () => {
   const current = partnerTypes[active];
 
   return (
-    <section id="impact" ref={ref} className="relative bg-gray-50 dark:bg-[#0A0A0A] overflow-hidden">
+    <section id="impact" ref={ref} className="relative overflow-hidden">
 
       {/* ── CORE VALUES ── */}
       <div ref={valuesRef} className="py-16 sm:py-24 ls:py-8">
@@ -294,18 +408,24 @@ export const Projects = () => {
             transition={{ duration: 0.6, ease: REVEAL_EASE }}
             className="text-center mb-12 sm:mb-16"
           >
-            <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
-              What We Stand For
-            </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4 tracking-tight">
-              SCOOTY <span className="text-[#FEC001]">Core Values</span>
-            </h2>
-            <div className="flex justify-center items-center gap-5 text-sm font-semibold text-gray-400 dark:text-gray-500 tracking-[0.15em] uppercase">
-              <span>Safety</span>
-              <span className="text-[#FEC001] text-base">·</span>
-              <span>Courtesy</span>
-              <span className="text-[#FEC001] text-base">·</span>
-              <span>Partnership</span>
+            <div className="relative inline-block isolate">
+              <span
+                aria-hidden
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-[#FEC001]/20 to-transparent blur-2xl pointer-events-none -z-10"
+              />
+              <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
+                What We Stand For
+              </p>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4 tracking-tight">
+                SCOOTY <span className="text-[#FEC001]">Core Values</span>
+              </h2>
+              <div className="flex justify-center items-center gap-5 text-sm font-semibold text-gray-400 dark:text-gray-500 tracking-[0.15em] uppercase">
+                <span>Safety</span>
+                <span className="text-[#FEC001] text-base">·</span>
+                <span>Courtesy</span>
+                <span className="text-[#FEC001] text-base">·</span>
+                <span>Partnership</span>
+              </div>
             </div>
           </motion.div>
 
@@ -334,7 +454,7 @@ export const Projects = () => {
       </div>
 
       {/* ── GOVERNMENT QUOTES ── */}
-      <div ref={quotesRef} className="py-16 sm:py-24 ls:py-8 bg-white dark:bg-[#060606] border-t border-gray-100 dark:border-white/[0.05]">
+      <div ref={quotesRef} className="py-16 sm:py-24 ls:py-8 border-t border-gray-100 dark:border-white/[0.05]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -342,78 +462,29 @@ export const Projects = () => {
             transition={{ duration: 0.6, ease: REVEAL_EASE }}
             className="text-center mb-10 sm:mb-14"
           >
-            <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
-              Recognized By Leaders
-            </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-3 tracking-tight">
-              Voices of <span className="text-[#FEC001]">Leadership</span>
-            </h2>
-            <p className="text-gray-400 dark:text-gray-500 text-sm sm:text-base max-w-md mx-auto">
-              What community and government leaders are saying about SCOOTY.
-            </p>
+            <div className="relative inline-block isolate">
+              <span
+                aria-hidden
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-[#FEC001]/20 to-transparent blur-2xl pointer-events-none -z-10"
+              />
+              <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
+                Recognized By Leaders
+              </p>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-3 tracking-tight">
+                Voices of <span className="text-[#FEC001]">Leadership</span>
+              </h2>
+              <p className="text-gray-400 dark:text-gray-500 text-sm sm:text-base max-w-md mx-auto">
+                What community and government leaders are saying about SCOOTY.
+              </p>
+            </div>
           </motion.div>
 
-          {/* ── Mobile layout (< lg) ── */}
-          <div className="lg:hidden flex flex-col gap-3.5">
-            <QuoteImageCard
-              q={governmentQuotes[1]} i={1}
-              inView={quotesInView} onClick={() => setSelectedQuote(1)}
-              className="h-72 sm:h-80"
-            />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-              <QuoteTextCard
-                q={governmentQuotes[0]} i={0} styleIdx={0}
-                inView={quotesInView} onClick={() => setSelectedQuote(0)}
-                className="min-h-[220px]"
-              />
-              <QuoteTextCard
-                q={governmentQuotes[2]} i={2} styleIdx={1}
-                inView={quotesInView} onClick={() => setSelectedQuote(2)}
-                className="min-h-[220px]"
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-              <QuoteImageCard
-                q={governmentQuotes[4]} i={4}
-                inView={quotesInView} onClick={() => setSelectedQuote(4)}
-                className="h-64 sm:h-72"
-              />
-              <QuoteTextCard
-                q={governmentQuotes[3]} i={3} styleIdx={2}
-                inView={quotesInView} onClick={() => setSelectedQuote(3)}
-                className="min-h-[220px]"
-              />
-            </div>
-          </div>
-
-          {/* ── Desktop collage (lg+) ── */}
-          <div
-            className="hidden lg:grid grid-cols-3 gap-3.5"
-            style={{ gridTemplateRows: 'repeat(2, minmax(300px, auto))' }}
-          >
-            <QuoteTextCard
-              q={governmentQuotes[0]} i={0} styleIdx={0}
-              inView={quotesInView} onClick={() => setSelectedQuote(0)}
-            />
-            <div className="row-span-2">
-              <QuoteImageCard
-                q={governmentQuotes[1]} i={1}
-                inView={quotesInView} onClick={() => setSelectedQuote(1)}
-              />
-            </div>
-            <QuoteTextCard
-              q={governmentQuotes[2]} i={2} styleIdx={1}
-              inView={quotesInView} onClick={() => setSelectedQuote(2)}
-            />
-            <QuoteImageCard
-              q={governmentQuotes[4]} i={4}
-              inView={quotesInView} onClick={() => setSelectedQuote(4)}
-            />
-            <QuoteTextCard
-              q={governmentQuotes[3]} i={3} styleIdx={2}
-              inView={quotesInView} onClick={() => setSelectedQuote(3)}
-            />
-          </div>
+          {/* ── Smooth horizontal scroll ── */}
+          <QuotesScroller
+            quotes={governmentQuotes}
+            inView={quotesInView}
+            onSelect={setSelectedQuote}
+          />
         </div>
       </div>
 
@@ -506,15 +577,21 @@ export const Projects = () => {
           transition={{ duration: 0.6, ease: REVEAL_EASE }}
           className="text-center mb-10 sm:mb-14"
         >
-          <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
-            Building Communities Together
-          </p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4 tracking-tight">
-            Our <span className="text-[#FEC001]">Partners</span>
-          </h2>
-          <p className="text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
-            Working with cities, transit agencies, and communities across Ontario to transform how people move.
-          </p>
+          <div className="relative inline-block isolate">
+            <span
+              aria-hidden
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-[#FEC001]/20 to-transparent blur-2xl pointer-events-none -z-10"
+            />
+            <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
+              Building Communities Together
+            </p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4 tracking-tight">
+              Our <span className="text-[#FEC001]">Partners</span>
+            </h2>
+            <p className="text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+              Working with cities, transit agencies, and communities across Ontario to transform how people move.
+            </p>
+          </div>
         </motion.div>
 
         {/* Partner types carousel */}

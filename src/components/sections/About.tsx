@@ -24,7 +24,7 @@ export const About = () => {
   const [socialsRef, socialsInView] = useSection();
 
   return (
-    <section id="about" className="bg-white/70 dark:bg-black/35 ">
+    <section id="about">
 
       {/* ── BUILT PROUDLY IN ONTARIO ── */}
       <div ref={headerRef} className="py-12 sm:py-16 ls:py-8 relative overflow-hidden">
@@ -39,25 +39,31 @@ export const About = () => {
           transition={{ duration: 0.6, ease: EASING }}
           className="text-center mb-10 sm:mb-12"
         >
-          <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
-            Our Story
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-6">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white tracking-tight">
-              Built Proudly in <span className="text-yellow-500">Ontario</span>
-            </h2>
-            <MapleLeafSVG className="w-9 h-10 sm:w-11 sm:h-12 text-red-500 dark:text-red-400 flex-shrink-0" />
+          <div className="relative inline-block isolate">
+            <span
+              aria-hidden
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-[#FEC001]/20 to-transparent blur-2xl pointer-events-none -z-10"
+            />
+            <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
+              Our Story
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-6">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white tracking-tight">
+                Built Proudly in <span className="text-yellow-500">Ontario</span>
+              </h2>
+              <MapleLeafSVG className="w-9 h-10 sm:w-11 sm:h-12 text-red-500 dark:text-red-400 flex-shrink-0" />
+            </div>
+            <p className="text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
+              SCOOTY is a 100% owned and operated Canadian company built and developed with local talent that has world-class experience, right here in Ontario. We live in the communities we serve — so we have a deep sense of ownership and passion to bring the latest mobility solutions that meet the needs of our communities.
+            </p>
           </div>
-          <p className="text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            SCOOTY is a 100% owned and operated Canadian company built and developed with local talent that has world-class experience, right here in Ontario. We live in the communities we serve — so we have a deep sense of ownership and passion to bring the latest mobility solutions that meet the needs of our communities.
-          </p>
         </motion.div>
 
         </div>
       </div>{/* /Built Proudly wrapper */}
 
       {/* ── SOCIALS ── */}
-      <div ref={socialsRef} className="py-16 sm:py-20 ls:py-8 bg-gray-50 dark:bg-[#040404]">
+      <div ref={socialsRef} className="py-16 sm:py-20 ls:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, x: -28 }}
@@ -65,15 +71,21 @@ export const About = () => {
             transition={{ duration: 0.6, ease: EASING }}
             className="text-center"
           >
-            <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
-              Follow Along
-            </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4 tracking-tight">
-              Stay in Motion with <span className="text-[#FEC001]">SCOOTY</span>
-            </h2>
-            <p className="text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-xl mx-auto mb-10">
-              Real stories, city launches, and the future of transit — live from our community.
-            </p>
+            <div className="relative inline-block isolate mb-10">
+              <span
+                aria-hidden
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-[#FEC001]/20 to-transparent blur-2xl pointer-events-none -z-10"
+              />
+              <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
+                Follow Along
+              </p>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4 tracking-tight">
+                Stay in Motion with <span className="text-[#FEC001]">SCOOTY</span>
+              </h2>
+              <p className="text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+                Real stories, city launches, and the future of transit — live from our community.
+              </p>
+            </div>
             <div className="flex justify-center flex-wrap gap-3 sm:gap-4">
               {[
                 { icon: Linkedin, href: 'https://linkedin.com/company/ridescooty', label: 'LinkedIn' },
