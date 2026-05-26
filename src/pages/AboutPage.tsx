@@ -16,7 +16,12 @@ import {
   ChevronLeft,
   ChevronRight,
   ArrowRight,
+  Calendar,
+  MapPin,
+  Home,
+  Clock,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 /* ─── Tab config ──────────────────────────────────────────────────────────── */
 
@@ -35,9 +40,9 @@ const TABS = [
       'Active in 5+ Ontario cities',
     ],
     highlights: [
-      { value: '2023', label: 'Founded' },
-      { value: '100%', label: 'Canadian' },
-    ],
+      { value: '2023', label: 'Founded', icon: Calendar },
+      { value: '100%', label: 'Canadian', icon: Flag },
+    ] as { value: string; label: string; icon: LucideIcon }[],
     image: '/assets/mainPage/QuotesImages/DSC_1837.jpg',
   },
   {
@@ -54,9 +59,9 @@ const TABS = [
       'Modernize public transit across Canada',
     ],
     highlights: [
-      { value: '3', label: 'Core Products' },
-      { value: '5+', label: 'Cities Served' },
-    ],
+      { value: '3', label: 'Core Products', icon: Zap },
+      { value: '5+', label: 'Cities Served', icon: MapPin },
+    ] as { value: string; label: string; icon: LucideIcon }[],
     image: '/assets/mainPage/QuotesImages/2024MarkhamOVINScootyDemo-048.jpg',
   },
   {
@@ -73,9 +78,9 @@ const TABS = [
       'Partnering with Canadian transit agencies',
     ],
     highlights: [
-      { value: 'Ontario', label: 'Home Base' },
-      { value: 'Canada', label: 'Born & Built' },
-    ],
+      { value: 'Ontario', label: 'Home Base', icon: Home },
+      { value: 'Canada', label: 'Born & Built', icon: Flag },
+    ] as { value: string; label: string; icon: LucideIcon }[],
     image: '/assets/mainPage/QuotesImages/City Hall Group Shot - Brampton Launch Photo (2).JPG',
   },
   {
@@ -93,9 +98,9 @@ const TABS = [
       'YouTube: SCOOTY Mobility',
     ],
     highlights: [
-      { value: '5', label: 'Platforms' },
-      { value: 'Daily', label: 'Updates' },
-    ],
+      { value: '5', label: 'Platforms', icon: Globe },
+      { value: 'Daily', label: 'Updates', icon: Clock },
+    ] as { value: string; label: string; icon: LucideIcon }[],
     image: '/assets/Partners/brampton-partnership.JPG',
   },
 ];
@@ -174,9 +179,13 @@ const socials = [
 ];
 
 const MapleLeaf = ({ className = '' }: { className?: string }) => (
-  <svg viewBox="0 0 100 100" className={className} fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-    <path d="M50 5 L56 30 L80 18 L68 40 L95 42 L75 56 L82 80 L60 68 L58 95 L50 75 L42 95 L40 68 L18 80 L25 56 L5 42 L32 40 L20 18 L44 30 Z" />
-  </svg>
+  <img
+    src="/assets/About/maple-leafs.png"
+    alt="Maple leaf"
+    className={`${className} object-contain`}
+    loading="lazy"
+    decoding="async"
+  />
 );
 
 /* ─── Page ────────────────────────────────────────────────────────────────── */
@@ -320,24 +329,64 @@ export const AboutPage = () => {
                       </p>
 
                       {/* Features */}
-                      <div className="flex flex-col gap-2 mb-7">
+                      <motion.div
+                        className="flex flex-col gap-2 mb-7"
+                        initial="hidden"
+                        animate="show"
+                        variants={{
+                          hidden: {},
+                          show: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } },
+                        }}
+                      >
                         {current.features.map((feature, i) => (
-                          <div key={i} className="flex items-center gap-3 py-1">
-                            <span className="w-5 h-5 rounded-full bg-primary-500 text-black text-[10px] font-bold flex items-center justify-center flex-shrink-0">{i + 1}</span>
+                          <motion.div
+                            key={i}
+                            variants={{
+                              hidden: { opacity: 0, x: -12 },
+                              show: { opacity: 1, x: 0 },
+                            }}
+                            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                            whileHover={{ x: 3 }}
+                            className="flex items-center gap-3 py-1 group cursor-default"
+                          >
+                            <span className="w-5 h-5 rounded-full bg-primary-500 text-black text-[10px] font-bold flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110">{i + 1}</span>
                             <span className="text-sm font-medium text-gray-700 dark:text-gray-200">{feature}</span>
-                          </div>
+                          </motion.div>
                         ))}
-                      </div>
+                      </motion.div>
 
                       {/* Stats row */}
-                      <div className="flex gap-3 mb-7 flex-wrap">
-                        {current.highlights.map((h, i) => (
-                          <div key={i} className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-navy-700/50 border border-yellow-500 dark:border-navy-600/60 backdrop-blur-sm text-center min-w-[100px]">
-                            <div className="text-base font-black font-display text-primary-500 leading-none">{h.value}</div>
-                            <div className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">{h.label}</div>
-                          </div>
-                        ))}
-                      </div>
+                      <motion.div
+                        className="flex gap-3 mb-7 flex-wrap"
+                        initial="hidden"
+                        animate="show"
+                        variants={{
+                          hidden: {},
+                          show: { transition: { staggerChildren: 0.08, delayChildren: 0.35 } },
+                        }}
+                      >
+                        {current.highlights.map((h, i) => {
+                          const HighlightIcon = h.icon;
+                          return (
+                            <motion.div
+                              key={i}
+                              variants={{
+                                hidden: { opacity: 0, y: 12, scale: 0.94 },
+                                show: { opacity: 1, y: 0, scale: 1 },
+                              }}
+                              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                              whileHover={{ y: -3, scale: 1.03 }}
+                              className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-navy-700/50 border border-yellow-500 dark:border-navy-600/60 backdrop-blur-sm text-center min-w-[110px] min-h-[92px] flex flex-col items-center justify-center gap-1 cursor-default hover:shadow-lg hover:shadow-primary-500/20 transition-shadow"
+                            >
+                              {HighlightIcon && <HighlightIcon className="w-5 h-5 text-primary-500" />}
+                              <div className="text-sm font-black font-display text-primary-500 leading-tight whitespace-nowrap">{h.value}</div>
+                              {h.label && (
+                                <div className="text-[11px] text-gray-500 dark:text-gray-400 leading-tight">{h.label}</div>
+                              )}
+                            </motion.div>
+                          );
+                        })}
+                      </motion.div>
 
                       {/* CTA */}
                       <div>
@@ -458,7 +507,7 @@ export const AboutPage = () => {
           >
             <div className="relative">
               <div className="absolute inset-0 bg-red-600/20 rounded-full blur-2xl scale-150" />
-              <MapleLeaf className="relative w-20 h-20 text-red-500" />
+              <MapleLeaf className="relative w-100 h-20 text-red-500" />
             </div>
           </motion.div>
 
@@ -494,30 +543,17 @@ export const AboutPage = () => {
             initial={{ opacity: 0, scaleX: 0 }}
             animate={canadaInView ? { opacity: 1, scaleX: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.7 }}
-            className="flex items-center justify-center mx-auto w-48 h-8 rounded-lg overflow-hidden mb-12 shadow-lg"
+            className="flex items-center justify-center mx-auto w-150 h-80 rounded-lg overflow-hidden mb-12 shadow-lg"
           >
-            <div className="w-1/4 h-full bg-red-600" />
-            <div className="w-1/2 h-full bg-white flex items-center justify-center">
-              <MapleLeaf className="w-5 h-5 text-red-600" />
-            </div>
-            <div className="w-1/4 h-full bg-red-600" />
+            <img
+              src="/assets/About/canada-mask.png"
+              alt="Canadian flag"
+              className="w-full h-full object-contain"
+              loading="lazy"
+              decoding="async"
+            />
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={canadaInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.85 }}
-            className="flex flex-wrap justify-center gap-3"
-          >
-            {['Founded in Ontario', 'Brampton HQ', 'Serving 5+ Cities', 'Expanding Nationwide'].map((tag) => (
-              <span
-                key={tag}
-                className="px-4 py-2 bg-white/5 border border-white/10 text-gray-400 rounded-full text-sm font-medium"
-              >
-                {tag}
-              </span>
-            ))}
-          </motion.div>
         </div>
       </section>
 

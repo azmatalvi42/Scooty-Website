@@ -31,17 +31,6 @@ export const Footer = () => (
       {/* Top row: logo + nav + socials */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-8">
 
-        {/* Logo */}
-        <Link to="/" className="flex-shrink-0">
-          <img
-            src="/assets/scooty-logo-tm.png"
-            alt="SCOOTY"
-            className="h-7 w-auto brightness-0 invert opacity-80"
-            loading="lazy"
-            decoding="async"
-          />
-        </Link>
-
         {/* Nav links */}
         <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
           {navLinks.map((item) => (

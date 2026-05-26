@@ -1,6 +1,13 @@
 import { useParams, Link, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useSpring,
+} from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import {
   MapPin,
@@ -15,6 +22,10 @@ import {
   Navigation,
   Train,
   Leaf,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Camera,
 } from 'lucide-react';
 
 /* ─────────────────────────────────────── CITY DATA ─── */
@@ -41,16 +52,37 @@ const cityData: Record<string, {
   community: string;
   nextCity?: string;
   prevCity?: string;
+  gallery?: { src: string; title: string; caption: string }[];
+  heroPosition?: 'top' | 'center' | 'bottom';
+  heroObjectPosition?: string; // overrides heroPosition when set (e.g. 'center calc(50% - 10px)')
 }> = {
   brampton: {
     name: 'Brampton',
     slug: 'brampton',
     launched: 'April 2023',
-    tagline: 'City-wide micromobility serving one of Canada\'s fastest-growing cities.',
+    tagline: 'Where it all started — city-wide micromobility in one of Canada\'s fastest-growing cities.',
     overview:
-      'SCOOTY launched in Brampton in April 2023, making it our first Ontario deployment and the foundation of our Canadian operations. Brampton\'s sprawling geography and rapidly growing population presented both a challenge and an opportunity — to demonstrate that micromobility can serve large, diverse cities, not just downtown cores. Today, SCOOTY operates across the entire City of Brampton, connecting communities, supporting commuters, and bridging gaps in the transit network.',
-    heroImage:
-      'https://images.pexels.com/photos/1486222/pexels-photo-1486222.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'Our first Ontario deployment, and the foundation of SCOOTY\'s Canadian story. Brampton proved that micromobility can serve entire cities — not just downtown cores.',
+    heroImage: '/assets/Cities/Brampton/brampton-hero.png',
+    heroPosition: 'center',
+    heroObjectPosition: 'center calc(50% - 170px)',
+    gallery: [
+      {
+        src: '/assets/Cities/Brampton/brampton-cityhall.JPG',
+        title: 'Brampton City Hall',
+        caption: 'Where the partnership began — civic launch with the City of Brampton.',
+      },
+      {
+        src: '/assets/Cities/Brampton/brampton-bbq.png',
+        title: 'In the Community',
+        caption: 'Showing up at neighbourhood events and street fairs.',
+      },
+      {
+        src: '/assets/Cities/Brampton/brampton-mascot.png',
+        title: 'Built for Brampton',
+        caption: 'The SCOOTY mascot — a local face for a local program.',
+      },
+    ],
     vehicles: ['E-Scooters'],
     stats: [
       { label: 'Launch Year', value: '2023' },
@@ -88,7 +120,7 @@ const cityData: Record<string, {
       ],
     },
     community:
-      'Brampton is one of Canada\'s most diverse and fastest-growing cities. SCOOTY\'s program was designed with Brampton\'s community in mind — providing affordable, accessible transportation options that reflect the city\'s values of inclusivity and sustainability. We work closely with the City of Brampton to align our operations with local transportation plans and Vision Zero road safety goals.',
+      'Designed with Brampton\'s community in mind — affordable, accessible, and aligned with Vision Zero road safety goals.',
     nextCity: 'barrie',
   },
 
@@ -98,9 +130,16 @@ const cityData: Record<string, {
     launched: 'June 2024',
     tagline: 'Waterfront e-bike adventures along Barrie\'s stunning Georgian Bay shoreline.',
     overview:
-      'SCOOTY launched in Barrie in June 2024, bringing e-bikes to one of Ontario\'s most scenic waterfront destinations. Barrie\'s Centennial Park and lakeside trail network provided the ideal environment for a tourism- and recreation-focused micromobility program. Visitors and residents alike can now explore Barrie\'s beautiful waterfront in a sustainable, car-free way — taking in the sights of Kempenfelt Bay, Centennial Beach, and the surrounding parks.',
-    heroImage:
-      'https://images.pexels.com/photos/1770809/pexels-photo-1770809.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'E-bikes for Barrie\'s lakeside trails and Centennial Park — a clean, fun way to explore Kempenfelt Bay and the waterfront.',
+    heroImage: '/assets/Cities/Barrie/barrie-hero.png',
+    heroPosition: 'center',
+    gallery: [
+      {
+        src: '/assets/Cities/Barrie/barrie-mayor.png',
+        title: 'Partnership in Action',
+        caption: 'Out on the trails with City of Barrie leadership — a program built shoulder-to-shoulder with the community.',
+      },
+    ],
     vehicles: ['E-Bikes'],
     stats: [
       { label: 'Launch Year', value: '2024' },
@@ -138,7 +177,7 @@ const cityData: Record<string, {
       ],
     },
     community:
-      'Barrie is a growing city with a strong identity rooted in its natural surroundings and Georgian Bay waterfront. SCOOTY\'s partnership with the City of Barrie supports the city\'s vision for a connected, sustainable waterfront district. Our e-bike program provides a clean, fun, and accessible way for visitors and residents to experience what makes Barrie unique.',
+      'A partnership built around Barrie\'s waterfront identity — clean, accessible mobility for visitors and residents.',
     prevCity: 'brampton',
     nextCity: 'markham',
   },
@@ -149,9 +188,27 @@ const cityData: Record<string, {
     launched: 'August 2024',
     tagline: 'Connecting Downtown Markham\'s innovation district with sustainable urban mobility.',
     overview:
-      'SCOOTY launched in Markham in August 2024, bringing both e-scooters and e-bikes to Downtown Markham — one of Ontario\'s most dynamic urban centres. Markham is home to a thriving technology sector, a vibrant dining and retail scene, and a growing residential community. Our mixed fleet of e-scooters and e-bikes gives residents, workers, and visitors flexible options for navigating the downtown core and connecting with the regional transit network.',
-    heroImage:
-      'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'Our only Ontario program with both e-scooters and e-bikes — serving Markham\'s tech corridor, downtown, and YRT/Viva transit network.',
+    heroImage: '/assets/Cities/Markham/markham-hero.png',
+    heroPosition: 'center',
+    heroObjectPosition: 'center calc(50% - 90px)',
+    gallery: [
+      {
+        src: '/assets/Cities/Markham/markham-mayor.jpg',
+        title: 'Riding with the Mayor',
+        caption: 'Markham\'s leadership riding alongside SCOOTY at the city launch.',
+      },
+      {
+        src: '/assets/Cities/Markham/markham-mayorspeech.png',
+        title: 'Launch Day',
+        caption: 'Officially live at markham.ca — a partnership built around Markham\'s Smart City vision.',
+      },
+      {
+        src: '/assets/Cities/Markham/markham-helmet.jpg',
+        title: 'Built for Safety',
+        caption: 'SCOOTY helmets and dual-vehicle fleet — e-scooters and e-bikes side-by-side.',
+      },
+    ],
     vehicles: ['E-Scooters', 'E-Bikes'],
     stats: [
       { label: 'Launch Year', value: '2024' },
@@ -189,7 +246,7 @@ const cityData: Record<string, {
       ],
     },
     community:
-      'Markham is known as the "High-Tech Capital of Canada," and its urban growth reflects a community that values innovation, diversity, and sustainability. SCOOTY\'s partnership with the City of Markham aligns with the city\'s Smart City strategy and its commitment to building a connected, green urban environment. We collaborate with local businesses, developers, and transit partners to deliver a mobility experience that matches Markham\'s ambitions.',
+      'A partnership built around Markham\'s Smart City strategy — clean, connected mobility for the "High-Tech Capital of Canada."',
     prevCity: 'barrie',
     nextCity: 'burlington',
   },
@@ -200,9 +257,22 @@ const cityData: Record<string, {
     launched: 'June 2025',
     tagline: 'Seven kilometres of trail access connecting Burlington\'s communities sustainably.',
     overview:
-      'SCOOTY launched in Burlington in June 2025, bringing e-scooters to the City of Burlington\'s Centennial Trail corridor. The Centennial Trail is one of Burlington\'s most-used active transportation routes, running through the heart of the city and connecting residential areas with parks, schools, and transit hubs. Our program makes this trail more accessible than ever — giving more Burlingtonians a convenient, emission-free way to get around.',
-    heroImage:
-      'https://images.pexels.com/photos/1624496/pexels-photo-1624496.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'E-scooters along Burlington\'s 7 km Centennial Trail — a clean, emission-free way to move through the city.',
+    heroImage: '/assets/Cities/Burlington/burlington-hero.png',
+    heroPosition: 'center',
+    heroObjectPosition: 'center calc(50% - 60px)',
+    gallery: [
+      {
+        src: '/assets/Cities/Burlington/burlington-rider.png',
+        title: 'On the Trail',
+        caption: 'Cruising through downtown Burlington on the Centennial Trail corridor.',
+      },
+      {
+        src: '/assets/Cities/Burlington/burlington-scooters.png',
+        title: 'Designated Parking',
+        caption: '17 designated parking zones keep the fleet organized across the corridor.',
+      },
+    ],
     vehicles: ['E-Scooters'],
     stats: [
       { label: 'Launch Year', value: '2025' },
@@ -240,7 +310,7 @@ const cityData: Record<string, {
       ],
     },
     community:
-      'Burlington is a city that takes pride in its natural beauty, active lifestyle, and commitment to sustainable growth. SCOOTY\'s partnership with the City of Burlington reflects a shared vision for reducing car dependence and making active transportation more accessible. The Centennial Trail program is a natural extension of Burlington\'s investment in cycling and pedestrian infrastructure, and SCOOTY is proud to be part of that story.',
+      'A natural extension of Burlington\'s investment in active transportation — built around the city\'s love of trails, cycling, and sustainable growth.',
     prevCity: 'markham',
     nextCity: 'metrolinx',
   },
@@ -298,6 +368,45 @@ const cityData: Record<string, {
 
 const cityOrder = ['brampton', 'barrie', 'markham', 'burlington', 'metrolinx'];
 
+/* ─────────────────────────────────────── TILT CARD ─── */
+
+const TiltCard = ({
+  children,
+  className = '',
+  onClick,
+  max = 8,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
+  max?: number;
+}) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useSpring(useTransform(y, [-200, 200], [max, -max]), { stiffness: 180, damping: 18 });
+  const rotateY = useSpring(useTransform(x, [-200, 200], [-max, max]), { stiffness: 180, damping: 18 });
+
+  return (
+    <motion.div
+      onMouseMove={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        x.set(e.clientX - rect.left - rect.width / 2);
+        y.set(e.clientY - rect.top - rect.height / 2);
+      }}
+      onMouseLeave={() => {
+        x.set(0);
+        y.set(0);
+      }}
+      onClick={onClick}
+      style={{ rotateX, rotateY, transformPerspective: 1200 }}
+      whileTap={{ scale: 0.98 }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 /* ─────────────────────────────────────── COMPONENT ─── */
 
 export const CityPage = () => {
@@ -314,6 +423,20 @@ export const CityPage = () => {
   const [areaRef, areaInView] = useInView({ triggerOnce: true, threshold: 0.05 });
   const [transitRef, transitInView] = useInView({ triggerOnce: true, threshold: 0.05 });
   const [communityRef, communityInView] = useInView({ triggerOnce: true, threshold: 0.05 });
+  const [galleryRef, galleryInView] = useInView({ triggerOnce: true, threshold: 0.08 });
+
+  // Lightbox state
+  const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+
+  // Hero scroll parallax
+  const heroSectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress: heroScroll } = useScroll({
+    target: heroSectionRef,
+    offset: ['start start', 'end start'],
+  });
+  const heroImgY = useTransform(heroScroll, [0, 1], ['0%', '22%']);
+  const heroImgScale = useTransform(heroScroll, [0, 1], [1, 1.12]);
+  const heroTextY = useTransform(heroScroll, [0, 1], ['0%', '-40%']);
 
   if (!data) {
     return (
@@ -338,16 +461,30 @@ export const CityPage = () => {
     <div className="min-h-screen bg-white dark:bg-black">
 
       {/* ── HERO ── */}
-      <section className="relative h-[70vh] min-h-[500px] flex items-end overflow-hidden">
-        <img
+      <section ref={heroSectionRef} className="relative h-[80vh] min-h-[560px] flex items-end overflow-hidden">
+        <motion.img
           src={data.heroImage}
           alt={data.name}
-          className="absolute inset-0 w-full h-full object-cover"
+          style={{
+            y: heroImgY,
+            scale: heroImgScale,
+            ...(data.heroObjectPosition ? { objectPosition: data.heroObjectPosition } : {}),
+          }}
+          className={`absolute inset-0 w-full h-[120%] object-cover ${
+            data.heroObjectPosition
+              ? ''
+              : data.heroPosition === 'center'
+                ? 'object-center'
+                : data.heroPosition === 'bottom'
+                  ? 'object-bottom'
+                  : 'object-top'
+          }`}
           fetchPriority="high"
           loading="eager"
           decoding="async"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
 
         {/* Back link */}
         <Link
@@ -358,7 +495,7 @@ export const CityPage = () => {
           All Locations
         </Link>
 
-        <div ref={heroRef} className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-8 pb-12">
+        <motion.div ref={heroRef} style={{ y: heroTextY }} className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-8 pb-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={heroInView ? { opacity: 1, y: 0 } : {}}
@@ -391,7 +528,7 @@ export const CityPage = () => {
             </h1>
             <p className="text-lg md:text-xl text-white/70 max-w-2xl">{data.tagline}</p>
           </motion.div>
-        </div>
+        </motion.div>
       </section>
 
       {/* ── STATS STRIP ── */}
@@ -460,6 +597,98 @@ export const CityPage = () => {
           </div>
         </div>
       </section>
+
+      {/* ── IMAGE BENTO GALLERY (only if city has gallery) ── */}
+      {data.gallery && data.gallery.length > 0 && (
+        <section ref={galleryRef} className="py-16 sm:py-20 bg-black relative overflow-hidden">
+          <div
+            className="absolute inset-0 opacity-[0.04] pointer-events-none"
+            style={{
+              backgroundImage: 'radial-gradient(circle, rgba(234,179,8,0.8) 1px, transparent 1px)',
+              backgroundSize: '28px 28px',
+            }}
+          />
+          <div className="absolute top-0 left-1/3 w-80 h-80 bg-primary-500/10 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={galleryInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7 }}
+              className="flex items-center justify-between flex-wrap gap-4 mb-8 sm:mb-10"
+            >
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-500/10 border border-primary-500/30 rounded-full mb-3">
+                  <Camera className="w-3.5 h-3.5 text-primary-400" />
+                  <span className="text-xs font-semibold text-primary-400 tracking-wide uppercase">In Pictures</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-bold font-display text-white tracking-tight">
+                  {data.name} in <span className="text-primary-500">Action</span>
+                </h2>
+              </div>
+              <p className="text-sm text-gray-400 max-w-xs">
+                Tap any photo to view full size.
+              </p>
+            </motion.div>
+
+            {/* Bento grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              {data.gallery.map((g, i) => {
+                const onlyOne = data.gallery!.length === 1;
+                // Layout:
+                //  - 1 image  → full-width spotlight
+                //  - 2+ images → first spans two rows on desktop; others stack
+                const span = onlyOne
+                  ? 'sm:col-span-2 aspect-[16/9]'
+                  : i === 0
+                    ? 'sm:row-span-2 aspect-[4/5] sm:aspect-auto sm:h-full'
+                    : 'aspect-[16/10]';
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={galleryInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.55, delay: 0.08 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                    className={span}
+                  >
+                    <TiltCard
+                      onClick={() => setLightboxIdx(i)}
+                      max={6}
+                      className="group relative w-full h-full rounded-3xl overflow-hidden border border-white/10 cursor-pointer shadow-xl shadow-black/40 hover:shadow-primary-500/20 transition-shadow duration-500"
+                    >
+                      <img
+                        src={g.src}
+                        alt={g.title}
+                        className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      {/* Hover/tap overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                      <div className="absolute inset-0 ring-1 ring-transparent group-hover:ring-primary-500/40 transition-all duration-300 rounded-3xl pointer-events-none" />
+
+                      {/* Caption */}
+                      <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
+                        <h3 className="text-white font-bold text-base sm:text-lg leading-tight tracking-tight">
+                          {g.title}
+                        </h3>
+                        <p className="text-gray-300 text-xs sm:text-sm mt-1.5 leading-relaxed line-clamp-2 sm:line-clamp-none">
+                          {g.caption}
+                        </p>
+                      </div>
+
+                      {/* Zoom indicator */}
+                      <div className="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/55 backdrop-blur-md border border-white/15 flex items-center justify-center text-white/80 group-hover:bg-primary-500 group-hover:text-black transition-all duration-300">
+                        <Camera className="w-4 h-4" />
+                      </div>
+                    </TiltCard>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── SERVICE AREA ── */}
       <section ref={areaRef} className="py-20 bg-gray-50 dark:bg-navy-900">
@@ -674,6 +903,79 @@ export const CityPage = () => {
           </div>
         </section>
       )}
+
+      {/* ── LIGHTBOX ── */}
+      <AnimatePresence>
+        {lightboxIdx !== null && data.gallery && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setLightboxIdx(null)}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md p-4 sm:p-8"
+          >
+            <button
+              onClick={() => setLightboxIdx(null)}
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white transition-colors z-10"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Prev */}
+            {data.gallery.length > 1 && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLightboxIdx((lightboxIdx! - 1 + data.gallery!.length) % data.gallery!.length);
+                }}
+                className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white transition-colors z-10"
+                aria-label="Previous"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+            )}
+
+            {/* Next */}
+            {data.gallery.length > 1 && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLightboxIdx((lightboxIdx! + 1) % data.gallery!.length);
+                }}
+                className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white transition-colors z-10"
+                aria-label="Next"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            )}
+
+            <motion.div
+              key={lightboxIdx}
+              initial={{ opacity: 0, scale: 0.94 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-5xl w-full max-h-[88vh] flex flex-col items-center gap-4"
+            >
+              <img
+                src={data.gallery[lightboxIdx].src}
+                alt={data.gallery[lightboxIdx].title}
+                className="max-w-full max-h-[72vh] w-auto h-auto object-contain rounded-2xl shadow-2xl"
+              />
+              <div className="text-center max-w-2xl px-4">
+                <h3 className="text-white font-bold text-lg sm:text-xl">{data.gallery[lightboxIdx].title}</h3>
+                <p className="text-gray-300 text-sm mt-1.5">{data.gallery[lightboxIdx].caption}</p>
+                <p className="text-gray-500 text-xs mt-3 tabular-nums">
+                  {lightboxIdx + 1} / {data.gallery.length}
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

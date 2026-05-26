@@ -1,8 +1,14 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { ArrowRight, ChevronLeft, ChevronRight, Shield, Heart, Handshake, Quote, X } from 'lucide-react';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { ArrowRight, ChevronLeft, ChevronRight, Shield, Heart, Handshake, Quote, X, Plus } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+
+const MapleLeafSVG = ({ className = '' }: { className?: string }) => (
+  <svg viewBox="-2015 -2000 4030 4030" className={className} fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path d="m-90 2030 45-863a95 95 0 0 0-111-98l-859 151 116-320a65 65 0 0 0-20-73l-941-762 212-99a65 65 0 0 0 34-79l-186-572 542 115a65 65 0 0 0 73-38l105-247 423 454a65 65 0 0 0 111-57l-204-1052 327 189a65 65 0 0 0 91-27l332-652 332 652a65 65 0 0 0 91 27l327-189-204 1052a65 65 0 0 0 111 57l423-454 105 247a65 65 0 0 0 73 38l542-115-186 572a65 65 0 0 0 34 79l212 99-941 762a65 65 0 0 0-20 73l116 320-859-151a95 95 0 0 0-111 98l45 863z" />
+  </svg>
+);
 
 const caseStudies = [
   {
@@ -37,18 +43,21 @@ const coreValues = [
     title: 'Safety',
     description:
       "Safety is a fundamental right for everyone. Inspired by Vision Zero principles, SCOOTY's commitment to safety is the foundation of our company — expressed in our branding, our technology, and our daily operations.",
+    practices: ['High-visibility livery', 'Geofencing speed control', 'Double hand brakes', 'Running lights & signals'],
   },
   {
     icon: Heart,
     title: 'Courtesy',
     description:
       'Courtesy is critical in making shared mobility work for everyone. We implement it into our planning process, operational best practices and communication to ensure a respectful experience for all.',
+    practices: ['Rider onboarding education', 'Community engagement', 'Pedestrian priority', 'Respectful operations'],
   },
   {
     icon: Handshake,
     title: 'Partnership',
     description:
       "SCOOTY plans, designs and delivers mobility solutions through our community partnerships network. Our plans are guided by collective domain expertise and carefully aligned with municipal vision, goals and policies.",
+    practices: ['Municipal alignment', 'Transit integration', 'Local insights', 'Tailored deployments'],
   },
 ];
 
@@ -115,34 +124,6 @@ const governmentQuotes = [
   },
 ];
 
-const partnerTypes = [
-  {
-    title: 'Cities',
-    description:
-      'No two cities are the same. Partner with SCOOTY to bring the latest transit technology and mobility services to meet the needs of your community.',
-    image: '/assets/mainPage/partners-carousel/toronto-skyline.png',
-  },
-  {
-    title: 'Transit',
-    description:
-      'Reimagine how daily commuting looks for your riders. Partner with SCOOTY to integrate digital payments, real-time updates, schedule delays and AI-powered customer support within your existing operations.',
-    image: '/assets/mainPage/main-pg-transit.jpeg',
-  },
-  {
-    title: 'Real Estate',
-    description:
-      'Looking to meet your Transportation Demand Management (TDM) plans for your current or upcoming development? Partner with SCOOTY to bring shared, zero-emission mobility solutions to your residential, commercial or retail properties.',
-    image: 'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1200',
-  },
-  {
-    title: 'Non-Profit',
-    description:
-      'Enhance mobility access and engagement for your local community. Partner with SCOOTY to bring shared, zero-emission transportation and innovative mobility programs to campuses, events, tourism destinations, and local organizations.',
-    image: '',
-  },
-];
-
-const AUTO_INTERVAL = 10000;
 const CAROUSEL_EASE: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
 const REVEAL_EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -251,29 +232,15 @@ const QuotesScroller = ({
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-
-    const onWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
-      e.preventDefault();
-      el.scrollLeft += e.deltaY;
-    };
-
-    el.addEventListener('wheel', onWheel, { passive: false });
-    return () => el.removeEventListener('wheel', onWheel);
-  }, []);
-
   return (
     <div className="relative">
       <div
         ref={scrollRef}
-        className="overflow-x-auto scrollbar-hide pb-4 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 scroll-smooth"
-        style={{ WebkitOverflowScrolling: 'touch' }}
+        className="overflow-x-auto scrollbar-hide pb-4 scroll-smooth overscroll-x-contain overscroll-y-auto"
+        style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y pan-x' }}
       >
         <div
-          className="grid gap-3.5"
+          className="grid gap-3.5 px-4 sm:px-6 lg:px-8"
           style={{
             gridTemplateRows: 'repeat(2, minmax(260px, auto))',
             gridAutoFlow: 'column dense',
@@ -360,41 +327,7 @@ export const Projects = () => {
   const [valuesRef, valuesInView] = useInView({ triggerOnce: true, threshold: 0.08 });
   const [quotesRef, quotesInView] = useInView({ triggerOnce: true, threshold: 0.06 });
   const [selectedQuote, setSelectedQuote] = useState<number | null>(null);
-  const [active, setActive] = useState(0);
-  const [direction, setDirection] = useState(1);
-
-  const goTo = useCallback(
-    (index: number) => {
-      setDirection(index > active ? 1 : -1);
-      setActive(index);
-    },
-    [active]
-  );
-
-  const next = useCallback(() => {
-    const nextIndex = (active + 1) % partnerTypes.length;
-    setDirection(1);
-    setActive(nextIndex);
-  }, [active]);
-
-  const prev = useCallback(() => {
-    const prevIndex = (active - 1 + partnerTypes.length) % partnerTypes.length;
-    setDirection(-1);
-    setActive(prevIndex);
-  }, [active]);
-
-  useEffect(() => {
-    const timer = setInterval(next, AUTO_INTERVAL);
-    return () => clearInterval(timer);
-  }, [next]);
-
-  const variants = {
-    enter: (dir: number) => ({ x: dir > 0 ? '55%' : '-55%', opacity: 0 }),
-    center: { x: 0, opacity: 1 },
-    exit: (dir: number) => ({ x: dir > 0 ? '-55%' : '55%', opacity: 0 }),
-  };
-
-  const current = partnerTypes[active];
+  const [expandedValue, setExpandedValue] = useState<number | null>(null);
 
   return (
     <section id="impact" ref={ref} className="relative overflow-hidden">
@@ -419,7 +352,7 @@ export const Projects = () => {
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4 tracking-tight">
                 SCOOTY <span className="text-[#FEC001]">Core Values</span>
               </h2>
-              <div className="flex justify-center items-center gap-5 text-sm font-semibold text-gray-400 dark:text-gray-500 tracking-[0.15em] uppercase">
+              <div className="flex flex-wrap justify-center items-center gap-x-3 sm:gap-x-5 gap-y-1 px-2 text-[11px] sm:text-sm font-semibold text-gray-400 dark:text-gray-500 tracking-[0.12em] sm:tracking-[0.15em] uppercase">
                 <span>Safety</span>
                 <span className="text-[#FEC001] text-base">·</span>
                 <span>Courtesy</span>
@@ -430,25 +363,108 @@ export const Projects = () => {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
-            {coreValues.map((v, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 24 }}
-                animate={valuesInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.55, delay: 0.1 + i * 0.12, ease: REVEAL_EASE }}
-                className="group bg-white dark:bg-[#0A0A0A] rounded-2xl p-7 sm:p-8 border border-gray-100 dark:border-white/[0.055] hover:border-[#FEC001]/25 hover:shadow-xl dark:hover:shadow-[0_8px_40px_rgba(254,192,1,0.06)] transition-all duration-300"
-              >
-                <div className="w-11 h-11 sm:w-12 sm:h-12 bg-[#FEC001]/[0.08] border border-[#FEC001]/15 rounded-xl flex items-center justify-center mb-5 group-hover:bg-[#FEC001] group-hover:border-[#FEC001] transition-all duration-250">
-                  <v.icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#FEC001] group-hover:text-black transition-colors duration-250" />
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold font-display text-gray-900 dark:text-white mb-3 tracking-tight">
-                  {v.title}
-                </h3>
-                <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-[15px] leading-relaxed">
-                  {v.description}
-                </p>
-              </motion.div>
-            ))}
+            {coreValues.map((v, i) => {
+              const isCourtesy = v.title === 'Courtesy';
+              const isOutlined = v.title === 'Safety' || v.title === 'Partnership';
+              const cardClasses = isCourtesy
+                ? 'group bg-[#FEC001] rounded-2xl p-7 sm:p-8 border border-[#FEC001] hover:shadow-xl dark:hover:shadow-[0_8px_40px_rgba(254,192,1,0.2)] transition-all duration-300'
+                : isOutlined
+                  ? 'group bg-white dark:bg-[#0A0A0A] rounded-2xl p-7 sm:p-8 border-2 border-[#FEC001] hover:border-[#FEC001] hover:shadow-xl dark:hover:shadow-[0_8px_40px_rgba(254,192,1,0.1)] transition-all duration-300'
+                  : 'group bg-white dark:bg-[#0A0A0A] rounded-2xl p-7 sm:p-8 border border-gray-100 dark:border-white/[0.055] hover:border-[#FEC001]/25 hover:shadow-xl dark:hover:shadow-[0_8px_40px_rgba(254,192,1,0.06)] transition-all duration-300';
+              const iconWrapClasses = isCourtesy
+                ? 'w-11 h-11 sm:w-12 sm:h-12 bg-black/10 border border-black/15 rounded-xl flex items-center justify-center mb-5 transition-all duration-250'
+                : 'w-11 h-11 sm:w-12 sm:h-12 bg-[#FEC001]/[0.08] border border-[#FEC001]/15 rounded-xl flex items-center justify-center mb-5 group-hover:bg-[#FEC001] group-hover:border-[#FEC001] transition-all duration-250';
+              const iconClasses = isCourtesy
+                ? 'w-5 h-5 sm:w-6 sm:h-6 text-black transition-colors duration-250'
+                : 'w-5 h-5 sm:w-6 sm:h-6 text-[#FEC001] group-hover:text-black transition-colors duration-250';
+              const titleClasses = isCourtesy
+                ? 'text-lg sm:text-xl font-bold font-display text-black mb-3 tracking-tight'
+                : 'text-lg sm:text-xl font-bold font-display text-gray-900 dark:text-white mb-3 tracking-tight';
+              const descClasses = isCourtesy
+                ? 'text-black/80 text-sm sm:text-[15px] leading-relaxed'
+                : 'text-gray-500 dark:text-gray-400 text-sm sm:text-[15px] leading-relaxed';
+              const isExpanded = expandedValue === i;
+              const toggleClasses = isCourtesy
+                ? 'inline-flex items-center gap-1.5 mt-5 text-xs font-bold text-black/70 hover:text-black tracking-wider uppercase transition-colors'
+                : 'inline-flex items-center gap-1.5 mt-5 text-xs font-bold text-[#FEC001] hover:text-[#FFD00F] tracking-wider uppercase transition-colors';
+              const chipClasses = isCourtesy
+                ? 'inline-flex items-center px-3 py-1.5 rounded-full bg-black/10 border border-black/15 text-[11px] font-semibold text-black/80'
+                : 'inline-flex items-center px-3 py-1.5 rounded-full bg-[#FEC001]/10 border border-[#FEC001]/25 text-[11px] font-semibold text-gray-700 dark:text-gray-200';
+              return (
+                <motion.div
+                  key={i}
+                  layout
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={valuesInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.55, delay: 0.1 + i * 0.12, ease: REVEAL_EASE }}
+                  className={cardClasses}
+                >
+                  <motion.div layout="position">
+                    <div className={iconWrapClasses}>
+                      <v.icon className={iconClasses} />
+                    </div>
+                    <h3 className={titleClasses}>
+                      {v.title}
+                    </h3>
+                    <p className={descClasses}>
+                      {v.description}
+                    </p>
+                  </motion.div>
+
+                  <button
+                    onClick={() => setExpandedValue(isExpanded ? null : i)}
+                    className={toggleClasses}
+                    aria-expanded={isExpanded}
+                  >
+                    <motion.span
+                      animate={{ rotate: isExpanded ? 45 : 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="inline-flex"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                    </motion.span>
+                    {isExpanded ? 'Hide details' : 'See in action'}
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isExpanded && (
+                      <motion.div
+                        key="practices"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3, ease: REVEAL_EASE }}
+                        className="overflow-hidden"
+                      >
+                        <motion.div
+                          className="flex flex-wrap gap-2 pt-4 mt-1"
+                          initial="hidden"
+                          animate="show"
+                          variants={{
+                            hidden: {},
+                            show: { transition: { staggerChildren: 0.05 } },
+                          }}
+                        >
+                          {v.practices.map((p, pi) => (
+                            <motion.span
+                              key={pi}
+                              variants={{
+                                hidden: { opacity: 0, y: 6 },
+                                show: { opacity: 1, y: 0 },
+                              }}
+                              transition={{ duration: 0.25, ease: REVEAL_EASE }}
+                              className={chipClasses}
+                            >
+                              {p}
+                            </motion.span>
+                          ))}
+                        </motion.div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -467,24 +483,52 @@ export const Projects = () => {
                 aria-hidden
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-[#FEC001]/20 to-transparent blur-2xl pointer-events-none -z-10"
               />
-              <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
-                Recognized By Leaders
-              </p>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-3 tracking-tight">
-                Voices of <span className="text-[#FEC001]">Leadership</span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white tracking-tight">
+                What people are saying about <span className="text-[#FEC001]">SCOOTY</span>
               </h2>
-              <p className="text-gray-400 dark:text-gray-500 text-sm sm:text-base max-w-md mx-auto">
-                What community and government leaders are saying about SCOOTY.
+            </div>
+          </motion.div>
+        </div>
+
+        {/* ── Edge-to-edge horizontal scroll (sideways only) ── */}
+        <QuotesScroller
+          quotes={governmentQuotes}
+          inView={quotesInView}
+          onSelect={setSelectedQuote}
+        />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* ── BUILT PROUDLY IN ONTARIO ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={quotesInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.2, ease: REVEAL_EASE }}
+            className="relative isolate text-center mt-14 sm:mt-20 pt-10 sm:pt-12 border-t border-gray-100 dark:border-white/[0.05]"
+          >
+            {/* Soft round glow — same colour as the city animation so it blends seamlessly */}
+            <div
+              aria-hidden
+              className="absolute inset-0 -z-10 pointer-events-none"
+              style={{
+                background:
+                  'radial-gradient(circle at 50% 50%, rgba(254,192,1,0.09), rgba(254,192,1,0.04) 32%, rgba(254,192,1,0) 60%), radial-gradient(circle at 50% 50%, rgba(7,7,16,0.82), rgba(7,7,16,0.6) 20%, rgba(7,7,16,0.34) 40%, rgba(7,7,16,0.15) 60%, rgba(7,7,16,0.05) 76%, rgba(7,7,16,0) 90%)',
+              }}
+            />
+            <div className="relative inline-block">
+              <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
+                Our Story
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-6">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white tracking-tight">
+                  Built Proudly in <span className="text-yellow-500">Ontario</span>
+                </h2>
+                <MapleLeafSVG className="w-9 h-10 sm:w-11 sm:h-12 text-red-500 dark:text-red-400 flex-shrink-0" />
+              </div>
+              <p className="text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
+                SCOOTY is a 100% owned and operated Canadian company built and developed with local talent that has world-class experience, right here in Ontario. We live in the communities we serve — so we have a deep sense of ownership and passion to bring the latest mobility solutions that meet the needs of our communities.
               </p>
             </div>
           </motion.div>
-
-          {/* ── Smooth horizontal scroll ── */}
-          <QuotesScroller
-            quotes={governmentQuotes}
-            inView={quotesInView}
-            onSelect={setSelectedQuote}
-          />
         </div>
       </div>
 
@@ -567,160 +611,8 @@ export const Projects = () => {
         )}
       </AnimatePresence>
 
-      {/* ── PARTNERS + CASE STUDIES ── */}
+      {/* ── CASE STUDIES ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 ls:py-8">
-
-        {/* Our Partners heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: REVEAL_EASE }}
-          className="text-center mb-10 sm:mb-14"
-        >
-          <div className="relative inline-block isolate">
-            <span
-              aria-hidden
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-[#FEC001]/20 to-transparent blur-2xl pointer-events-none -z-10"
-            />
-            <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
-              Building Communities Together
-            </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4 tracking-tight">
-              Our <span className="text-[#FEC001]">Partners</span>
-            </h2>
-            <p className="text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
-              Working with cities, transit agencies, and communities across Ontario to transform how people move.
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Partner types carousel */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.1, ease: REVEAL_EASE }}
-          className="mb-14 sm:mb-20"
-        >
-          {/* Partner type tabs */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
-            {partnerTypes.map((p, i) => (
-              <button
-                key={i}
-                onClick={() => goTo(i)}
-                className={`px-4 py-2 rounded-full text-xs sm:text-sm font-bold tracking-wide transition-all duration-200 ${
-                  i === active
-                    ? 'bg-[#FEC001] text-black'
-                    : 'bg-white dark:bg-white/[0.05] text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-200 dark:border-white/[0.07]'
-                }`}
-                style={i === active ? { boxShadow: '0 0 20px rgba(254,192,1,0.3)' } : {}}
-              >
-                {p.title}
-              </button>
-            ))}
-          </div>
-
-          {/* Carousel */}
-          <div className="relative">
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={active}
-                custom={direction}
-                variants={variants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.48, ease: CAROUSEL_EASE }}
-              >
-                <div className="rounded-3xl overflow-hidden border border-gray-100 dark:border-white/[0.055] bg-white dark:bg-[#0A0A0A]">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-                    {/* Left — Text */}
-                    <div className="p-7 sm:p-10 md:p-14 flex flex-col justify-center">
-                      <span className="inline-block px-3.5 py-1.5 bg-[#FEC001] text-black text-[11px] font-bold rounded-full mb-5 tracking-widest uppercase w-fit">
-                        Building Communities Together
-                      </span>
-                      <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display text-gray-900 dark:text-white mb-4 sm:mb-5 leading-tight tracking-tight">
-                        {current.title} Partners
-                      </h4>
-                      <p className="text-gray-500 dark:text-gray-400 leading-relaxed text-base sm:text-lg mb-8 sm:mb-10">
-                        {current.description}
-                      </p>
-                      <Link
-                        to="/partners"
-                        className="group inline-flex items-center gap-2 px-6 py-3 bg-[#FEC001] text-black rounded-full font-bold text-sm hover:bg-[#FFD00F] transition-all duration-200 w-fit"
-                      whileHover={{ boxShadow: '0 0 28px rgba(254,192,1,0.4)' }}
-                      >
-                        <span>Learn More</span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-150" />
-                      </Link>
-                    </div>
-
-                    {/* Right — Image */}
-                    <div className="relative min-h-[200px] sm:min-h-[300px] lg:min-h-[460px] ls:min-h-[160px] overflow-hidden">
-                      {current.image ? (
-                        <>
-                          <img
-                            src={current.image}
-                            alt={current.title}
-                            className="absolute inset-0 w-full h-full object-cover"
-                            loading="lazy"
-                            decoding="async"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-r from-white/50 dark:from-[#0A0A0A]/50 via-transparent to-transparent lg:from-transparent" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
-                        </>
-                      ) : (
-                        <div className="absolute inset-0 bg-gradient-to-br from-[#FEC001]/10 to-transparent flex items-center justify-center">
-                          <span className="text-[#FEC001]/25 text-6xl font-bold font-display">
-                            {current.title.charAt(0)}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Prev / Next arrows */}
-            <button
-              onClick={prev}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 sm:-translate-x-5 z-10 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white dark:bg-[#111] border border-gray-200 dark:border-white/[0.08] flex items-center justify-center shadow-md hover:border-[#FEC001]/50 hover:text-[#FEC001] transition-all duration-200"
-              aria-label="Previous"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <button
-              onClick={next}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 sm:translate-x-5 z-10 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white dark:bg-[#111] border border-gray-200 dark:border-white/[0.08] flex items-center justify-center shadow-md hover:border-[#FEC001]/50 hover:text-[#FEC001] transition-all duration-200"
-              aria-label="Next"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-
-          {/* Dot indicators */}
-          <div className="flex justify-center items-center gap-2.5 mt-6">
-            {partnerTypes.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goTo(index)}
-                className="relative h-1 rounded-full overflow-hidden bg-gray-200 dark:bg-white/10 transition-all duration-300"
-                style={{ width: index === active ? 36 : 8 }}
-                aria-label={`Go to slide ${index + 1}`}
-              >
-                {index === active && (
-                  <motion.div
-                    key={active}
-                    className="absolute inset-y-0 left-0 bg-[#FEC001] rounded-full"
-                    initial={{ width: '0%' }}
-                    animate={{ width: '100%' }}
-                    transition={{ duration: AUTO_INTERVAL / 1000, ease: 'linear' }}
-                  />
-                )}
-              </button>
-            ))}
-          </div>
-        </motion.div>
 
         {/* ── Case Studies ── */}
         <motion.div

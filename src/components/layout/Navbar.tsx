@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll } from 'framer-motion';
 import { Menu, X, ChevronRight } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { ThemeToggle } from '../ui/ThemeToggle';
@@ -19,7 +19,6 @@ const navigation = [
   { name: 'Partners',   href: '/partners' },
   { name: 'Technology', href: '/technology' },
   { name: 'About Us',   href: '/about' },
-  {name: 'Test Page', href: '/test' },
 ];
 
 export const Navbar = () => {
@@ -28,6 +27,7 @@ export const Navbar = () => {
   const [announcementVisible, setAnnouncementVisible] = useState(true);
   const [announcementIndex, setAnnouncementIndex] = useState(0);
   const location = useLocation();
+  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60);
@@ -118,8 +118,14 @@ export const Navbar = () => {
           backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'blur(0px)',
         }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
-        style={{ borderBottomWidth: 1, borderBottomStyle: 'solid' }}
+        style={{ borderBottomWidth: 1, borderBottomStyle: 'solid', position: 'relative' }}
       >
+        {/* Scroll progress bar */}
+        <motion.div
+          aria-hidden
+          style={{ scaleX: scrollYProgress, transformOrigin: '0% 50%' }}
+          className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#FEC001] via-[#FFD00F] to-[#FEC001] z-10 pointer-events-none"
+        />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Three-column layout: logo | nav (centered) | actions */}
           <div className="grid grid-cols-[1fr_auto_1fr] items-center h-[4.5rem]">
@@ -128,9 +134,9 @@ export const Navbar = () => {
             <motion.div className="flex items-center gap-2.5" whileHover={{ scale: 1.01 }}>
               <Link to="/" className="flex items-center">
                 <img
-            src="/assets/scooty-logo-tm.png"
+                  src="/assets/scooty-logo-tm.png"
                   alt="SCOOTY"
-                  className="h-7 sm:h-8 w-auto brightness-0 invert"
+                  className="h-10 sm:h-12 w-auto"
                   fetchPriority="high"
                   decoding="async"
                 />

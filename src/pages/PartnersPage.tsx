@@ -26,7 +26,10 @@ import {
   Star,
   ChevronLeft,
   ChevronRight,
+  TrendingUp,
+  Sparkles,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 /* ─────────────────────────────────────────── DATA ─── */
 
@@ -110,7 +113,7 @@ const partnerSolutions = [
   {
     icon: Building2,
     title: 'Cities',
-    subtitle: 'Municipality Programs',
+    subtitle: 'Municipal Programs',
     image: '/assets/Partners/brampton-partnership.JPG',
     description:
       'Work with a Canadian mobility provider that understands how municipalities operate. SCOOTY collaborates closely with city teams to design programs aligned with transportation strategies, sustainability goals, and urban planning initiatives.',
@@ -122,9 +125,9 @@ const partnerSolutions = [
       'Community engagement programs',
     ],
     highlights: [
-      { value: '4+', label: 'Active Cities' },
-      { value: '100%', label: 'Canadian' },
-    ],
+      { value: '4+', label: 'Active Cities', icon: Building2 },
+      { value: '100%', label: 'Canadian', icon: Leaf },
+    ] as { value: string; label: string; icon: LucideIcon }[],
   },
   {
     icon: Briefcase,
@@ -140,9 +143,9 @@ const partnerSolutions = [
       'Attract tenants and customers',
     ],
     highlights: [
-      { value: '↑', label: 'Foot Traffic' },
-      { value: 'TDM', label: 'Compliant' },
-    ],
+      { value: '↑', label: 'Foot Traffic', icon: TrendingUp },
+      { value: 'TDM', label: 'Compliant', icon: CheckCircle },
+    ] as { value: string; label: string; icon: LucideIcon }[],
   },
   {
     icon: GraduationCap,
@@ -158,9 +161,9 @@ const partnerSolutions = [
       'Next-generation mobility insights',
     ],
     highlights: [
-      { value: 'Turnkey', label: 'Program' },
-      { value: 'Research', label: 'Ready' },
-    ],
+      { value: 'Turnkey', label: 'Program', icon: Zap },
+      { value: 'Research', label: 'Ready', icon: GraduationCap },
+    ] as { value: string; label: string; icon: LucideIcon }[],
   },
   {
     icon: Home,
@@ -176,9 +179,9 @@ const partnerSolutions = [
       'Sustainable infrastructure support',
     ],
     highlights: [
-      { value: 'Net Zero', label: 'Mobility' },
-      { value: 'Future', label: 'Ready' },
-    ],
+      { value: 'Net Zero', label: 'Mobility', icon: Leaf },
+      { value: 'Future', label: 'Ready', icon: Sparkles },
+    ] as { value: string; label: string; icon: LucideIcon }[],
   },
 ];
 
@@ -449,7 +452,7 @@ export const PartnersPage = () => {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="text-5xl sm:text-6xl md:text-7xl font-bold font-display leading-[1.05] tracking-tight mb-5 [filter:drop-shadow(0_2px_20px_rgba(0,0,0,0.9))]"
           >
-            <span className="block text-white">Partner With</span>
+            <span className="block text-white">Partner with</span>
             <span className="block text-[#FEC001] mt-2">SCOOTY</span>
           </motion.h1>
 
@@ -562,24 +565,64 @@ export const PartnersPage = () => {
                       </p>
 
                       {/* Features */}
-                      <div className="flex flex-col gap-2 mb-7">
+                      <motion.div
+                        className="flex flex-col gap-2 mb-7"
+                        initial="hidden"
+                        animate="show"
+                        variants={{
+                          hidden: {},
+                          show: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } },
+                        }}
+                      >
                         {current.features.map((feature, i) => (
-                          <div key={i} className="flex items-center gap-3 py-1">
-                            <span className="w-5 h-5 rounded-full bg-primary-500 text-black text-[10px] font-bold flex items-center justify-center flex-shrink-0">{i + 1}</span>
+                          <motion.div
+                            key={i}
+                            variants={{
+                              hidden: { opacity: 0, x: -12 },
+                              show: { opacity: 1, x: 0 },
+                            }}
+                            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                            whileHover={{ x: 3 }}
+                            className="flex items-center gap-3 py-1 group cursor-default"
+                          >
+                            <span className="w-5 h-5 rounded-full bg-primary-500 text-black text-[10px] font-bold flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110">{i + 1}</span>
                             <span className="text-sm font-medium text-gray-700 dark:text-gray-200">{feature}</span>
-                          </div>
+                          </motion.div>
                         ))}
-                      </div>
+                      </motion.div>
 
                       {/* Stats row */}
-                      <div className="flex gap-3 mb-7 flex-wrap">
-                        {current.highlights.map((h, i) => (
-                          <div key={i} className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-navy-700/50 border border-yellow-500 dark:border-navy-600/60 backdrop-blur-sm text-center min-w-[100px]">
-                            <div className="text-base font-black font-display text-primary-500 leading-none">{h.value}</div>
-                            <div className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">{h.label}</div>
-                          </div>
-                        ))}
-                      </div>
+                      <motion.div
+                        className="flex gap-3 mb-7 flex-wrap"
+                        initial="hidden"
+                        animate="show"
+                        variants={{
+                          hidden: {},
+                          show: { transition: { staggerChildren: 0.08, delayChildren: 0.35 } },
+                        }}
+                      >
+                        {current.highlights.map((h, i) => {
+                          const HighlightIcon = h.icon;
+                          return (
+                            <motion.div
+                              key={i}
+                              variants={{
+                                hidden: { opacity: 0, y: 12, scale: 0.94 },
+                                show: { opacity: 1, y: 0, scale: 1 },
+                              }}
+                              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                              whileHover={{ y: -3, scale: 1.03 }}
+                              className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-navy-700/50 border border-yellow-500 dark:border-navy-600/60 backdrop-blur-sm text-center min-w-[110px] min-h-[92px] flex flex-col items-center justify-center gap-1 cursor-default hover:shadow-lg hover:shadow-primary-500/20 transition-shadow"
+                            >
+                              {HighlightIcon && <HighlightIcon className="w-5 h-5 text-primary-500" />}
+                              <div className="text-sm font-black font-display text-primary-500 leading-tight whitespace-nowrap">{h.value}</div>
+                              {h.label && (
+                                <div className="text-[11px] text-gray-500 dark:text-gray-400 leading-tight">{h.label}</div>
+                              )}
+                            </motion.div>
+                          );
+                        })}
+                      </motion.div>
 
                       {/* CTA */}
                       <div>

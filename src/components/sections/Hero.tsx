@@ -25,6 +25,17 @@ export const Hero = () => {
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/15 to-black/55" />
       <div className="absolute bottom-0 left-0 right-0 h-56 bg-gradient-to-t from-black to-transparent" />
 
+      {/* ── Foggy gradient beneath text (stronger localized darkening for legibility over the city) ── */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(ellipse 90% 75% at 50% 50%, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0) 70%)',
+          filter: 'blur(40px)',
+        }}
+      />
+
       {/* ── Subtle brand grid ── */}
       <div
         className="absolute inset-0 opacity-[0.018]"
@@ -56,17 +67,6 @@ export const Hero = () => {
             <span className="block text-[#FEC001]">Meets Intelligence</span>
           </motion.h1>
 
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0, x: -24 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.32, ease: EASING }}
-            className="text-base sm:text-lg md:text-xl text-gray-200 max-w-xl sm:max-w-2xl mx-auto leading-relaxed"
-          >
-            We integrate on-demand mobility, digital payments and AI-powered transit intelligence
-            with existing transit infrastructure to make daily commuting smooth, simple and efficient.
-          </motion.p>
-
           {/* ── CTA buttons ── */}
           <motion.div
             initial={{ opacity: 0, x: -24 }}
@@ -75,7 +75,7 @@ export const Hero = () => {
             className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-1"
           >
           </motion.div>
-          <p className="text-2xl text-primary-400 font-display tracking-wide font-bold pt-20">
+          <p className="text-2xl text-primary-400 font-display tracking-wide font-bold pt-4 sm:pt-6">
             <span className="text-white">We’re on a mission to  </span>power how cities move people.
           </p>
 

@@ -15,7 +15,7 @@ const solutions = [
   {
     title: 'SCOOTY PAY',
     description:
-      'Integrated, secure, and scalable payment processing for transit ticketing and 3rd party mobility services bringing one fare, one platform and many ways to move.',
+      'Integrated, secure, and scalable payment processing API for transit fare ticketing and 3rd party mobility services.',
     image: 'https://images.pexels.com/photos/4386431/pexels-photo-4386431.jpeg?auto=compress&cs=tinysrgb&w=1200',
     tag: 'Payments',
     accent: '#01FEC0',
@@ -72,7 +72,17 @@ export const Services = () => {
   const current = solutions[active];
 
   return (
-    <section id="services" ref={ref} className="relative py-12 sm:py-16 ls:py-8 overflow-hidden">
+    <section id="services" ref={ref} className="relative isolate py-12 sm:py-16 ls:py-8 overflow-hidden">
+
+      {/* Soft round glow — same colour as the city animation so it blends seamlessly */}
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(circle at 50% 22%, rgba(254,192,1,0.09), rgba(254,192,1,0.04) 32%, rgba(254,192,1,0) 60%), radial-gradient(circle at 50% 22%, rgba(7,7,16,0.82), rgba(7,7,16,0.6) 20%, rgba(7,7,16,0.34) 40%, rgba(7,7,16,0.15) 60%, rgba(7,7,16,0.05) 76%, rgba(7,7,16,0) 90%)',
+        }}
+      />
 
       {/* Decorative background blobs */}
       <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-[#FEC001]/[0.04] rounded-full blur-3xl pointer-events-none" />
@@ -97,11 +107,7 @@ export const Services = () => {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-10 sm:mb-14"
         >
-          <div className="relative inline-block isolate">
-            <span
-              aria-hidden
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-[#FEC001]/20 to-transparent blur-2xl pointer-events-none -z-10"
-            />
+          <div className="relative inline-block">
             <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
               Scooty Transit Platform
             </p>
@@ -170,7 +176,7 @@ export const Services = () => {
                         className="inline-block px-3.5 py-1.5 text-black text-[11px] font-bold rounded-full mb-5 tracking-widest uppercase w-fit"
                         style={{ backgroundColor: current.accent }}
                       >
-                        Building Communities Together
+                        {current.tag}
                       </span>
                       <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display text-gray-900 dark:text-white mb-4 sm:mb-5 leading-tight tracking-tight">
                         {current.title}

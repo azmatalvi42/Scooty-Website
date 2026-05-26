@@ -28,7 +28,17 @@ export const ChatbotDemo = () => {
   const navigate = useNavigate();
 
   return (
-    <section id="riders" ref={ref} className="relative py-16 sm:py-24 ls:py-8 overflow-hidden">
+    <section id="riders" ref={ref} className="relative isolate py-16 sm:py-24 ls:py-8 overflow-hidden">
+      {/* Soft round glow — same colour as the city animation so it blends seamlessly */}
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(circle at 50% 40%, rgba(254,192,1,0.09), rgba(254,192,1,0.04) 32%, rgba(254,192,1,0) 60%), radial-gradient(circle at 50% 40%, rgba(7,7,16,0.82), rgba(7,7,16,0.6) 20%, rgba(7,7,16,0.34) 40%, rgba(7,7,16,0.15) 60%, rgba(7,7,16,0.05) 76%, rgba(7,7,16,0) 90%)',
+        }}
+      />
+
       {/* Subtle top border */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gray-100 dark:bg-white/[0.04]" />
 
@@ -41,11 +51,7 @@ export const ChatbotDemo = () => {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.65, ease: EASING }}
           >
-            <div className="relative inline-block isolate mb-10">
-              <span
-                aria-hidden
-                className="absolute inset-0 bg-gradient-to-r from-[#FEC001]/25 via-[#FEC001]/15 to-transparent blur-2xl pointer-events-none -z-10"
-              />
+            <div className="relative inline-block mb-10">
               {/* Eyebrow pill */}
               <motion.span
                 initial={{ opacity: 0, y: 10 }}

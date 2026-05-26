@@ -9,17 +9,38 @@ import {
   ParkingSquare,
   Shield,
   Bike,
-  Apple,
-  Play,
   ArrowRight,
   HardHat,
   ChevronLeft,
   ChevronRight,
+  Check,
+  Route,
+  Gauge,
+  Satellite,
+  Timer,
+  UserCheck,
+  ListChecks,
+  Sparkles,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 // ─── Tab config ───────────────────────────────────────────────────────────────
 
-const TABS = [
+type Highlight = { value: string; label: string; icon?: LucideIcon };
+type RiderTab = {
+  icon: LucideIcon;
+  label: string;
+  slug: string;
+  subtitle: string;
+  description: string;
+  features: string[];
+  featureColors?: string[];
+  bulleted?: boolean;
+  highlights: Highlight[];
+  image: string;
+};
+
+const TABS: RiderTab[] = [
   {
     icon: Rocket,
     label: 'Getting Started',
@@ -28,8 +49,8 @@ const TABS = [
     description: 'Download the app, create an account, and unlock your first SCOOTY ride within seconds.',
     features: ['Download App', 'Create Account', 'Find Vehicles', 'Scan & Ride'],
     highlights: [
-      { value: '2 min', label: 'Setup time' },
-      { value: '16+', label: 'Age required' },
+      { value: '2 min', label: 'Setup time', icon: Timer },
+      { value: '16+', label: 'Age required', icon: UserCheck },
     ],
     image: "/assets/Riders/Carousel/riders-carousel.gif"
   },
@@ -41,8 +62,8 @@ const TABS = [
     description: 'Scan, unlock, and ride. Follow our simple steps to get moving safely.',
     features: ['Scan QR Code', 'Put on Helmet', 'Follow Safety Rules'],
     highlights: [
-      { value: '5', label: 'Easy Steps' },
-      { value: 'Beginner', label: 'Friendly' },
+      { value: '5', label: 'Easy Steps', icon: ListChecks },
+      { value: 'Beginner', label: 'Friendly', icon: Sparkles },
     ],
     image: '/assets/Riders/Carousel/riders-carousel-ride.png',
   },
@@ -61,7 +82,7 @@ const TABS = [
       'bg-purple-600/25 border-purple-600/50 text-purple-600 dark:text-purple-400',
     ],
     highlights: [
-      { value: '20 km/h', label: 'Max speed' },
+      { value: '20 km/h', label: 'Max speed', icon: Gauge },
     ],
     image: '/assets/Riders/Carousel/riders-carousel-map.png',
   },
@@ -71,9 +92,9 @@ const TABS = [
     slug: 'parking',
     subtitle: 'Park responsibly',
     description: 'Be smart, ride safely, park in 3 easy steps. ',
-    features: ['Find Zones', 'Park Upright', 'Take Photo'],
+    features: ['Find a Parking Zone', 'Park Vehicle Upright', 'Take a Photo'],
     highlights: [
-      { value: 'Free Parking', label: 'At Designated Zones' },
+      { value: 'Free Parking', label: 'At Designated Zones', icon: ParkingSquare },
     ],
     image: '/assets/Riders/Carousel/riders-carousel-parking.png',
   },
@@ -82,24 +103,42 @@ const TABS = [
     label: 'Safety',
     slug: 'safety',
     subtitle: 'Ride safely',
-    description: 'Wear a helmet, follow traffic rules, and never ride on sidewalks.',
-    features: ['Wear Helmet', 'Follow Rules', 'Single Rider', 'Stay Alert'],
-    highlights: [
-      { value: '100%', label: 'Helmet rate goal' },
-      { value: '0', label: 'Sidewalk riding' },
+    description: 'Be smart, ride safe, follow the rules',
+    features: [
+      '16+ min. Age requirement',
+      'Wear a helmet at all times',
+      'No sidewalk riding',
+      'One rider per vehicle',
+      'No riding under the influence',
+      'Follow local riding rules',
     ],
+    highlights: [],
     image: '/assets/Riders/Carousel/riders-carousel-safety.png',
   },
   {
     icon: Bike,
-    label: 'Vehicles',
+    label: 'Micromobility Vehicles',
     slug: 'vehicles',
     subtitle: 'Our fleet',
     description: 'Choose between e-scooters and e-bikes, both equipped with the latest tech.',
-    features: ['E-Scooters', 'E-Bikes', 'GPS Enabled', 'Smart Lock'],
+    bulleted: true,
+    features: [
+      'Up to 20 KM/H top speed',
+      'Up to 70 KMs E-Scooter range distance',
+      'Up to 100 KMs E-Bike range distance',
+      'Fast wireless phone charger',
+      'Front & Rear brakes',
+      'Dual shock suspension',
+      'Anti-slip foot grip pad',
+      'Turn signals',
+      'High visibility reflective vinyl wrap',
+      'High visibility LED light',
+      'High visibility day-time LED headlight',
+    ],
     highlights: [
-      { value: '2', label: 'Vehicle types' },
-      { value: '20 km/h', label: 'Top speed' },
+      { value: '100 KM', label: 'range distance', icon: Route },
+      { value: '20 KM/H', label: 'Top speed', icon: Gauge },
+      { value: 'GPS tracked', label: '', icon: Satellite },
     ],
     image: '/assets/Riders/Carousel/riders-carousel-vehicles.png',
   },
@@ -139,32 +178,34 @@ export const RidersPage = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-gray-50 dark:to-navy-900" />
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/50 to-transparent" />
 
-        {/* Hero text */}
-        <div ref={heroRef} className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-14">
+        {/* Hero text — evenly spaced with pt-10 rhythm between nav, paragraph, download text, and store icons */}
+        <div ref={heroRef} className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-10">
           <motion.h1
             initial={{ opacity: 0, x: -32 }}
             animate={heroInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-5xl sm:text-6xl md:text-7xl font-bold font-display leading-[1.05] tracking-tight mb-5 [filter:drop-shadow(0_2px_20px_rgba(0,0,0,0.9))]"
+            style={{ fontSize: 'clamp(1.75rem, 7vw, 5.5rem)' }}
+            className="whitespace-nowrap font-bold font-display leading-[1.05] tracking-tight [filter:drop-shadow(0_2px_20px_rgba(0,0,0,0.9))]"
           >
-            <span className="block text-white">Your City,</span>
-            <span className="block text-[#FEC001] mt-2">Your Ride</span>
+            <span className="text-white">Your City,{'  '}</span>
+            <span className="text-[#FEC001]">Your Ride</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, x: -24 }}
             animate={heroInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-base sm:text-lg md:text-xl text-white/90 max-w-xl mx-auto leading-relaxed mb-7 [filter:drop-shadow(0_1px_8px_rgba(0,0,0,0.8))]"
+            className="text-base sm:text-lg md:text-xl text-white/90 max-w-xl mx-auto leading-relaxed pt-10 [filter:drop-shadow(0_1px_8px_rgba(0,0,0,0.8))]"
           >
             Hop on a SCOOTY e-scooter or e-bike and ride through the city.
           </motion.p>
 
-          {/* Download CTA */}
+          {/* Download CTA — yellow pill button with App Store + Play Store icons inline (original-style layout) */}
           <motion.div
             initial={{ opacity: 0, x: -24 }}
             animate={heroInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.5 }}
+            className="pt-10 flex flex-col items-center"
           >
             <motion.a
               href="#"
@@ -174,11 +215,28 @@ export const RidersPage = () => {
             >
               <span>Download to start riding</span>
               <span className="flex items-center gap-2 border-l border-black/20 pl-4">
-                <Apple className="w-5 h-5" />
-                <Play className="w-4 h-4 fill-current" />
+                <img
+                  src="/icons/appstore-icon.png"
+                  alt="App Store"
+                  className="h-6 sm:h-7 w-auto object-contain"
+                  style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.55))' }}
+                  loading="eager"
+                  decoding="async"
+                />
+                <img
+                  src="/icons/playstore-icon.png"
+                  alt="Google Play"
+                  className="h-6 sm:h-7 w-auto object-contain"
+                  style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.55))' }}
+                  loading="eager"
+                  decoding="async"
+                />
               </span>
             </motion.a>
-            <p className="text-sm text-white/70 mt-3">Available on iOS &amp; Android</p>
+
+            <p className="text-sm text-white/70 mt-4 [filter:drop-shadow(0_1px_8px_rgba(0,0,0,0.8))]">
+              Available on iOS &amp; Android
+            </p>
           </motion.div>
         </div>
 
@@ -267,42 +325,116 @@ export const RidersPage = () => {
                     </p>
 
                     {/* Features */}
-                    <div className="flex flex-col gap-2 mb-7">
+                    <motion.div
+                      className={`flex flex-col gap-2 mb-7 ${current.bulleted ? 'sm:grid sm:grid-cols-2 sm:gap-x-6' : ''}`}
+                      initial="hidden"
+                      animate="show"
+                      variants={{
+                        hidden: {},
+                        show: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } },
+                      }}
+                    >
                       {current.features.map((feature, i) => {
-                        const colors = (current as any).featureColors?.[i];
-                        return colors ? (
-                          <div key={i} className="flex items-center gap-3 py-1">
-                            <span className={`inline-flex items-center justify-center w-20 py-1 rounded-full border text-xs font-bold whitespace-nowrap ${colors}`}>
-                              {feature.split('=')[0].trim()}
-                            </span>
-                            <span className="text-sm text-gray-600 dark:text-gray-300">
-                              {feature.split('=')[1].trim()}
-                            </span>
-                          </div>
-                        ) : (
-                          <div key={i} className="flex items-center gap-3 py-1">
-                            <span className="w-5 h-5 rounded-full bg-primary-500 text-black text-[10px] font-bold flex items-center justify-center flex-shrink-0">{i + 1}</span>
+                        const colors = current.featureColors?.[i];
+                        const bulleted = current.bulleted;
+                        const rowVariants = {
+                          hidden: { opacity: 0, x: -12 },
+                          show: { opacity: 1, x: 0 },
+                        };
+                        if (colors) {
+                          return (
+                            <motion.div
+                              key={i}
+                              variants={rowVariants}
+                              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                              className="flex items-center gap-3 py-1"
+                            >
+                              <span className={`inline-flex items-center justify-center w-20 py-1 rounded-full border text-xs font-bold whitespace-nowrap flex-shrink-0 ${colors}`}>
+                                {feature.split('=')[0].trim()}
+                              </span>
+                              <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                                {feature.split('=')[1].trim()}
+                              </span>
+                            </motion.div>
+                          );
+                        }
+                        if (bulleted) {
+                          return (
+                            <motion.div
+                              key={i}
+                              variants={rowVariants}
+                              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                              className="flex items-center gap-3 py-1"
+                            >
+                              <span className="w-5 h-5 rounded-full bg-primary-500/15 border border-primary-500/40 text-primary-500 flex items-center justify-center flex-shrink-0">
+                                <Check className="w-3 h-3" />
+                              </span>
+                              <span className="text-sm font-medium text-gray-700 dark:text-gray-200">{feature}</span>
+                            </motion.div>
+                          );
+                        }
+                        return (
+                          <motion.div
+                            key={i}
+                            variants={rowVariants}
+                            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                            whileHover={{ x: 3 }}
+                            className="flex items-center gap-3 py-1 group cursor-default"
+                          >
+                            <span className="w-5 h-5 rounded-full bg-primary-500 text-black text-[10px] font-bold flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110">{i + 1}</span>
                             <span className="text-sm font-medium text-gray-700 dark:text-gray-200">{feature}</span>
-                          </div>
+                          </motion.div>
                         );
                       })}
-                    </div>
+                    </motion.div>
 
                     {/* Stats row */}
-                    <div className="flex gap-3 mb-7 flex-wrap">
-                      {current.highlights.map((h, i) => (
-                        <div key={i} className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-navy-700/50 border border-yellow-500 border-width: 1px dark:border-navy-600/60 backdrop-blur-sm text-center min-w-[100px]">
-                          <div className="text-base font-black font-display text-primary-500 leading-none">{h.value}</div>
-                          <div className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">{h.label}</div>
-                        </div>
-                      ))}
+                    <motion.div
+                      className="flex gap-3 mb-7 flex-wrap"
+                      initial="hidden"
+                      animate="show"
+                      variants={{
+                        hidden: {},
+                        show: { transition: { staggerChildren: 0.08, delayChildren: 0.35 } },
+                      }}
+                    >
+                      {current.highlights.map((h, i) => {
+                        const HighlightIcon = h.icon;
+                        return (
+                          <motion.div
+                            key={i}
+                            variants={{
+                              hidden: { opacity: 0, y: 12, scale: 0.94 },
+                              show: { opacity: 1, y: 0, scale: 1 },
+                            }}
+                            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                            whileHover={{ y: -3, scale: 1.03 }}
+                            className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-navy-700/50 border border-yellow-500 dark:border-navy-600/60 backdrop-blur-sm text-center min-w-[110px] min-h-[92px] flex flex-col items-center justify-center gap-1 cursor-default hover:shadow-lg hover:shadow-primary-500/20 transition-shadow"
+                          >
+                            {HighlightIcon && <HighlightIcon className="w-5 h-5 text-primary-500" />}
+                            <div className="text-sm font-black font-display text-primary-500 leading-tight whitespace-nowrap">{h.value}</div>
+                            {h.label && (
+                              <div className="text-[11px] text-gray-500 dark:text-gray-400 leading-tight">{h.label}</div>
+                            )}
+                          </motion.div>
+                        );
+                      })}
                       {showHelmet && (
-                        <div className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-navy-700/50 border border-red-500 backdrop-blur-sm text-center min-w-[100px]">
-                          <HardHat className="w-5 h-5 text-red-500 mx-auto" />
-                          <div className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">Helmet required</div>
-                        </div>
+                        <motion.div
+                          variants={{
+                            hidden: { opacity: 0, y: 12, scale: 0.94 },
+                            show: { opacity: 1, y: 0, scale: 1 },
+                          }}
+                          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                          whileHover={{ y: -3, scale: 1.03 }}
+                          className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-navy-700/50 border border-yellow-500 dark:border-navy-600/60 backdrop-blur-sm text-center min-w-[110px] min-h-[92px] flex flex-col items-center justify-center gap-1 cursor-default hover:shadow-lg hover:shadow-primary-500/20 transition-shadow"
+                        >
+                          <HardHat className="w-5 h-5 text-primary-500" />
+                          <div className="text-sm font-black font-display text-primary-500 leading-tight whitespace-nowrap">Required</div>
+                          <div className="text-[11px] text-gray-500 dark:text-gray-400 leading-tight">Helmet</div>
+                        </motion.div>
                       )}
-                    </div>
+                    </motion.div>
 
                     {/* CTA */}
                     <div>
@@ -316,17 +448,48 @@ export const RidersPage = () => {
                     </div>
                   </div>
 
-                  {/* Right — Image */}
+                  {/*
+                    Right — Image
+                    Recommended carousel image dimensions: 1200×1200px (1:1 square),
+                    or 1200×900px (4:3) with subject centered. The column is portrait
+                    on desktop (~420×600) and landscape on mobile (~375×240), and uses
+                    object-cover — a centered subject in a square source avoids awkward
+                    crops at any breakpoint. Export PNG/WebP at ~150–250 KB.
+                  */}
                   <div className="relative overflow-hidden min-h-[240px] sm:min-h-[300px] lg:min-h-0 rounded-b-3xl lg:rounded-b-none lg:rounded-r-3xl">
-                    <img
-                      src={current.image}
-                      alt={current.label}
-                      className="absolute inset-0 w-full h-full object-cover"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    {/* Gradient blends into card on desktop */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent lg:bg-gradient-to-r lg:from-yellow-950/30 lg:via-transparent lg:to-transparent" />
+                    {current.slug === 'where-to-ride' ? (
+                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/25 via-yellow-500/10 to-transparent flex flex-col items-center justify-center p-8 text-center">
+                        <div
+                          className="absolute inset-0 opacity-[0.08]"
+                          style={{
+                            backgroundImage:
+                              'linear-gradient(rgba(254,192,1,1) 1px, transparent 1px), linear-gradient(90deg, rgba(254,192,1,1) 1px, transparent 1px)',
+                            backgroundSize: '40px 40px',
+                          }}
+                        />
+                        <div className="relative w-16 h-16 rounded-2xl bg-primary-500/15 border border-primary-500/30 flex items-center justify-center mb-4">
+                          <MapPin className="w-8 h-8 text-primary-500" />
+                        </div>
+                        <p className="relative text-base font-bold font-display text-gray-800 dark:text-white">
+                          Riding Zone Map
+                        </p>
+                        <p className="relative text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-[260px]">
+                          Live map coming soon. Check the SCOOTY app for current zones.
+                        </p>
+                      </div>
+                    ) : (
+                      <>
+                        <img
+                          src={current.image}
+                          alt={current.label}
+                          className="absolute inset-0 w-full h-full object-cover"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        {/* Gradient blends into card on desktop */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent lg:bg-gradient-to-r lg:from-yellow-950/30 lg:via-transparent lg:to-transparent" />
+                      </>
+                    )}
                     {/* Label pill */}
                     <div className="absolute bottom-4 right-4 flex items-center gap-1.5 bg-black/55 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-white/15">
                       <current.icon className="w-3 h-3 text-primary-400" />
