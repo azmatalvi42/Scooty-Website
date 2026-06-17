@@ -6,6 +6,25 @@ const ScrollToTop = () => {
   useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
   return null;
 };
+
+// Only true on desktop-sized screens (>= 1024px). Used to skip the
+// background animation on mobile/tablet so its canvas loop never runs there.
+const useIsDesktop = () => {
+  const query = '(min-width: 1024px)';
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(query).matches
+  );
+
+  useEffect(() => {
+    const mql = window.matchMedia(query);
+    const onChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mql.addEventListener('change', onChange);
+    setIsDesktop(mql.matches);
+    return () => mql.removeEventListener('change', onChange);
+  }, []);
+
+  return isDesktop;
+};
 import { LoadingSpinner } from './components/ui/LoadingSpinner';
 import { NetworkCanvas } from './components/ui/NetworkCanvas';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
@@ -22,6 +41,8 @@ import { PartnersPage } from './pages/PartnersPage';
 import { TechnologyPage } from './pages/TechnologyPage';
 import { CityPage } from './pages/CityPage';
 import { AboutPage } from './pages/AboutPage';
+import { RideLogPage } from './pages/RideLogPage';
+import { BlogPostPage } from './pages/BlogPostPage';
 const HomePage = () => (
   <>
     <Hero />
@@ -34,6 +55,7 @@ const HomePage = () => (
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const isDesktop = useIsDesktop();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -52,7 +74,7 @@ function App() {
       <Router>
         <ScrollToTop />
         <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
-          <NetworkCanvas />
+          {isDesktop && <NetworkCanvas />}
 
           <Navbar />
 
@@ -64,6 +86,8 @@ function App() {
               <Route path="/partners" element={<PartnersPage />} />
               <Route path="/partners/:city" element={<CityPage />} />
               <Route path="/technology" element={<TechnologyPage />} />
+              <Route path="/blog" element={<RideLogPage />} />
+              <Route path="/blog/:slug" element={<BlogPostPage />} />
               <Route path="/about" element={<AboutPage />} />
 
               <Route path="*" element={

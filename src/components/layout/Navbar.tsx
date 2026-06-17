@@ -19,6 +19,7 @@ const navigation = [
   { name: 'Partners',   href: '/partners' },
   { name: 'Technology', href: '/technology' },
   { name: 'About Us',   href: '/about' },
+  { name: 'Blog',       href: '/blog' },
 ];
 
 export const Navbar = () => {
@@ -141,27 +142,24 @@ export const Navbar = () => {
                   decoding="async"
                 />
               </Link>
-              <span className="hidden lg:inline-flex items-center px-2.5 py-1 bg-[#FEC001]/10 border border-[#FEC001]/20 rounded-full text-[10px] font-semibold text-[#FEC001] tracking-wide whitespace-nowrap">
-                Proudly Canadian · Made in Ontario
-              </span>
             </motion.div>
 
             {/* ── Desktop nav (center) ── */}
-            <div className="hidden md:flex items-center gap-0.5">
+            <div className="hidden md:flex items-center gap-1 rounded-full border border-white/[0.07] bg-white/[0.03] px-1.5 py-1 backdrop-blur-sm">
               {navigation.map((item) => {
                 const isActive = location.pathname === item.href;
                 return (
                   <Link
                     key={item.name}
                     to={item.href}
-                    className={`relative px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      isActive ? 'text-black' : 'text-white/50 hover:text-white/90'
+                    className={`relative px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors duration-200 ${
+                      isActive ? 'text-black' : 'text-white/60 hover:text-white'
                     }`}
                   >
                     {isActive && (
                       <motion.div
                         layoutId="nav-pill"
-                        className="absolute inset-0 rounded-lg bg-[#FEC001]"
+                        className="absolute inset-0 rounded-full bg-[#FEC001]"
                         transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                       />
                     )}

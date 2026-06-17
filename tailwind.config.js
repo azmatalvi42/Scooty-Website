@@ -63,6 +63,9 @@ export default {
       fontFamily: {
         sans:    ['Avenir', 'Avenir Next', 'Nunito Sans', 'Helvetica Neue', 'Arial', 'sans-serif'],
         display: ['Avenir', 'Avenir Next', 'Nunito Sans', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        // Editorial serifs — scoped to the Blog ("The Ride Log") newspaper UI
+        masthead: ['Fraunces', 'Georgia', 'Cambria', '"Times New Roman"', 'serif'],
+        news:     ['"Source Serif 4"', 'Georgia', 'Cambria', '"Times New Roman"', 'serif'],
       },
       animation: {
         'fade-in':      'fadeIn 0.4s ease-out',

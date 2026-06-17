@@ -1,41 +1,15 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { ArrowRight, ChevronLeft, ChevronRight, Shield, Heart, Handshake, Quote, X, Plus } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { governmentQuotes } from '../../data/projects';
 
 const MapleLeafSVG = ({ className = '' }: { className?: string }) => (
   <svg viewBox="-2015 -2000 4030 4030" className={className} fill="currentColor" xmlns="http://www.w3.org/2000/svg">
     <path d="m-90 2030 45-863a95 95 0 0 0-111-98l-859 151 116-320a65 65 0 0 0-20-73l-941-762 212-99a65 65 0 0 0 34-79l-186-572 542 115a65 65 0 0 0 73-38l105-247 423 454a65 65 0 0 0 111-57l-204-1052 327 189a65 65 0 0 0 91-27l332-652 332 652a65 65 0 0 0 91 27l327-189-204 1052a65 65 0 0 0 111 57l423-454 105 247a65 65 0 0 0 73 38l542-115-186 572a65 65 0 0 0 34 79l212 99-941 762a65 65 0 0 0-20 73l116 320-859-151a95 95 0 0 0-111 98l45 863z" />
   </svg>
 );
-
-const caseStudies = [
-  {
-    city: 'Brampton, ON',
-    slug: 'brampton',
-    image: 'https://images.pexels.com/photos/1006965/pexels-photo-1006965.jpeg?auto=compress&cs=tinysrgb&w=600',
-    rides: '2.1M rides served',
-    emissions: '4,200 tons CO₂ saved',
-    highlight: 'Reduced average commute time by 18%',
-  },
-  {
-    city: 'Barrie, ON',
-    slug: 'barrie',
-    image: 'https://images.pexels.com/photos/2614818/pexels-photo-2614818.jpeg?auto=compress&cs=tinysrgb&w=600',
-    rides: '1.5M rides served',
-    emissions: '3,100 tons CO₂ saved',
-    highlight: 'Fleet utilization increased by 35%',
-  },
-  {
-    city: 'Metrolinx',
-    slug: 'metrolinx',
-    image: 'https://images.pexels.com/photos/3278015/pexels-photo-3278015.jpeg?auto=compress&cs=tinysrgb&w=600',
-    rides: 'GTHA-wide integration',
-    emissions: 'First & last-mile transit',
-    highlight: 'Proud partners innovating transit across Ontario',
-  },
-];
 
 const coreValues = [
   {
@@ -58,69 +32,6 @@ const coreValues = [
     description:
       "SCOOTY plans, designs and delivers mobility solutions through our community partnerships network. Our plans are guided by collective domain expertise and carefully aligned with municipal vision, goals and policies.",
     practices: ['Municipal alignment', 'Transit integration', 'Local insights', 'Tailored deployments'],
-  },
-];
-
-const governmentQuotes = [
-  {
-    quote: "I am pleased to see SCOOTY expand and offer more options to keep commuters moving. Transit-Integrated Micromobility is critical to allow more people to use transit for longer-distance trips across the region. Our government is protecting Ontario by supporting businesses, municipalities and transit providers in implementing innovative transportation solutions, like SCOOTY\u2019s new micromobility technology, to make life more affordable for commuters and grow our economy.",
-    name: "Honourable Prabmeet Sarkaria",
-    title: "Minister of Transportation for Ontario",
-    image: "/assets/mainPage/QuotesImages/DSC_4516.jpg",
-  },
-  {
-    quote: "The integration of new, innovative technologies like SCOOTY into our transportation network is an essential step in ensuring workers, families, and students across our province are supported in their day-to-day activities.",
-    name: "Vic Fedeli",
-    title: "Minister of Economic Development, Job Creation and Trade",
-    image: "/assets/mainPage/QuotesImages/DSC_4553 (1).jpg",
-  },
-  {
-    quote: "I have been pleased to watch Brampton's SCOOTY demonstrate their tech-focused, partnership-based approach to local mobility and connections to transit. Great transit makes for thriving communities, and SCOOTY is a great part of our transit mix.",
-    name: "Patrick Brown",
-    title: "Mayor, City of Brampton",
-    image: "/assets/mainPage/QuotesImages/DSC_1837.jpg",
-  },
-  {
-    quote: "The city has been pleased with our work with SCOOTY to support the needs of transit riders and improve connections to and from transit stops across the city. Having multi-modal commuting options connected through a unified transit fare is essential to encourage residents and visitors of Brampton to use transit, attracting investment and promoting economic activity.",
-    name: "Councillor Gurpartap Singh Toor",
-    title: "Chair of Economic Development and Regional Councillor of Wards 9 & 10, City of Brampton",
-    image: "/assets/mainPage/QuotesImages/City Hall Group Shot - Brampton Launch Photo (2).JPG",
-  },
-  {
-    quote: "SCOOTY will help improve the first and last kilometre connectivity by providing another transportation option for people travelling to and from the City of Markham's downtown district. We want to make sure that when you arrive here, that you get to your destination as easily, as efficiently and as accessible as possible, and that's what SCOOTY does.",
-    name: "Frank Scarpitti",
-    title: "Mayor of Markham",
-    image: "/assets/mainPage/QuotesImages/2024MarkhamOVINScootyDemo-048.jpg",
-  },
-  {
-    quote: "SCOOTY's commitment to safety, courtesy, and partnership reflects exactly the kind of collaborative approach we need to deliver modern transit solutions to our residents. Their integration with our local network has been seamless and well received by the community.",
-    name: "Regional Council Representative",
-    title: "Region of Peel",
-    image: "/assets/mainPage/QuotesImages/DSC_4516.jpg",
-  },
-  {
-    quote: "Ontario's economic growth depends on moving people and goods efficiently. Innovative companies like SCOOTY help our communities solve the first-mile and last-mile challenge with technology that's purpose-built for Canadian cities.",
-    name: "Provincial Transit Advisor",
-    title: "Ministry of Transportation Ontario",
-    image: "/assets/mainPage/QuotesImages/DSC_4553 (1).jpg",
-  },
-  {
-    quote: "We're proud to partner with a homegrown Ontario company that listens to municipalities, designs around real rider needs, and delivers measurable outcomes for our communities. SCOOTY has set a high bar for what shared mobility partnerships should look like.",
-    name: "Director of Mobility & Transit",
-    title: "City Partner, Ontario",
-    image: "/assets/mainPage/QuotesImages/DSC_1837.jpg",
-  },
-  {
-    quote: "Connecting our downtown core, our transit hubs, and our neighbourhoods has always been a priority. SCOOTY brings the technology, the operational discipline, and the local insight to make multi-modal commuting truly work for residents and visitors alike.",
-    name: "Mobility Program Lead",
-    title: "City of Markham",
-    image: "/assets/mainPage/QuotesImages/2024MarkhamOVINScootyDemo-048.jpg",
-  },
-  {
-    quote: "Affordable, reliable, and zero-emission transportation options are essential to the future of our region. SCOOTY's approach — rooted in partnership and built on Ontario expertise — is helping us deliver on those goals every day.",
-    name: "Economic Development Lead",
-    title: "City of Brampton",
-    image: "/assets/mainPage/QuotesImages/City Hall Group Shot - Brampton Launch Photo (2).JPG",
   },
 ];
 
@@ -150,13 +61,15 @@ const QuoteTextCard = ({
   className?: string;
 }) => {
   const s = textCardStyles[styleIdx];
+  // styleIdx 0 is the yellow card — a white ring is invisible on it, so use black.
+  const ringColor = styleIdx === 0 ? 'focus-visible:ring-black' : 'focus-visible:ring-white';
   return (
     <motion.button
       initial={{ opacity: 0, y: 24 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.55, delay: 0.08 + i * 0.09, ease: REVEAL_EASE }}
       onClick={onClick}
-      className={`relative rounded-2xl p-5 sm:p-7 flex flex-col justify-between text-left cursor-pointer group h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 ${s.bg} ${className}`}
+      className={`relative rounded-2xl p-5 sm:p-7 flex flex-col justify-between text-left cursor-pointer group h-full focus:outline-none focus-visible:ring-2 ${ringColor} ${s.bg} ${className}`}
       whileHover={{ y: -3 }}
       whileTap={{ scale: 0.985 }}
     >
@@ -196,7 +109,7 @@ const QuoteImageCard = ({
     animate={inView ? { opacity: 1, scale: 1 } : {}}
     transition={{ duration: 0.6, delay: 0.08 + i * 0.09, ease: REVEAL_EASE }}
     onClick={onClick}
-    className={`relative rounded-2xl overflow-hidden group cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FEC001] h-full w-full ${className}`}
+    className={`relative rounded-2xl overflow-hidden group cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FEC001] focus-visible:ring-offset-2 focus-visible:ring-offset-black h-full w-full ${className}`}
     whileHover={{ y: -3 }}
     whileTap={{ scale: 0.985 }}
   >
@@ -291,36 +204,32 @@ const QuotesScroller = ({
   );
 };
 
-const AnimatedCounter = ({ target, suffix }: { target: number; suffix: string }) => {
-  const [count, setCount] = useState(0);
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const ref = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated) {
-          setHasAnimated(true);
-          const duration = 1800;
-          const startTime = performance.now();
-          const animate = (currentTime: number) => {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            setCount(Math.floor(eased * target));
-            if (progress < 1) requestAnimationFrame(animate);
-          };
-          requestAnimationFrame(animate);
-        }
-      },
-      { threshold: 0.5 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [target, hasAnimated]);
-
-  return <span ref={ref}>{count}{suffix}</span>;
-};
+const caseStudies = [
+  {
+    city: 'Brampton, ON',
+    slug: 'brampton',
+    image: 'https://images.pexels.com/photos/1006965/pexels-photo-1006965.jpeg?auto=compress&cs=tinysrgb&w=600',
+    rides: '2.1M rides served',
+    emissions: '4,200 tons CO₂ saved',
+    highlight: 'Reduced average commute time by 18%',
+  },
+  {
+    city: 'Barrie, ON',
+    slug: 'barrie',
+    image: 'https://images.pexels.com/photos/2614818/pexels-photo-2614818.jpeg?auto=compress&cs=tinysrgb&w=600',
+    rides: '1.5M rides served',
+    emissions: '3,100 tons CO₂ saved',
+    highlight: 'Fleet utilization increased by 35%',
+  },
+  {
+    city: 'Metrolinx',
+    slug: 'metrolinx',
+    image: 'https://images.pexels.com/photos/3278015/pexels-photo-3278015.jpeg?auto=compress&cs=tinysrgb&w=600',
+    rides: 'GTHA-wide integration',
+    emissions: 'First & last-mile transit',
+    highlight: 'Proud partners innovating transit across Ontario',
+  },
+];
 
 export const Projects = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.08 });
@@ -568,7 +477,7 @@ export const Projects = () => {
                 <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/75" />
                 <button
                   onClick={() => setSelectedQuote(null)}
-                  className="absolute top-4 right-4 w-8 h-8 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-colors"
+                  className="absolute top-4 right-4 w-8 h-8 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FEC001] transition-colors"
                   aria-label="Close"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -591,7 +500,7 @@ export const Projects = () => {
                 <div className="flex items-center justify-between mt-8 pt-5 border-t border-gray-100 dark:border-white/[0.07]">
                   <button
                     onClick={() => setSelectedQuote((selectedQuote - 1 + governmentQuotes.length) % governmentQuotes.length)}
-                    className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-[#FEC001] transition-colors duration-200"
+                    className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-[#FEC001] rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FEC001] transition-colors duration-200"
                   >
                     <ChevronLeft className="w-4 h-4" /> Previous
                   </button>
@@ -600,7 +509,7 @@ export const Projects = () => {
                   </span>
                   <button
                     onClick={() => setSelectedQuote((selectedQuote + 1) % governmentQuotes.length)}
-                    className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-[#FEC001] transition-colors duration-200"
+                    className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-[#FEC001] rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FEC001] transition-colors duration-200"
                   >
                     Next <ChevronRight className="w-4 h-4" />
                   </button>
