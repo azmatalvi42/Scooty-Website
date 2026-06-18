@@ -114,7 +114,7 @@ const partnerSolutions = [
     icon: Building2,
     title: 'Cities',
     subtitle: 'Municipal Programs',
-    image: '/assets/Partners/brampton-partnership.JPG',
+    image: '/assets/Partners/brampton-partnership.webp',
     description:
       'Work with a Canadian mobility provider that understands how municipalities operate. SCOOTY collaborates closely with city teams to design programs aligned with transportation strategies, sustainability goals, and urban planning initiatives.',
     features: [
@@ -133,7 +133,7 @@ const partnerSolutions = [
     icon: Briefcase,
     title: 'Businesses',
     subtitle: 'Commercial Partners',
-    image: '/assets/Partners/partners-carousel-business.jpg',
+    image: '/assets/Partners/partners-carousel-business.webp',
     description:
       'Shared mobility can become a competitive advantage. By integrating micromobility into retail, commercial, and mixed-use developments, businesses can attract more visitors, improve accessibility, and enhance customer experiences.',
     features: [
@@ -151,7 +151,7 @@ const partnerSolutions = [
     icon: GraduationCap,
     title: 'Transit',
     subtitle: 'Academic Programs',
-    image: 'https://images.pexels.com/photos/1462009/pexels-photo-1462009.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: '/assets/Partners/transit.webp',
     description:
       'SCOOTY provides turnkey micromobility programs designed for academic environments. Our solutions combine vehicles, software, operations, and research opportunities that support campus mobility needs.',
     features: [
@@ -169,7 +169,7 @@ const partnerSolutions = [
     icon: Home,
     title: 'Developers',
     subtitle: 'Real Estate & Development',
-    image: '/assets/Partners/partners-carousel-developer.png',
+    image: '/assets/Partners/developers.webp',
     description:
       'Build communities designed for the future of transportation. SCOOTY helps developers create connected neighborhoods where residents can live, work, and move sustainably.',
     features: [
@@ -192,7 +192,7 @@ const locations = [
     launched: 'April 2023',
     status: 'active',
     vehicles: ['E-Scooters'],
-    image: '/assets/Partners/cities-brampton.png',
+    image: '/assets/Partners/cities-brampton.webp',
     highlights: [
       'Service area covering the entire city',
       'Riding on roads ≤ 50 km/h',
@@ -206,7 +206,7 @@ const locations = [
     launched: 'June 2024',
     status: 'active',
     vehicles: ['E-Bikes'],
-    image: '/assets/Partners/cities-barrie.png',
+    image: '/assets/Partners/cities-barrie.webp',
     highlights: [
       'Waterfront service area',
       'Riding permitted on local trails',
@@ -219,7 +219,7 @@ const locations = [
     launched: 'August 2024',
     status: 'active',
     vehicles: ['E-Scooters', 'E-Bikes'],
-    image: '/assets/Partners/cities-markham-2.jpg',
+    image: '/assets/Partners/cities-markham-2.webp',
     highlights: [
       'Riding on roads ≤ 50 km/h',
       'Designated parking zones',
@@ -232,7 +232,7 @@ const locations = [
     launched: 'June 2025',
     status: 'active',
     vehicles: ['E-Scooters'],
-    image: '/assets/Partners/cities-burlington.png',
+    image: '/assets/Partners/cities-burlington.webp',
     highlights: [
       '7 km trail corridor',
       'Designated parking zones',
@@ -264,7 +264,7 @@ const proudPartners = [
   },
   {
     name: 'City of Markham',
-    img: '/assets/Partners/Marquee/markham-logo.jpg',
+    img: '/assets/Partners/Marquee/markham-logo.webp',
     abbr: 'MKM',
     tagline: 'Municipality Partner',
     accent: '#00509E',
@@ -273,7 +273,7 @@ const proudPartners = [
   },
   {
     name: 'Metrolinx',
-    img: '/assets/Partners/Marquee/metrolinx-logo.jpg',
+    img: '/assets/Partners/Marquee/metrolinx-logo.webp',
     abbr: 'MLX',
     tagline: 'Transit Partner',
     accent: '#006E51',
@@ -282,7 +282,7 @@ const proudPartners = [
   },
   {
     name: 'City of Barrie',
-    img: '/assets/Partners/Marquee/barrie-logo.jpg',
+    img: '/assets/Partners/Marquee/barrie-logo.webp',
     abbr: 'BRR',
     tagline: 'Municipality Partner',
     accent: '#1A4A7A',
@@ -291,7 +291,7 @@ const proudPartners = [
   },
   {
     name: 'City of Burlington',
-    img: '/assets/Partners/Marquee/burlington-logo.png',
+    img: '/assets/Partners/Marquee/burlington-logo.webp',
     abbr: 'BRL',
     tagline: 'Municipality Partner',
     accent: '#006B3C',
@@ -300,7 +300,7 @@ const proudPartners = [
   },
   {
     name: 'TMU',
-    img: '/assets/Partners/Marquee/tmu-logo.jpg',
+    img: '/assets/Partners/Marquee/tmu-logo.webp',
     abbr: 'TMU',
     tagline: 'Academic Partner',
     accent: '#002B5C',
@@ -433,7 +433,7 @@ export const PartnersPage = () => {
       <section className="relative z-10 overflow-hidden">
         {/* Background image */}
         <img
-          src="/assets/Partners/partner-img.jpg"
+          src="/assets/Partners/partner-img.webp"
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
           fetchPriority="high"

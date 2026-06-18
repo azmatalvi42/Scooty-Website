@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
@@ -21,6 +21,7 @@ import {
   UserCheck,
   ListChecks,
   Sparkles,
+  ArrowDown,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -45,9 +46,9 @@ const TABS: RiderTab[] = [
     icon: Rocket,
     label: 'Getting Started',
     slug: 'getting-started',
-    subtitle: 'Start your first ride',
-    description: 'Download the app, create an account, and unlock your first SCOOTY ride within seconds.',
-    features: ['Download App', 'Create Account', 'Find Vehicles', 'Scan & Ride'],
+    subtitle: 'Set up in minutes',
+    description: 'Get set up in minutes. Download the SCOOTY app, create your account, and add a payment method — then you are ready to ride.',
+    features: ['Download the SCOOTY app', 'Create your account', 'Add a payment method'],
     highlights: [
       { value: '2 min', label: 'Setup time', icon: Timer },
       { value: '16+', label: 'Age required', icon: UserCheck },
@@ -65,7 +66,7 @@ const TABS: RiderTab[] = [
       { value: '5', label: 'Easy Steps', icon: ListChecks },
       { value: 'Beginner', label: 'Friendly', icon: Sparkles },
     ],
-    image: '/assets/Riders/Carousel/riders-carousel-ride.png',
+    image: '/assets/Riders/Carousel/riders-carousel-ride.webp',
   },
   {
     icon: MapPin,
@@ -84,7 +85,7 @@ const TABS: RiderTab[] = [
     highlights: [
       { value: '20 km/h', label: 'Max speed', icon: Gauge },
     ],
-    image: '/assets/Riders/Carousel/riders-carousel-map.png',
+    image: '/assets/Riders/Carousel/riders-carousel-map.webp',
   },
   {
     icon: ParkingSquare,
@@ -96,7 +97,7 @@ const TABS: RiderTab[] = [
     highlights: [
       { value: 'Free Parking', label: 'At Designated Zones', icon: ParkingSquare },
     ],
-    image: '/assets/Riders/Carousel/riders-carousel-parking.png',
+    image: '/assets/Riders/Carousel/riders-carousel-parking.webp',
   },
   {
     icon: Shield,
@@ -113,7 +114,7 @@ const TABS: RiderTab[] = [
       'Follow local riding rules',
     ],
     highlights: [],
-    image: '/assets/Riders/Carousel/riders-carousel-safety.png',
+    image: '/assets/Riders/Carousel/riders-carousel-safety.webp',
   },
   {
     icon: Bike,
@@ -140,7 +141,7 @@ const TABS: RiderTab[] = [
       { value: '20 KM/H', label: 'Top speed', icon: Gauge },
       { value: 'GPS tracked', label: '', icon: Satellite },
     ],
-    image: '/assets/Riders/Carousel/riders-carousel-vehicles.png',
+    image: '/assets/Riders/Carousel/riders-carousel-vehicles.webp',
   },
 ];
 
@@ -161,15 +162,38 @@ export const RidersPage = () => {
   const isGettingStarted = current.slug === 'getting-started';
   const showHelmet = isGettingStarted || current.slug === 'how-to-ride' || current.slug === 'where-to-ride';
 
+  const stepsRef = useRef<HTMLElement>(null);
+  const scrollToSteps = () =>
+    stepsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  const [showScrollHint, setShowScrollHint] = useState(false);
+  useEffect(() => {
+    const onScroll = () => {
+      const el = stepsRef.current;
+      if (!el) return;
+      const top = el.getBoundingClientRect().top;
+      // Show from page load; hide only once the steps section comes into view.
+      setShowScrollHint(top > window.innerHeight * 0.55);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-white dark:bg-black">
       {/* Hero + Tab nav — share one background image */}
       <section className="relative overflow-hidden">
         {/* Background image */}
         <img
-          src="/assets/Riders/riders-page-hero.png"
-          alt=""
+          src="/assets/Riders/riders-page-hero.webp"
+          alt="A SCOOTY rider on an e-scooter in the city"
           className="absolute inset-0 w-full h-full object-cover"
+          style={{ objectPosition: 'center 18%' }}
           fetchPriority="high"
           loading="eager"
           decoding="async"
@@ -306,7 +330,7 @@ export const RidersPage = () => {
                 {/* Top accent */}
                 <div className="h-1 w-full bg-gradient-to-r from-primary-500 via-primary-400 to-primary-500/30" />
 
-                <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px]">
+                <div className={`grid grid-cols-1 ${current.slug === 'where-to-ride' ? 'lg:grid-cols-[1fr_560px]' : 'lg:grid-cols-[1fr_420px]'}`}>
                   {/* Left — Text */}
                   <div className="p-7 sm:p-9 lg:p-12 flex flex-col justify-center">
 
@@ -438,13 +462,23 @@ export const RidersPage = () => {
 
                     {/* CTA */}
                     <div>
-                      <Link
-                        to={`/riders/${current.slug}`}
-                        className="group inline-flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-black rounded-full text-sm font-semibold hover:bg-primary-400 transition-all duration-300 w-fit shadow-md shadow-primary-500/25 hover:shadow-lg hover:shadow-primary-500/35"
-                      >
-                        <span>Learn More</span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </Link>
+                      {current.slug === 'how-to-ride' ? (
+                        <button
+                          onClick={scrollToSteps}
+                          className="group inline-flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-black rounded-full text-sm font-semibold hover:bg-primary-400 transition-all duration-300 w-fit shadow-md shadow-primary-500/25 hover:shadow-lg hover:shadow-primary-500/35"
+                        >
+                          <span>See the steps</span>
+                          <ArrowDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
+                        </button>
+                      ) : (
+                        <Link
+                          to={`/riders/${current.slug}`}
+                          className="group inline-flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-black rounded-full text-sm font-semibold hover:bg-primary-400 transition-all duration-300 w-fit shadow-md shadow-primary-500/25 hover:shadow-lg hover:shadow-primary-500/35"
+                        >
+                          <span>Learn More</span>
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                      )}
                     </div>
                   </div>
 
@@ -456,9 +490,36 @@ export const RidersPage = () => {
                     object-cover — a centered subject in a square source avoids awkward
                     crops at any breakpoint. Export PNG/WebP at ~150–250 KB.
                   */}
-                  <div className="relative overflow-hidden min-h-[240px] sm:min-h-[300px] lg:min-h-0 rounded-b-3xl lg:rounded-b-none lg:rounded-r-3xl">
+                  <div className={`relative overflow-hidden rounded-b-3xl lg:rounded-b-none lg:rounded-r-3xl ${current.slug === 'where-to-ride' ? 'min-h-[300px] sm:min-h-[380px] lg:min-h-0' : 'min-h-[240px] sm:min-h-[300px] lg:min-h-0'}`}>
                     {current.slug === 'where-to-ride' ? (
-                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/25 via-yellow-500/10 to-transparent flex flex-col items-center justify-center p-8 text-center">
+                      <div className="absolute inset-0 bg-black">
+                        <video
+                          src="/assets/video/ride-arcs.mp4"
+                          poster="/assets/video/ride-arcs-poster.jpg"
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          preload="metadata"
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                        {/* Cinematic overlays */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 lg:bg-gradient-to-l lg:from-transparent lg:via-transparent lg:to-yellow-950/40" />
+                        <div className="absolute inset-0 ring-1 ring-inset ring-primary-500/30" />
+                        {/* Live badge */}
+                        <div className="absolute top-4 left-4 flex items-center gap-2 bg-black/55 backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1.5 rounded-full border border-primary-400/40">
+                          <span className="relative flex h-2 w-2">
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-400 opacity-75" />
+                            <span className="relative inline-flex h-2 w-2 rounded-full bg-primary-500" />
+                          </span>
+                          Live ride arcs · Brampton
+                        </div>
+                      </div>
+                    ) : current.slug === 'how-to-ride' ? (
+                      <button
+                        onClick={scrollToSteps}
+                        className="group absolute inset-0 w-full bg-gradient-to-br from-yellow-500/25 via-yellow-500/10 to-transparent flex flex-col items-center justify-center p-8 text-center"
+                      >
                         <div
                           className="absolute inset-0 opacity-[0.08]"
                           style={{
@@ -467,16 +528,16 @@ export const RidersPage = () => {
                             backgroundSize: '40px 40px',
                           }}
                         />
-                        <div className="relative w-16 h-16 rounded-2xl bg-primary-500/15 border border-primary-500/30 flex items-center justify-center mb-4">
-                          <MapPin className="w-8 h-8 text-primary-500" />
+                        <div className="relative w-16 h-16 rounded-2xl bg-primary-500/15 border border-primary-500/30 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                          <ArrowDown className="w-8 h-8 text-primary-500 animate-bounce" />
                         </div>
                         <p className="relative text-base font-bold font-display text-gray-800 dark:text-white">
-                          Riding Zone Map
+                          See how it works
                         </p>
                         <p className="relative text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-[260px]">
-                          Live map coming soon. Check the SCOOTY app for current zones.
+                          Scroll down for the full step-by-step ride guide.
                         </p>
-                      </div>
+                      </button>
                     ) : (
                       <>
                         <img
@@ -518,6 +579,75 @@ export const RidersPage = () => {
           </div>
         </div>
       </section>
+
+      {/* ── How to Ride — step by step (surfaced on the main page) ── */}
+      <section
+        ref={stepsRef}
+        id="how-to-ride-steps"
+        className="relative py-16 sm:py-20 bg-gray-50 dark:bg-navy-900 scroll-mt-24"
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-10 sm:mb-14"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-500/10 border border-primary-500/30 mb-4">
+              <ListChecks className="w-4 h-4 text-primary-600 dark:text-primary-400" />
+              <span className="text-xs font-bold tracking-widest uppercase text-primary-600 dark:text-primary-400">
+                How to Ride
+              </span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white mb-4 tracking-tight">
+              Ride in <span className="text-primary-500">simple steps</span>
+            </h2>
+            <p className="text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+              Scan, unlock, and ride. Everything you need to know before your first trip.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {[1, 2, 3, 4, 5, 6].map((n, i) => (
+              <motion.div
+                key={n}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.45, delay: i * 0.06 }}
+                className="overflow-hidden rounded-2xl border border-gray-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.03] shadow-sm"
+              >
+                <img
+                  src={`/assets/Riders/HowToRide/how-to-ride-${n}.webp`}
+                  alt={`How to ride a SCOOTY — step ${n}`}
+                  className="w-full h-auto block"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Floating quick-scroll to the how-to-ride steps */}
+      <AnimatePresence>
+        {showScrollHint && (
+          <motion.button
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            transition={{ duration: 0.25 }}
+            onClick={scrollToSteps}
+            className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-primary-500 text-black font-bold text-sm shadow-xl shadow-primary-500/30 hover:bg-primary-400 transition-colors"
+            aria-label="Jump to how to ride steps"
+          >
+            <span>How to ride</span>
+            <ArrowDown className="w-4 h-4 animate-bounce" />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

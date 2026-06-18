@@ -50,7 +50,7 @@ export const POSTS: Post[] = [
     "readTime": "4 min read",
     "date": "Jun 2, 2026",
     "author": "City Team",
-    "image": "/assets/mainPage/our-solutions-carousel/toronto-skyline.png",
+    "image": "/assets/mainPage/our-solutions-carousel/toronto-skyline.webp",
     "featured": true,
     "body": [
       {
@@ -131,7 +131,7 @@ export const POSTS: Post[] = [
     "readTime": "3 min read",
     "date": "May 28, 2026",
     "author": "Rider Experience",
-    "image": "/assets/Riders/Carousel/riders-carousel-parking.png",
+    "image": "/assets/Riders/Carousel/riders-carousel-parking.webp",
     "body": [
       {
         "type": "paragraph",
@@ -215,7 +215,7 @@ export const POSTS: Post[] = [
     "readTime": "2 min read",
     "date": "May 24, 2026",
     "author": "Safety Team",
-    "image": "/assets/Riders/Carousel/riders-carousel-safety.png",
+    "image": "/assets/Riders/Carousel/riders-carousel-safety.webp",
     "body": [
       {
         "type": "paragraph",
@@ -299,7 +299,7 @@ export const POSTS: Post[] = [
     "readTime": "5 min read",
     "date": "May 19, 2026",
     "author": "Operations",
-    "image": "/assets/Riders/Carousel/riders-carousel-vehicles.png",
+    "image": "/assets/Riders/Carousel/riders-carousel-vehicles.webp",
     "body": [
       {
         "type": "paragraph",
@@ -384,7 +384,7 @@ export const POSTS: Post[] = [
     "readTime": "4 min read",
     "date": "May 15, 2026",
     "author": "City Team",
-    "image": "/assets/Cities/Burlington/burlington-hero.png",
+    "image": "/assets/Cities/Burlington/burlington-hero.webp",
     "body": [
       {
         "type": "paragraph",
@@ -459,7 +459,7 @@ export const POSTS: Post[] = [
     "readTime": "3 min read",
     "date": "May 11, 2026",
     "author": "SCOOTY Editorial",
-    "image": "/assets/Riders/Carousel/riders-carousel-map.png",
+    "image": "/assets/Riders/Carousel/riders-carousel-map.webp",
     "body": [
       {
         "type": "paragraph",
@@ -543,7 +543,7 @@ export const POSTS: Post[] = [
     "readTime": "3 min read",
     "date": "May 6, 2026",
     "author": "City Team",
-    "image": "/assets/Riders/Carousel/riders-carousel-ride.png",
+    "image": "/assets/Riders/Carousel/riders-carousel-ride.webp",
     "body": [
       {
         "type": "paragraph",
@@ -631,7 +631,7 @@ export const POSTS: Post[] = [
     "readTime": "4 min read",
     "date": "May 1, 2026",
     "author": "Rider Experience",
-    "image": "/assets/Cities/Markham/markham-hero.png",
+    "image": "/assets/Cities/Markham/markham-hero.webp",
     "body": [
       {
         "type": "paragraph",

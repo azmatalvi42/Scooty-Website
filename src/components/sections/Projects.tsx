@@ -208,7 +208,7 @@ const caseStudies = [
   {
     city: 'Brampton, ON',
     slug: 'brampton',
-    image: 'https://images.pexels.com/photos/1006965/pexels-photo-1006965.jpeg?auto=compress&cs=tinysrgb&w=600',
+    image: '/assets/Partners/cities-brampton.webp',
     rides: '2.1M rides served',
     emissions: '4,200 tons CO₂ saved',
     highlight: 'Reduced average commute time by 18%',
@@ -216,7 +216,7 @@ const caseStudies = [
   {
     city: 'Barrie, ON',
     slug: 'barrie',
-    image: 'https://images.pexels.com/photos/2614818/pexels-photo-2614818.jpeg?auto=compress&cs=tinysrgb&w=600',
+    image: '/assets/Partners/cities-barrie.webp',
     rides: '1.5M rides served',
     emissions: '3,100 tons CO₂ saved',
     highlight: 'Fleet utilization increased by 35%',
@@ -224,7 +224,7 @@ const caseStudies = [
   {
     city: 'Metrolinx',
     slug: 'metrolinx',
-    image: 'https://images.pexels.com/photos/3278015/pexels-photo-3278015.jpeg?auto=compress&cs=tinysrgb&w=600',
+    image: '/assets/Partners/transit.webp',
     rides: 'GTHA-wide integration',
     emissions: 'First & last-mile transit',
     highlight: 'Proud partners innovating transit across Ontario',

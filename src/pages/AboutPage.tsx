@@ -43,7 +43,7 @@ const TABS = [
       { value: '2023', label: 'Founded', icon: Calendar },
       { value: '100%', label: 'Canadian', icon: Flag },
     ] as { value: string; label: string; icon: LucideIcon }[],
-    image: '/assets/mainPage/QuotesImages/DSC_1837.jpg',
+    image: '/assets/About/team-award.webp',
   },
   {
     icon: Zap,
@@ -62,7 +62,7 @@ const TABS = [
       { value: '3', label: 'Core Products', icon: Zap },
       { value: '5+', label: 'Cities Served', icon: MapPin },
     ] as { value: string; label: string; icon: LucideIcon }[],
-    image: '/assets/mainPage/QuotesImages/2024MarkhamOVINScootyDemo-048.jpg',
+    image: '/assets/mainPage/QuotesImages/2024MarkhamOVINScootyDemo-048.webp',
   },
   {
     icon: Flag,
@@ -81,7 +81,7 @@ const TABS = [
       { value: 'Ontario', label: 'Home Base', icon: Home },
       { value: 'Canada', label: 'Born & Built', icon: Flag },
     ] as { value: string; label: string; icon: LucideIcon }[],
-    image: '/assets/mainPage/QuotesImages/City Hall Group Shot - Brampton Launch Photo (2).JPG',
+    image: '/assets/mainPage/QuotesImages/City Hall Group Shot - Brampton Launch Photo (2).webp',
   },
   {
     icon: Globe,
@@ -101,7 +101,7 @@ const TABS = [
       { value: '5', label: 'Platforms', icon: Globe },
       { value: 'Daily', label: 'Updates', icon: Clock },
     ] as { value: string; label: string; icon: LucideIcon }[],
-    image: '/assets/Partners/brampton-partnership.JPG',
+    image: '/assets/mainPage/QuotesImages/DSC_4553 (1).webp',
   },
 ];
 
@@ -180,9 +180,9 @@ const socials = [
 
 const MapleLeaf = ({ className = '' }: { className?: string }) => (
   <img
-    src="/assets/About/maple-leafs.png"
+    src="/assets/About/maple-leafs.webp"
     alt="Maple leaf"
-    className={`${className} object-contain`}
+    className={`${className} object-cover object-left`}
     loading="lazy"
     decoding="async"
   />
@@ -213,14 +213,16 @@ export const AboutPage = () => {
       {/* ── HERO + TAB NAV ── */}
       <section className="relative overflow-hidden">
         {/* Background image */}
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/8/8a/The_Game_%28Unsplash%29.jpg"
-          alt=""
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/assets/video/about-aerial-poster.webp"
           className="absolute inset-0 w-full h-full object-cover object-center"
-          fetchPriority="high"
-          loading="eager"
-          decoding="async"
-        />
+        >
+          <source src="/assets/video/about-aerial.mp4" type="video/mp4" />
+        </video>
         {/* Overlay — very light tint so the drone shot stays vivid */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-gray-50 dark:to-navy-900" />
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/50 to-transparent" />
@@ -488,7 +490,7 @@ export const AboutPage = () => {
       </section>
 
       {/* ── MADE IN CANADA ── */}
-      <section ref={canadaRef} className="py-24 bg-black relative overflow-hidden">
+      <section ref={canadaRef} className="pt-24 pb-12 bg-black relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.04]"
           style={{
             backgroundImage: 'radial-gradient(circle, rgba(234,179,8,0.8) 1px, transparent 1px)',
@@ -507,7 +509,7 @@ export const AboutPage = () => {
           >
             <div className="relative">
               <div className="absolute inset-0 bg-red-600/20 rounded-full blur-2xl scale-150" />
-              <MapleLeaf className="relative w-100 h-20 text-red-500" />
+              <MapleLeaf className="relative w-16 h-16" />
             </div>
           </motion.div>
 
@@ -543,10 +545,10 @@ export const AboutPage = () => {
             initial={{ opacity: 0, scaleX: 0 }}
             animate={canadaInView ? { opacity: 1, scaleX: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.7 }}
-            className="flex items-center justify-center mx-auto w-150 h-80 rounded-lg overflow-hidden mb-12 shadow-lg"
+            className="flex items-center justify-center mx-auto w-72 h-72 rounded-lg overflow-hidden shadow-lg"
           >
             <img
-              src="/assets/About/canada-mask.png"
+              src="/assets/About/canada-mask.webp"
               alt="Canadian flag"
               className="w-full h-full object-contain"
               loading="lazy"

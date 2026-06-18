@@ -8,7 +8,7 @@ const solutions = [
     title: 'SCOOTY On-Demand Mobility',
     description:
       'Improving the reach of regional transit by resolving the first-and-last-km service gap through on-demand mobility (Transit to Your Doorstep\u00ae).',
-    image: '/assets/mainPage/our-solutions-carousel/Gemini_Generated_Image_tnpy9stnpy9stnpy.png',
+    image: '/assets/mainPage/our-solutions-carousel/on-demand-mobility.webp',
     tag: 'Micromobility',
     accent: '#FEC001',
   },
@@ -16,7 +16,7 @@ const solutions = [
     title: 'SCOOTY PAY',
     description:
       'Integrated, secure, and scalable payment processing API for transit fare ticketing and 3rd party mobility services.',
-    image: 'https://images.pexels.com/photos/4386431/pexels-photo-4386431.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    image: '/assets/mainPage/our-solutions-carousel/scooty-pay.webp',
     tag: 'Payments',
     accent: '#01FEC0',
   },
@@ -24,7 +24,7 @@ const solutions = [
     title: 'SCOOTY AI RideGuide',
     description:
       'Using conversational AI, real-time service updates, dynamic routing and customer support to enhance the daily transit commuting experience.',
-    image: '/assets/mainPage/our-solutions-carousel/ai-ride-guide.png',
+    image: '/assets/mainPage/our-solutions-carousel/ai-ride-guide.webp',
     tag: 'AI RideGuide',
     accent: '#01BDFE',
   },

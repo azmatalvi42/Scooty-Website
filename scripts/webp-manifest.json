@@ -1,0 +1,226 @@
+[
+  {
+    "from": "/assets/About/canada-mask.png",
+    "to": "/assets/About/canada-mask.webp"
+  },
+  {
+    "from": "/assets/About/maple-leafs.png",
+    "to": "/assets/About/maple-leafs.webp"
+  },
+  {
+    "from": "/assets/About/team-award.jpg",
+    "to": "/assets/About/team-award.webp"
+  },
+  {
+    "from": "/assets/Cities/Barrie/barrie-hero.jpg",
+    "to": "/assets/Cities/Barrie/barrie-hero.webp"
+  },
+  {
+    "from": "/assets/Cities/Barrie/barrie-mayor.jpg",
+    "to": "/assets/Cities/Barrie/barrie-mayor.webp"
+  },
+  {
+    "from": "/assets/Cities/Brampton/brampton-bbq.jpg",
+    "to": "/assets/Cities/Brampton/brampton-bbq.webp"
+  },
+  {
+    "from": "/assets/Cities/Brampton/brampton-cityhall.JPG",
+    "to": "/assets/Cities/Brampton/brampton-cityhall.webp"
+  },
+  {
+    "from": "/assets/Cities/Brampton/brampton-hero.jpg",
+    "to": "/assets/Cities/Brampton/brampton-hero.webp"
+  },
+  {
+    "from": "/assets/Cities/Brampton/brampton-mascot.jpg",
+    "to": "/assets/Cities/Brampton/brampton-mascot.webp"
+  },
+  {
+    "from": "/assets/Cities/Burlington/burlington-hero.jpg",
+    "to": "/assets/Cities/Burlington/burlington-hero.webp"
+  },
+  {
+    "from": "/assets/Cities/Burlington/burlington-rider.jpg",
+    "to": "/assets/Cities/Burlington/burlington-rider.webp"
+  },
+  {
+    "from": "/assets/Cities/Burlington/burlington-scooters.jpg",
+    "to": "/assets/Cities/Burlington/burlington-scooters.webp"
+  },
+  {
+    "from": "/assets/Cities/Markham/markham-ebikes.jpg",
+    "to": "/assets/Cities/Markham/markham-ebikes.webp"
+  },
+  {
+    "from": "/assets/Cities/Markham/markham-helmet.jpg",
+    "to": "/assets/Cities/Markham/markham-helmet.webp"
+  },
+  {
+    "from": "/assets/Cities/Markham/markham-hero.jpg",
+    "to": "/assets/Cities/Markham/markham-hero.webp"
+  },
+  {
+    "from": "/assets/Cities/Markham/markham-mayor.jpg",
+    "to": "/assets/Cities/Markham/markham-mayor.webp"
+  },
+  {
+    "from": "/assets/Cities/Markham/markham-mayorspeech.jpg",
+    "to": "/assets/Cities/Markham/markham-mayorspeech.webp"
+  },
+  {
+    "from": "/assets/Partners/Marquee/barrie-logo.jpg",
+    "to": "/assets/Partners/Marquee/barrie-logo.webp"
+  },
+  {
+    "from": "/assets/Partners/Marquee/burlington-logo.png",
+    "to": "/assets/Partners/Marquee/burlington-logo.webp"
+  },
+  {
+    "from": "/assets/Partners/Marquee/markham-logo.jpg",
+    "to": "/assets/Partners/Marquee/markham-logo.webp"
+  },
+  {
+    "from": "/assets/Partners/Marquee/metrolinx-logo.jpg",
+    "to": "/assets/Partners/Marquee/metrolinx-logo.webp"
+  },
+  {
+    "from": "/assets/Partners/Marquee/otu-logo.png",
+    "to": "/assets/Partners/Marquee/otu-logo.webp"
+  },
+  {
+    "from": "/assets/Partners/Marquee/tmu-logo.jpg",
+    "to": "/assets/Partners/Marquee/tmu-logo.webp"
+  },
+  {
+    "from": "/assets/Partners/brampton-partnership.JPG",
+    "to": "/assets/Partners/brampton-partnership.webp"
+  },
+  {
+    "from": "/assets/Partners/cities-barrie.jpg",
+    "to": "/assets/Partners/cities-barrie.webp"
+  },
+  {
+    "from": "/assets/Partners/cities-brampton.jpg",
+    "to": "/assets/Partners/cities-brampton.webp"
+  },
+  {
+    "from": "/assets/Partners/cities-burlington.jpg",
+    "to": "/assets/Partners/cities-burlington.webp"
+  },
+  {
+    "from": "/assets/Partners/cities-markham-2.jpg",
+    "to": "/assets/Partners/cities-markham-2.webp"
+  },
+  {
+    "from": "/assets/Partners/developers.jpg",
+    "to": "/assets/Partners/developers.webp"
+  },
+  {
+    "from": "/assets/Partners/partner-img.jpg",
+    "to": "/assets/Partners/partner-img.webp"
+  },
+  {
+    "from": "/assets/Partners/partners-carousel-business.jpg",
+    "to": "/assets/Partners/partners-carousel-business.webp"
+  },
+  {
+    "from": "/assets/Partners/transit.jpg",
+    "to": "/assets/Partners/transit.webp"
+  },
+  {
+    "from": "/assets/Riders/Carousel/riders-carousel-map.jpg",
+    "to": "/assets/Riders/Carousel/riders-carousel-map.webp"
+  },
+  {
+    "from": "/assets/Riders/Carousel/riders-carousel-parking.jpg",
+    "to": "/assets/Riders/Carousel/riders-carousel-parking.webp"
+  },
+  {
+    "from": "/assets/Riders/Carousel/riders-carousel-ride.jpg",
+    "to": "/assets/Riders/Carousel/riders-carousel-ride.webp"
+  },
+  {
+    "from": "/assets/Riders/Carousel/riders-carousel-safety.jpg",
+    "to": "/assets/Riders/Carousel/riders-carousel-safety.webp"
+  },
+  {
+    "from": "/assets/Riders/Carousel/riders-carousel-vehicles.jpg",
+    "to": "/assets/Riders/Carousel/riders-carousel-vehicles.webp"
+  },
+  {
+    "from": "/assets/Riders/HowToRide/how-to-ride-1.jpg",
+    "to": "/assets/Riders/HowToRide/how-to-ride-1.webp"
+  },
+  {
+    "from": "/assets/Riders/HowToRide/how-to-ride-2.jpg",
+    "to": "/assets/Riders/HowToRide/how-to-ride-2.webp"
+  },
+  {
+    "from": "/assets/Riders/HowToRide/how-to-ride-3.jpg",
+    "to": "/assets/Riders/HowToRide/how-to-ride-3.webp"
+  },
+  {
+    "from": "/assets/Riders/HowToRide/how-to-ride-4.jpg",
+    "to": "/assets/Riders/HowToRide/how-to-ride-4.webp"
+  },
+  {
+    "from": "/assets/Riders/HowToRide/how-to-ride-5.jpg",
+    "to": "/assets/Riders/HowToRide/how-to-ride-5.webp"
+  },
+  {
+    "from": "/assets/Riders/HowToRide/how-to-ride-6.jpg",
+    "to": "/assets/Riders/HowToRide/how-to-ride-6.webp"
+  },
+  {
+    "from": "/assets/Riders/riders-page-hero.jpg",
+    "to": "/assets/Riders/riders-page-hero.webp"
+  },
+  {
+    "from": "/assets/mainPage/QuotesImages/2024MarkhamOVINScootyDemo-048.jpg",
+    "to": "/assets/mainPage/QuotesImages/2024MarkhamOVINScootyDemo-048.webp"
+  },
+  {
+    "from": "/assets/mainPage/QuotesImages/City Hall Group Shot - Brampton Launch Photo (2).JPG",
+    "to": "/assets/mainPage/QuotesImages/City Hall Group Shot - Brampton Launch Photo (2).webp"
+  },
+  {
+    "from": "/assets/mainPage/QuotesImages/DSC_1837.jpg",
+    "to": "/assets/mainPage/QuotesImages/DSC_1837.webp"
+  },
+  {
+    "from": "/assets/mainPage/QuotesImages/DSC_4516.jpg",
+    "to": "/assets/mainPage/QuotesImages/DSC_4516.webp"
+  },
+  {
+    "from": "/assets/mainPage/QuotesImages/DSC_4553 (1).jpg",
+    "to": "/assets/mainPage/QuotesImages/DSC_4553 (1).webp"
+  },
+  {
+    "from": "/assets/mainPage/main-pg-riders.jpg",
+    "to": "/assets/mainPage/main-pg-riders.webp"
+  },
+  {
+    "from": "/assets/mainPage/our-solutions-carousel/ai-ride-guide.jpg",
+    "to": "/assets/mainPage/our-solutions-carousel/ai-ride-guide.webp"
+  },
+  {
+    "from": "/assets/mainPage/our-solutions-carousel/on-demand-mobility.jpg",
+    "to": "/assets/mainPage/our-solutions-carousel/on-demand-mobility.webp"
+  },
+  {
+    "from": "/assets/mainPage/our-solutions-carousel/toronto-skyline.jpg",
+    "to": "/assets/mainPage/our-solutions-carousel/toronto-skyline.webp"
+  },
+  {
+    "from": "/assets/scooty-logo-tm.png",
+    "to": "/assets/scooty-logo-tm.webp"
+  },
+  {
+    "from": "/assets/video/about-aerial-poster.jpg",
+    "to": "/assets/video/about-aerial-poster.webp"
+  },
+  {
+    "from": "/assets/video/hero-ride-poster.jpg",
+    "to": "/assets/video/hero-ride-poster.webp"
+  }
+]

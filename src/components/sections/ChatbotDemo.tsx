@@ -140,7 +140,7 @@ export const ChatbotDemo = () => {
             {/* Main image card */}
             <div className="relative w-full max-w-md rounded-3xl overflow-hidden shadow-2xl border border-gray-150 dark:border-white/[0.06]">
               <img
-                src="/assets/mainPage/main-pg-riders.png"
+                src="/assets/mainPage/main-pg-riders.webp"
                 alt="SCOOTY rider"
                 className="w-full h-[220px] sm:h-[340px] md:h-[420px] ls:h-[180px] object-cover"
                 loading="lazy"

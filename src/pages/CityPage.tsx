@@ -63,22 +63,22 @@ const cityData: Record<string, {
     tagline: 'Where it all started — city-wide micromobility in one of Canada\'s fastest-growing cities.',
     overview:
       'Our first Ontario deployment, and the foundation of SCOOTY\'s Canadian story. Brampton proved that micromobility can serve entire cities — not just downtown cores.',
-    heroImage: '/assets/Cities/Brampton/brampton-hero.png',
+    heroImage: '/assets/Cities/Brampton/brampton-hero.webp',
     heroPosition: 'center',
     heroObjectPosition: 'center calc(50% - 170px)',
     gallery: [
       {
-        src: '/assets/Cities/Brampton/brampton-cityhall.JPG',
+        src: '/assets/Cities/Brampton/brampton-cityhall.webp',
         title: 'Brampton City Hall',
         caption: 'Where the partnership began — civic launch with the City of Brampton.',
       },
       {
-        src: '/assets/Cities/Brampton/brampton-bbq.png',
+        src: '/assets/Cities/Brampton/brampton-bbq.webp',
         title: 'In the Community',
         caption: 'Showing up at neighbourhood events and street fairs.',
       },
       {
-        src: '/assets/Cities/Brampton/brampton-mascot.png',
+        src: '/assets/Cities/Brampton/brampton-mascot.webp',
         title: 'Built for Brampton',
         caption: 'The SCOOTY mascot — a local face for a local program.',
       },
@@ -131,11 +131,11 @@ const cityData: Record<string, {
     tagline: 'Waterfront e-bike adventures along Barrie\'s stunning Georgian Bay shoreline.',
     overview:
       'E-bikes for Barrie\'s lakeside trails and Centennial Park — a clean, fun way to explore Kempenfelt Bay and the waterfront.',
-    heroImage: '/assets/Cities/Barrie/barrie-hero.png',
+    heroImage: '/assets/Cities/Barrie/barrie-hero.webp',
     heroPosition: 'center',
     gallery: [
       {
-        src: '/assets/Cities/Barrie/barrie-mayor.png',
+        src: '/assets/Cities/Barrie/barrie-mayor.webp',
         title: 'Partnership in Action',
         caption: 'Out on the trails with City of Barrie leadership — a program built shoulder-to-shoulder with the community.',
       },
@@ -189,24 +189,29 @@ const cityData: Record<string, {
     tagline: 'Connecting Downtown Markham\'s innovation district with sustainable urban mobility.',
     overview:
       'Our only Ontario program with both e-scooters and e-bikes — serving Markham\'s tech corridor, downtown, and YRT/Viva transit network.',
-    heroImage: '/assets/Cities/Markham/markham-hero.png',
+    heroImage: '/assets/Cities/Markham/markham-hero.webp',
     heroPosition: 'center',
     heroObjectPosition: 'center calc(50% - 90px)',
     gallery: [
       {
-        src: '/assets/Cities/Markham/markham-mayor.jpg',
+        src: '/assets/Cities/Markham/markham-mayor.webp',
         title: 'Riding with the Mayor',
         caption: 'Markham\'s leadership riding alongside SCOOTY at the city launch.',
       },
       {
-        src: '/assets/Cities/Markham/markham-mayorspeech.png',
+        src: '/assets/Cities/Markham/markham-mayorspeech.webp',
         title: 'Launch Day',
         caption: 'Officially live at markham.ca — a partnership built around Markham\'s Smart City vision.',
       },
       {
-        src: '/assets/Cities/Markham/markham-helmet.jpg',
+        src: '/assets/Cities/Markham/markham-helmet.webp',
         title: 'Built for Safety',
         caption: 'SCOOTY helmets and dual-vehicle fleet — e-scooters and e-bikes side-by-side.',
+      },
+      {
+        src: '/assets/Cities/Markham/markham-ebikes.webp',
+        title: 'Dual-Vehicle Fleet',
+        caption: 'SCOOTY\'s Markham program runs both e-scooters and Canadian-built e-bikes from a single app.',
       },
     ],
     vehicles: ['E-Scooters', 'E-Bikes'],
@@ -258,17 +263,17 @@ const cityData: Record<string, {
     tagline: 'Seven kilometres of trail access connecting Burlington\'s communities sustainably.',
     overview:
       'E-scooters along Burlington\'s 7 km Centennial Trail — a clean, emission-free way to move through the city.',
-    heroImage: '/assets/Cities/Burlington/burlington-hero.png',
+    heroImage: '/assets/Cities/Burlington/burlington-hero.webp',
     heroPosition: 'center',
     heroObjectPosition: 'center calc(50% - 60px)',
     gallery: [
       {
-        src: '/assets/Cities/Burlington/burlington-rider.png',
+        src: '/assets/Cities/Burlington/burlington-rider.webp',
         title: 'On the Trail',
         caption: 'Cruising through downtown Burlington on the Centennial Trail corridor.',
       },
       {
-        src: '/assets/Cities/Burlington/burlington-scooters.png',
+        src: '/assets/Cities/Burlington/burlington-scooters.webp',
         title: 'Designated Parking',
         caption: '17 designated parking zones keep the fleet organized across the corridor.',
       },
@@ -322,8 +327,7 @@ const cityData: Record<string, {
     tagline: 'Proud partners with Metrolinx, innovating transit across the Greater Toronto and Hamilton Area.',
     overview:
       'SCOOTY is proud to partner with Metrolinx — the Crown agency responsible for regional transit across the Greater Toronto and Hamilton Area — to help reimagine how people connect to and from the GO Transit network. Our partnership focuses on closing the first-and-last-mile gap that prevents riders from choosing transit over the car. By integrating SCOOTY\'s on-demand micromobility and AI-powered RideGuide technology with Metrolinx\'s regional network, we are making it easier than ever for commuters across Ontario to choose sustainable, connected transit.',
-    heroImage:
-      'https://images.pexels.com/photos/3278015/pexels-photo-3278015.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    heroImage: '/assets/Partners/transit.webp',
     vehicles: ['E-Scooters', 'E-Bikes'],
     stats: [
       { label: 'Partner Type', value: 'Transit Agency' },

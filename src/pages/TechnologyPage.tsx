@@ -584,8 +584,8 @@ export const TechnologyPage = () => {
       <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
         <motion.div style={{ y: heroY }} className="absolute inset-0">
           <img
-            src="https://images.pexels.com/photos/1031698/pexels-photo-1031698.jpeg?auto=compress&cs=tinysrgb&w=1920"
-            alt=""
+            src="/assets/mainPage/our-solutions-carousel/toronto-skyline.webp"
+            alt="Toronto city skyline at dusk"
             className="w-full h-full object-cover"
             fetchPriority="high"
             loading="eager"

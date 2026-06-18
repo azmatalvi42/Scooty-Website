@@ -13,11 +13,11 @@ export const Hero = () => {
         muted
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ willChange: 'transform' }}
+        poster="/assets/video/hero-ride-poster.webp"
+        className="absolute inset-0 w-full h-full object-cover object-bottom"
+        style={{ willChange: 'transform', transform: 'scale(1.35) translateY(-12%)' }}
       >
-        <source src="https://videos.pexels.com/video-files/5321794/5321794-hd_1920_1080_25fps.mp4" type="video/mp4" />
-        <source src="https://videos.pexels.com/video-files/1851190/1851190-hd_1920_1080_25fps.mp4" type="video/mp4" />
+        <source src="/assets/video/hero-ride.mp4" type="video/mp4" />
       </video>
 
       {/* ── Layered overlays ── */}

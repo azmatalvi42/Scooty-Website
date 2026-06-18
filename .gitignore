@@ -23,3 +23,19 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# Raw source media dropped in repo root — optimized versions live in public/assets/.
+# Kept out of git (the two DJI clips alone are ~1.3 GB).
+/*.MP4
+/*.mp4
+/*.mov
+/*.MOV
+/DJI_*.MP4
+/DJI_*.mp4
+/2024MarkhamOVINScootyDemo-*.jpg
+/Scooty_Pay.png
+/developers.jpg
+/transit.jpeg
+
+# Generated audit output (Playwright screenshots)
+/playwright-audit/

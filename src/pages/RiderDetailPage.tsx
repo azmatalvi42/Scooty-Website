@@ -93,24 +93,6 @@ const GettingStartedContent = () => (
   </div>
 );
 
-const HowToRideContent = () => (
-  <div>
-    <Important>For first time riders, learn how to ride before your first trip</Important>
-    <StepList
-      steps={[
-        'Find a SCOOTY near you on the map in the SCOOTY app.',
-        'Scan the QR code to unlock and to start a SCOOTY ride, or type the vehicle ID number into the app.',
-        'Put your helmet on.',
-        'Holding the vehicle firmly, push the vehicle forward to flick the kickstand back.',
-        'To start the vehicle, push forward to gain momentum. Start pedalling (e-bike) or use the throttle (e-scooter) to increase the speed.',
-        'When riding, follow local laws and rules; be aware of geofencing (no riding/no-parking, slow-speed zones).',
-        'Use the app to find a designated parking zone. Park the vehicle properly and pull it up on the kickstand.',
-        'Swipe right in the app screen to end your ride; upload a photo of the SCOOTY vehicle, properly parked.',
-      ]}
-    />
-  </div>
-);
-
 const WhereToRideContent = () => (
   <div>
     <Important>Check the map in the SCOOTY app to see the different riding zones</Important>
@@ -253,7 +235,6 @@ const VehiclesContent = () => (
 
 const CONTENT_MAP: Record<string, { title: string; content: JSX.Element }> = {
   'getting-started': { title: 'Getting Started', content: <GettingStartedContent /> },
-  'how-to-ride': { title: 'How to Ride', content: <HowToRideContent /> },
   'where-to-ride': { title: 'Where to Ride', content: <WhereToRideContent /> },
   'parking': { title: 'Parking', content: <ParkingContent /> },
   'safety': { title: 'Safety', content: <SafetyContent /> },

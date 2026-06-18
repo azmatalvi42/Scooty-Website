@@ -135,7 +135,7 @@ export const Navbar = () => {
             <motion.div className="flex items-center gap-2.5" whileHover={{ scale: 1.01 }}>
               <Link to="/" className="flex items-center">
                 <img
-                  src="/assets/scooty-logo-tm.png"
+                  src="/assets/scooty-logo-tm.webp"
                   alt="SCOOTY"
                   className="h-10 sm:h-12 w-auto"
                   fetchPriority="high"
