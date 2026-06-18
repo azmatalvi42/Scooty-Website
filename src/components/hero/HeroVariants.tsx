@@ -220,25 +220,17 @@ export function HeroOverCity() {
           initial={{ opacity: 0, y: 34 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-[520px]"
+          className="max-w-[520px] pt-8"
         >
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-[7px] rounded-full bg-white/10 backdrop-blur-sm border border-white/15 mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FEC001] animate-pulse" />
-            <span className="text-white text-[11px] font-bold tracking-[0.1em] uppercase">
-              Live in 5+ Canadian cities
-            </span>
-          </div>
-
           {/* Headline */}
-          <h1 className="text-[clamp(48px,6.5vw,86px)] font-black font-display tracking-[-0.03em] text-white leading-[0.90]">
-            Power how<br />
-            cities <span className="text-[#FEC001]">move.</span>
+          <h1 className="text-[clamp(48px,6.5vw,88px)] font-black font-display tracking-[-0.03em] text-white leading-[0.92]">
+            Where Mobility<br />
+            <span className="text-[#FEC001]">Meets Intelligence</span>
           </h1>
 
           {/* Sub */}
-          <p className="mt-6 text-[15px] sm:text-lg text-white/52 max-w-[340px] leading-[1.65]">
-            First & last-mile micromobility — closing the gap between transit and your door.
+          <p className="mt-6 text-base sm:text-xl text-white/65 max-w-[400px] leading-relaxed font-display font-bold">
+            <span className="text-white">We're on a mission to </span>power how cities move people.
           </p>
 
           {/* CTAs */}
