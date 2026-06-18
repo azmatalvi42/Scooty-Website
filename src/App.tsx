@@ -30,11 +30,6 @@ import { NetworkCanvas } from './components/ui/NetworkCanvas';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
-import { Hero } from './components/sections/Hero';
-import { Services } from './components/sections/Services';
-import { Projects } from './components/sections/Projects';
-import { About } from './components/sections/About';
-import { ChatbotDemo } from './components/sections/ChatbotDemo';
 import { RidersPage } from './pages/RidersPage';
 import { RiderDetailPage } from './pages/RiderDetailPage';
 import { PartnersPage } from './pages/PartnersPage';
@@ -43,15 +38,9 @@ import { CityPage } from './pages/CityPage';
 import { AboutPage } from './pages/AboutPage';
 import { RideLogPage } from './pages/RideLogPage';
 import { BlogPostPage } from './pages/BlogPostPage';
-const HomePage = () => (
-  <>
-    <Hero />
-    <Services />
-    <ChatbotDemo />
-    <Projects />
-    <About />
-  </>
-);
+import { Demo3DPage } from './pages/Demo3DPage';
+import { HeroLabPage } from './pages/HeroLabPage';
+import { HomePage } from './pages/HomePage';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -89,6 +78,8 @@ function App() {
               <Route path="/blog" element={<RideLogPage />} />
               <Route path="/blog/:slug" element={<BlogPostPage />} />
               <Route path="/about" element={<AboutPage />} />
+              <Route path="/demo-3d" element={<Demo3DPage />} />
+              <Route path="/hero-lab" element={<HeroLabPage />} />
 
               <Route path="*" element={
                 <div className="min-h-screen bg-gray-50 dark:bg-black pt-20 flex items-center justify-center">
