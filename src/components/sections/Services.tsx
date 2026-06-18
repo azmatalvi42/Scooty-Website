@@ -13,11 +13,11 @@ const solutions = [
     accent: '#FEC001',
   },
   {
-    title: 'SCOOTY PAY',
+    title: 'PatchForce',
     description:
-      'Integrated, secure, and scalable payment processing API for transit fare ticketing and 3rd party mobility services.',
+      'Integrated transit payment infrastructure and open API — connecting fare ticketing seamlessly across every mode of your journey.',
     image: '/assets/mainPage/our-solutions-carousel/scooty-pay.webp',
-    tag: 'Payments',
+    tag: 'Transit Payments',
     accent: '#01FEC0',
   },
   {

@@ -203,7 +203,7 @@ const PayVisual = () => {
   const [txs, setTxs] = useState<Tx[]>([
     { id: 1, label: 'GO Train — Union to Brampton', amount: '-$4.20', time: 'Today 8:42 AM', icon: Bus },
     { id: 2, label: 'SCOOTY Ride — 2.1 km', amount: '-$1.80', time: 'Today 8:30 AM', icon: Zap },
-    { id: 3, label: 'SCOOTY PAY Top-Up', amount: '+$25.00', time: 'Yesterday', icon: RefreshCw },
+    { id: 3, label: 'PatchForce Top-Up', amount: '+$25.00', time: 'Yesterday', icon: RefreshCw },
   ]);
   const [tapPing, setTapPing] = useState(0);
   const idCounter = useRef(100);
@@ -229,7 +229,7 @@ const PayVisual = () => {
     idCounter.current += 1;
     const newTx: Tx = {
       id: idCounter.current,
-      label: 'SCOOTY PAY Top-Up',
+      label: 'PatchForce Top-Up',
       amount: '+$25.00',
       time: 'Just now',
       icon: RefreshCw,
@@ -277,7 +277,7 @@ const PayVisual = () => {
 
           <div className="absolute top-4 left-5 right-5 bottom-4 flex flex-col justify-between">
             <div className="flex items-center justify-between">
-              <div className="text-primary-400 font-bold text-sm tracking-widest">SCOOTY PAY</div>
+              <div className="text-primary-400 font-bold text-sm tracking-widest">PatchForce</div>
               <CreditCard className="w-5 h-5 text-primary-500/60" />
             </div>
             <div>
@@ -377,7 +377,7 @@ const PROMPTS = [
   {
     id: 'cost',
     text: 'How much will my commute cost?',
-    reply: 'Estimated $6.00 total: $1.80 SCOOTY + $4.20 GO Train. SCOOTY PAY can cover both in one tap.',
+    reply: 'Estimated $6.00 total: $1.80 SCOOTY + $4.20 GO Train. PatchForce can cover both in one tap.',
   },
   {
     id: 'time',
@@ -725,7 +725,7 @@ export const TechnologyPage = () => {
         </div>
       </section>
 
-      {/* ── PRODUCT 2: SCOOTY PAY ── */}
+      {/* ── PRODUCT 2: PatchForce ── */}
       <section id="pay" ref={s2Ref} className="relative py-28 bg-gray-950 overflow-hidden">
         <div
           className="absolute inset-0 opacity-[0.025]"

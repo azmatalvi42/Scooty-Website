@@ -35,7 +35,7 @@ const TABS = [
       'SCOOTY is a Canadian mobility company delivering safe, sustainable, and intelligent transportation solutions to cities, campuses, businesses, and communities across Ontario.',
     features: [
       'On-Demand Mobility platform',
-      'SCOOTY PAY integrated payments',
+      'PatchForce integrated payments',
       'AI RideGuide commuter assistant',
       'Active in 5+ Ontario cities',
     ],
