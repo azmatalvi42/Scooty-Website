@@ -1,80 +1,36 @@
+import { MobilityNetwork } from '../ui/mobility/MobilityNetwork';
 import { motion } from 'framer-motion';
-import { ArrowDown, ArrowRight } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
 
 const EASING: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 export const Hero = () => {
   return (
-    <section id="home" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
+    <section id="home" className="editorial-hero relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
 
-      {/* ── Video background ── */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ willChange: 'transform' }}
-      >
-        <source src="https://videos.pexels.com/video-files/5321794/5321794-hd_1920_1080_25fps.mp4" type="video/mp4" />
-        <source src="https://videos.pexels.com/video-files/1851190/1851190-hd_1920_1080_25fps.mp4" type="video/mp4" />
-      </video>
-
-      {/* ── Layered overlays ── */}
-      <div className="absolute inset-0 bg-black/65" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/15 to-black/55" />
-      <div className="absolute bottom-0 left-0 right-0 h-56 bg-gradient-to-t from-black to-transparent" />
-
-      {/* ── Foggy gradient beneath text (stronger localized darkening for legibility over the city) ── */}
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(ellipse 90% 75% at 50% 50%, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0) 70%)',
-          filter: 'blur(40px)',
-        }}
-      />
-
-      {/* ── Subtle brand grid ── */}
-      <div
-        className="absolute inset-0 opacity-[0.018]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(254,192,1,1) 1px, transparent 1px), linear-gradient(90deg, rgba(254,192,1,1) 1px, transparent 1px)',
-          backgroundSize: '80px 80px',
-        }}
-      />
-
+      {/* Full-width animated city behind the headline panel. */}
+      <MobilityNetwork />
 
       {/* ── Main content ── */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
+      <div className="editorial-hero-copy relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="space-y-6 sm:space-y-8"
+          className="editorial-hero-panel space-y-6 sm:space-y-8"
         >
 
           {/* Headline */}
           <motion.h1
-            initial={{ opacity: 0, x: -32 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.75, delay: 0.18, ease: EASING }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.08, ease: EASING }}
             className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] font-bold font-display leading-[1.02] tracking-tight"
           >
             <span className="block text-white">Where Mobility</span>
             <span className="block text-[#FEC001]">Meets Intelligence</span>
           </motion.h1>
 
-          {/* ── CTA buttons ── */}
-          <motion.div
-            initial={{ opacity: 0, x: -24 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.65, delay: 0.44, ease: EASING }}
-            className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-1"
-          >
-          </motion.div>
           <p className="text-2xl text-primary-400 font-display tracking-wide font-bold pt-4 sm:pt-6">
             <span className="text-white">We’re on a mission to  </span>power how cities move people.
           </p>
@@ -86,13 +42,11 @@ export const Hero = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.8 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+        transition={{ delay: 0.3, duration: 0.4 }}
+        className="editorial-hero-scroll absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
       >
         <motion.button
-          animate={{ y: [0, 7, 0] }}
-          transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
-          onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+          onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })}
           className="flex flex-col items-center gap-2 group cursor-pointer"
           aria-label="Scroll to solutions"
         >

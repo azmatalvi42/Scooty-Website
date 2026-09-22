@@ -1,3 +1,5 @@
+import { SiteImage } from '../components/ui/SiteImage';
+import { imageProps } from '../data/imageProps';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -463,7 +465,8 @@ export const CityPage = () => {
       {/* ── HERO ── */}
       <section ref={heroSectionRef} className="relative h-[80vh] min-h-[560px] flex items-end overflow-hidden">
         <motion.img
-          src={data.heroImage}
+          {...imageProps(data.heroImage)}
+          sizes="100vw"
           alt={data.name}
           style={{
             y: heroImgY,
@@ -656,7 +659,7 @@ export const CityPage = () => {
                       max={6}
                       className="group relative w-full h-full rounded-3xl overflow-hidden border border-white/10 cursor-pointer shadow-xl shadow-black/40 hover:shadow-primary-500/20 transition-shadow duration-500"
                     >
-                      <img
+                      <SiteImage
                         src={g.src}
                         alt={g.title}
                         className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
@@ -960,8 +963,10 @@ export const CityPage = () => {
               onClick={(e) => e.stopPropagation()}
               className="relative max-w-5xl w-full max-h-[88vh] flex flex-col items-center gap-4"
             >
-              <img
+              <SiteImage
                 src={data.gallery[lightboxIdx].src}
+                sizes="(max-width: 1024px) 100vw, 1024px"
+                loading="eager"
                 alt={data.gallery[lightboxIdx].title}
                 className="max-w-full max-h-[72vh] w-auto h-auto object-contain rounded-2xl shadow-2xl"
               />

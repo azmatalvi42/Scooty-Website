@@ -1,3 +1,4 @@
+import { SiteImage } from '../components/ui/SiteImage';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -151,7 +152,7 @@ const partnerSolutions = [
     icon: GraduationCap,
     title: 'Transit',
     subtitle: 'Academic Programs',
-    image: 'https://images.pexels.com/photos/1462009/pexels-photo-1462009.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: '/assets/Cities/Burlington/burlington-hero.png',
     description:
       'SCOOTY provides turnkey micromobility programs designed for academic environments. Our solutions combine vehicles, software, operations, and research opportunities that support campus mobility needs.',
     features: [
@@ -169,7 +170,7 @@ const partnerSolutions = [
     icon: Home,
     title: 'Developers',
     subtitle: 'Real Estate & Development',
-    image: '/assets/Partners/partners-carousel-developer.png',
+    image: '/assets/Cities/Brampton/brampton-hero.png',
     description:
       'Build communities designed for the future of transportation. SCOOTY helps developers create connected neighborhoods where residents can live, work, and move sustainably.',
     features: [
@@ -375,7 +376,7 @@ const ProudPartnersMarquee = () => {
             >
               {/* Logo */}
               <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex-shrink-0 overflow-hidden bg-white flex items-center justify-center">
-                <img
+                <SiteImage
                   src={partner.img}
                   alt={partner.name}
                   className="w-full h-full object-contain p-1"
@@ -432,10 +433,11 @@ export const PartnersPage = () => {
       {/* ── HERO + TAB NAV ── */}
       <section className="relative z-10 overflow-hidden">
         {/* Background image */}
-        <img
+        <SiteImage
           src="/assets/Partners/partner-img.jpg"
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
+          sizes="100vw"
           fetchPriority="high"
           loading="eager"
           decoding="async"
@@ -639,7 +641,7 @@ export const PartnersPage = () => {
 
                     {/* Right — Image */}
                     <div className="relative overflow-hidden min-h-[240px] sm:min-h-[300px] lg:min-h-0 rounded-b-3xl lg:rounded-b-none lg:rounded-r-3xl">
-                      <img
+                      <SiteImage
                         src={current.image}
                         alt={current.title}
                         className="absolute inset-0 w-full h-full object-cover"
@@ -835,7 +837,7 @@ export const PartnersPage = () => {
                 transition={{ duration: 0.6, delay: index * 0.12 }}
                 className="group relative rounded-3xl overflow-hidden h-72 cursor-pointer"
               >
-                <img
+                <SiteImage
                   src={loc.image}
                   alt={loc.city}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"

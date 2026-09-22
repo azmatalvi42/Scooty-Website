@@ -1,3 +1,20 @@
+# Image improvements — September 2026
+
+The site now uses `SiteImage` and `src/data/image-manifest.json` to serve responsive WebP copies (480, 960, 1600, and 2400px, capped at source width). Original assets are preserved. Rebuild exports with `python3 scripts/optimize-images.py` (requires Pillow). Layouts retain control of cropping; exports retain the complete source composition and apply EXIF orientation.
+
+- Home solutions use real Burlington riding photography and two local, scalable product concept illustrations.
+- Home city cards use local Scooty photography instead of generic stock scenes.
+- About uses Scooty community photography; partner panels use real deployments.
+- Page heroes request full-viewport image candidates; the city lightbox requests up to its 1024px display width.
+- The home video has a local photo poster for loading and unavailable video states.
+- Technology had an existing in-progress edit and was left untouched.
+
+The 57 source assets total 152.6 MB; their largest WebP variants total 12.7 MB (91.6% smaller). This is an asset comparison, not a measured page-load improvement. Originals remain in public for compatibility; total deployment size is not reduced.
+
+The reference audit below predates these changes; original paths and file sizes describe the source library, not what `SiteImage` now delivers.
+
+---
+
 # Image Dimension & Optimization Guide
 
 A per-image guide to the optimal export dimensions, format, and file-size targets for every image on the Scooty website, for the best experience across all devices.

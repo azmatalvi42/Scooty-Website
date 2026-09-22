@@ -1,0 +1,344 @@
+{
+  "/assets/About/canada-mask.png": {
+    "src": "/assets/optimized/assets-about-canada-mask-1080.webp",
+    "srcSet": "/assets/optimized/assets-about-canada-mask-480.webp 480w, /assets/optimized/assets-about-canada-mask-960.webp 960w, /assets/optimized/assets-about-canada-mask-1080.webp 1080w",
+    "width": 1080,
+    "height": 1080
+  },
+  "/assets/About/maple-leafs.png": {
+    "src": "/assets/optimized/assets-about-maple-leafs-1080.webp",
+    "srcSet": "/assets/optimized/assets-about-maple-leafs-480.webp 480w, /assets/optimized/assets-about-maple-leafs-960.webp 960w, /assets/optimized/assets-about-maple-leafs-1080.webp 1080w",
+    "width": 1080,
+    "height": 100
+  },
+  "/assets/Cities/Barrie/barrie-hero.png": {
+    "src": "/assets/optimized/assets-cities-barrie-barrie-hero-1254.webp",
+    "srcSet": "/assets/optimized/assets-cities-barrie-barrie-hero-480.webp 480w, /assets/optimized/assets-cities-barrie-barrie-hero-960.webp 960w, /assets/optimized/assets-cities-barrie-barrie-hero-1254.webp 1254w",
+    "width": 1254,
+    "height": 1254
+  },
+  "/assets/Cities/Barrie/barrie-mayor.png": {
+    "src": "/assets/optimized/assets-cities-barrie-barrie-mayor-1122.webp",
+    "srcSet": "/assets/optimized/assets-cities-barrie-barrie-mayor-480.webp 480w, /assets/optimized/assets-cities-barrie-barrie-mayor-960.webp 960w, /assets/optimized/assets-cities-barrie-barrie-mayor-1122.webp 1122w",
+    "width": 1122,
+    "height": 1402
+  },
+  "/assets/Cities/Brampton/brampton-bbq.png": {
+    "src": "/assets/optimized/assets-cities-brampton-brampton-bbq-1448.webp",
+    "srcSet": "/assets/optimized/assets-cities-brampton-brampton-bbq-480.webp 480w, /assets/optimized/assets-cities-brampton-brampton-bbq-960.webp 960w, /assets/optimized/assets-cities-brampton-brampton-bbq-1448.webp 1448w",
+    "width": 1448,
+    "height": 1086
+  },
+  "/assets/Cities/Brampton/brampton-cityhall.JPG": {
+    "src": "/assets/optimized/assets-cities-brampton-brampton-cityhall-2400.webp",
+    "srcSet": "/assets/optimized/assets-cities-brampton-brampton-cityhall-480.webp 480w, /assets/optimized/assets-cities-brampton-brampton-cityhall-960.webp 960w, /assets/optimized/assets-cities-brampton-brampton-cityhall-1600.webp 1600w, /assets/optimized/assets-cities-brampton-brampton-cityhall-2400.webp 2400w",
+    "width": 3456,
+    "height": 2304
+  },
+  "/assets/Cities/Brampton/brampton-hero.png": {
+    "src": "/assets/optimized/assets-cities-brampton-brampton-hero-1672.webp",
+    "srcSet": "/assets/optimized/assets-cities-brampton-brampton-hero-480.webp 480w, /assets/optimized/assets-cities-brampton-brampton-hero-960.webp 960w, /assets/optimized/assets-cities-brampton-brampton-hero-1600.webp 1600w, /assets/optimized/assets-cities-brampton-brampton-hero-1672.webp 1672w",
+    "width": 1672,
+    "height": 941
+  },
+  "/assets/Cities/Brampton/brampton-mascot.png": {
+    "src": "/assets/optimized/assets-cities-brampton-brampton-mascot-1448.webp",
+    "srcSet": "/assets/optimized/assets-cities-brampton-brampton-mascot-480.webp 480w, /assets/optimized/assets-cities-brampton-brampton-mascot-960.webp 960w, /assets/optimized/assets-cities-brampton-brampton-mascot-1448.webp 1448w",
+    "width": 1448,
+    "height": 1086
+  },
+  "/assets/Cities/Burlington/burlington-hero.png": {
+    "src": "/assets/optimized/assets-cities-burlington-burlington-hero-1537.webp",
+    "srcSet": "/assets/optimized/assets-cities-burlington-burlington-hero-480.webp 480w, /assets/optimized/assets-cities-burlington-burlington-hero-960.webp 960w, /assets/optimized/assets-cities-burlington-burlington-hero-1537.webp 1537w",
+    "width": 1537,
+    "height": 1023
+  },
+  "/assets/Cities/Burlington/burlington-rider.png": {
+    "src": "/assets/optimized/assets-cities-burlington-burlington-rider-1536.webp",
+    "srcSet": "/assets/optimized/assets-cities-burlington-burlington-rider-480.webp 480w, /assets/optimized/assets-cities-burlington-burlington-rider-960.webp 960w, /assets/optimized/assets-cities-burlington-burlington-rider-1536.webp 1536w",
+    "width": 1536,
+    "height": 1024
+  },
+  "/assets/Cities/Burlington/burlington-scooters.png": {
+    "src": "/assets/optimized/assets-cities-burlington-burlington-scooters-1254.webp",
+    "srcSet": "/assets/optimized/assets-cities-burlington-burlington-scooters-480.webp 480w, /assets/optimized/assets-cities-burlington-burlington-scooters-960.webp 960w, /assets/optimized/assets-cities-burlington-burlington-scooters-1254.webp 1254w",
+    "width": 1254,
+    "height": 1254
+  },
+  "/assets/Cities/Markham/markham-helmet.jpg": {
+    "src": "/assets/optimized/assets-cities-markham-markham-helmet-2400.webp",
+    "srcSet": "/assets/optimized/assets-cities-markham-markham-helmet-480.webp 480w, /assets/optimized/assets-cities-markham-markham-helmet-960.webp 960w, /assets/optimized/assets-cities-markham-markham-helmet-1600.webp 1600w, /assets/optimized/assets-cities-markham-markham-helmet-2400.webp 2400w",
+    "width": 4096,
+    "height": 2730
+  },
+  "/assets/Cities/Markham/markham-hero.png": {
+    "src": "/assets/optimized/assets-cities-markham-markham-hero-1672.webp",
+    "srcSet": "/assets/optimized/assets-cities-markham-markham-hero-480.webp 480w, /assets/optimized/assets-cities-markham-markham-hero-960.webp 960w, /assets/optimized/assets-cities-markham-markham-hero-1600.webp 1600w, /assets/optimized/assets-cities-markham-markham-hero-1672.webp 1672w",
+    "width": 1672,
+    "height": 941
+  },
+  "/assets/Cities/Markham/markham-mayor.jpg": {
+    "src": "/assets/optimized/assets-cities-markham-markham-mayor-2400.webp",
+    "srcSet": "/assets/optimized/assets-cities-markham-markham-mayor-480.webp 480w, /assets/optimized/assets-cities-markham-markham-mayor-960.webp 960w, /assets/optimized/assets-cities-markham-markham-mayor-1600.webp 1600w, /assets/optimized/assets-cities-markham-markham-mayor-2400.webp 2400w",
+    "width": 4096,
+    "height": 2730
+  },
+  "/assets/Cities/Markham/markham-mayorspeech.png": {
+    "src": "/assets/optimized/assets-cities-markham-markham-mayorspeech-1537.webp",
+    "srcSet": "/assets/optimized/assets-cities-markham-markham-mayorspeech-480.webp 480w, /assets/optimized/assets-cities-markham-markham-mayorspeech-960.webp 960w, /assets/optimized/assets-cities-markham-markham-mayorspeech-1537.webp 1537w",
+    "width": 1537,
+    "height": 1023
+  },
+  "/assets/Partners/DSC02478.JPG": {
+    "src": "/assets/optimized/assets-partners-dsc02478-2400.webp",
+    "srcSet": "/assets/optimized/assets-partners-dsc02478-480.webp 480w, /assets/optimized/assets-partners-dsc02478-960.webp 960w, /assets/optimized/assets-partners-dsc02478-1600.webp 1600w, /assets/optimized/assets-partners-dsc02478-2400.webp 2400w",
+    "width": 4128,
+    "height": 6192
+  },
+  "/assets/Partners/Marquee/barrie-logo.jpg": {
+    "src": "/assets/optimized/assets-partners-marquee-barrie-logo-371.webp",
+    "srcSet": "/assets/optimized/assets-partners-marquee-barrie-logo-371.webp 371w",
+    "width": 371,
+    "height": 139
+  },
+  "/assets/Partners/Marquee/brampton.webp": {
+    "src": "/assets/optimized/assets-partners-marquee-brampton-240.webp",
+    "srcSet": "/assets/optimized/assets-partners-marquee-brampton-240.webp 240w",
+    "width": 240,
+    "height": 333
+  },
+  "/assets/Partners/Marquee/burlington-logo.png": {
+    "src": "/assets/optimized/assets-partners-marquee-burlington-logo-654.webp",
+    "srcSet": "/assets/optimized/assets-partners-marquee-burlington-logo-480.webp 480w, /assets/optimized/assets-partners-marquee-burlington-logo-654.webp 654w",
+    "width": 654,
+    "height": 170
+  },
+  "/assets/Partners/Marquee/markham-logo.jpg": {
+    "src": "/assets/optimized/assets-partners-marquee-markham-logo-900.webp",
+    "srcSet": "/assets/optimized/assets-partners-marquee-markham-logo-480.webp 480w, /assets/optimized/assets-partners-marquee-markham-logo-900.webp 900w",
+    "width": 900,
+    "height": 900
+  },
+  "/assets/Partners/Marquee/metrolinx-logo.jpg": {
+    "src": "/assets/optimized/assets-partners-marquee-metrolinx-logo-1200.webp",
+    "srcSet": "/assets/optimized/assets-partners-marquee-metrolinx-logo-480.webp 480w, /assets/optimized/assets-partners-marquee-metrolinx-logo-960.webp 960w, /assets/optimized/assets-partners-marquee-metrolinx-logo-1200.webp 1200w",
+    "width": 1200,
+    "height": 213
+  },
+  "/assets/Partners/Marquee/otu-logo.webp": {
+    "src": "/assets/optimized/assets-partners-marquee-otu-logo-1920.webp",
+    "srcSet": "/assets/optimized/assets-partners-marquee-otu-logo-480.webp 480w, /assets/optimized/assets-partners-marquee-otu-logo-960.webp 960w, /assets/optimized/assets-partners-marquee-otu-logo-1600.webp 1600w, /assets/optimized/assets-partners-marquee-otu-logo-1920.webp 1920w",
+    "width": 1920,
+    "height": 1080
+  },
+  "/assets/Partners/Marquee/tmu-logo.jpg": {
+    "src": "/assets/optimized/assets-partners-marquee-tmu-logo-600.webp",
+    "srcSet": "/assets/optimized/assets-partners-marquee-tmu-logo-480.webp 480w, /assets/optimized/assets-partners-marquee-tmu-logo-600.webp 600w",
+    "width": 600,
+    "height": 450
+  },
+  "/assets/Partners/brampton-partnership.JPG": {
+    "src": "/assets/optimized/assets-partners-brampton-partnership-2400.webp",
+    "srcSet": "/assets/optimized/assets-partners-brampton-partnership-480.webp 480w, /assets/optimized/assets-partners-brampton-partnership-960.webp 960w, /assets/optimized/assets-partners-brampton-partnership-1600.webp 1600w, /assets/optimized/assets-partners-brampton-partnership-2400.webp 2400w",
+    "width": 3456,
+    "height": 2304
+  },
+  "/assets/Partners/cities-barrie.png": {
+    "src": "/assets/optimized/assets-partners-cities-barrie-1260.webp",
+    "srcSet": "/assets/optimized/assets-partners-cities-barrie-480.webp 480w, /assets/optimized/assets-partners-cities-barrie-960.webp 960w, /assets/optimized/assets-partners-cities-barrie-1260.webp 1260w",
+    "width": 1260,
+    "height": 920
+  },
+  "/assets/Partners/cities-brampton.png": {
+    "src": "/assets/optimized/assets-partners-cities-brampton-1260.webp",
+    "srcSet": "/assets/optimized/assets-partners-cities-brampton-480.webp 480w, /assets/optimized/assets-partners-cities-brampton-960.webp 960w, /assets/optimized/assets-partners-cities-brampton-1260.webp 1260w",
+    "width": 1260,
+    "height": 920
+  },
+  "/assets/Partners/cities-burlington.png": {
+    "src": "/assets/optimized/assets-partners-cities-burlington-1260.webp",
+    "srcSet": "/assets/optimized/assets-partners-cities-burlington-480.webp 480w, /assets/optimized/assets-partners-cities-burlington-960.webp 960w, /assets/optimized/assets-partners-cities-burlington-1260.webp 1260w",
+    "width": 1260,
+    "height": 920
+  },
+  "/assets/Partners/cities-markham-2.jpg": {
+    "src": "/assets/optimized/assets-partners-cities-markham-2-2400.webp",
+    "srcSet": "/assets/optimized/assets-partners-cities-markham-2-480.webp 480w, /assets/optimized/assets-partners-cities-markham-2-960.webp 960w, /assets/optimized/assets-partners-cities-markham-2-1600.webp 1600w, /assets/optimized/assets-partners-cities-markham-2-2400.webp 2400w",
+    "width": 4096,
+    "height": 2729
+  },
+  "/assets/Partners/cities-markham.jpg": {
+    "src": "/assets/optimized/assets-partners-cities-markham-2400.webp",
+    "srcSet": "/assets/optimized/assets-partners-cities-markham-480.webp 480w, /assets/optimized/assets-partners-cities-markham-960.webp 960w, /assets/optimized/assets-partners-cities-markham-1600.webp 1600w, /assets/optimized/assets-partners-cities-markham-2400.webp 2400w",
+    "width": 4096,
+    "height": 2730
+  },
+  "/assets/Partners/partner-img.jpg": {
+    "src": "/assets/optimized/assets-partners-partner-img-2400.webp",
+    "srcSet": "/assets/optimized/assets-partners-partner-img-480.webp 480w, /assets/optimized/assets-partners-partner-img-960.webp 960w, /assets/optimized/assets-partners-partner-img-1600.webp 1600w, /assets/optimized/assets-partners-partner-img-2400.webp 2400w",
+    "width": 4096,
+    "height": 2731
+  },
+  "/assets/Partners/partners-carousel-business.jpg": {
+    "src": "/assets/optimized/assets-partners-partners-carousel-business-2400.webp",
+    "srcSet": "/assets/optimized/assets-partners-partners-carousel-business-480.webp 480w, /assets/optimized/assets-partners-partners-carousel-business-960.webp 960w, /assets/optimized/assets-partners-partners-carousel-business-1600.webp 1600w, /assets/optimized/assets-partners-partners-carousel-business-2400.webp 2400w",
+    "width": 2730,
+    "height": 4096
+  },
+  "/assets/Partners/partners-carousel-developer.png": {
+    "src": "/assets/optimized/assets-partners-partners-carousel-developer-2400.webp",
+    "srcSet": "/assets/optimized/assets-partners-partners-carousel-developer-480.webp 480w, /assets/optimized/assets-partners-partners-carousel-developer-960.webp 960w, /assets/optimized/assets-partners-partners-carousel-developer-1600.webp 1600w, /assets/optimized/assets-partners-partners-carousel-developer-2400.webp 2400w",
+    "width": 2744,
+    "height": 1568
+  },
+  "/assets/Riders/Carousel/riders-carousel-map.png": {
+    "src": "/assets/optimized/assets-riders-carousel-riders-carousel-map-1696.webp",
+    "srcSet": "/assets/optimized/assets-riders-carousel-riders-carousel-map-480.webp 480w, /assets/optimized/assets-riders-carousel-riders-carousel-map-960.webp 960w, /assets/optimized/assets-riders-carousel-riders-carousel-map-1600.webp 1600w, /assets/optimized/assets-riders-carousel-riders-carousel-map-1696.webp 1696w",
+    "width": 1696,
+    "height": 2460
+  },
+  "/assets/Riders/Carousel/riders-carousel-parking.png": {
+    "src": "/assets/optimized/assets-riders-carousel-riders-carousel-parking-1260.webp",
+    "srcSet": "/assets/optimized/assets-riders-carousel-riders-carousel-parking-480.webp 480w, /assets/optimized/assets-riders-carousel-riders-carousel-parking-960.webp 960w, /assets/optimized/assets-riders-carousel-riders-carousel-parking-1260.webp 1260w",
+    "width": 1260,
+    "height": 920
+  },
+  "/assets/Riders/Carousel/riders-carousel-ride.png": {
+    "src": "/assets/optimized/assets-riders-carousel-riders-carousel-ride-1260.webp",
+    "srcSet": "/assets/optimized/assets-riders-carousel-riders-carousel-ride-480.webp 480w, /assets/optimized/assets-riders-carousel-riders-carousel-ride-960.webp 960w, /assets/optimized/assets-riders-carousel-riders-carousel-ride-1260.webp 1260w",
+    "width": 1260,
+    "height": 920
+  },
+  "/assets/Riders/Carousel/riders-carousel-safety.png": {
+    "src": "/assets/optimized/assets-riders-carousel-riders-carousel-safety-1260.webp",
+    "srcSet": "/assets/optimized/assets-riders-carousel-riders-carousel-safety-480.webp 480w, /assets/optimized/assets-riders-carousel-riders-carousel-safety-960.webp 960w, /assets/optimized/assets-riders-carousel-riders-carousel-safety-1260.webp 1260w",
+    "width": 1260,
+    "height": 920
+  },
+  "/assets/Riders/Carousel/riders-carousel-vehicles.png": {
+    "src": "/assets/optimized/assets-riders-carousel-riders-carousel-vehicles-1260.webp",
+    "srcSet": "/assets/optimized/assets-riders-carousel-riders-carousel-vehicles-480.webp 480w, /assets/optimized/assets-riders-carousel-riders-carousel-vehicles-960.webp 960w, /assets/optimized/assets-riders-carousel-riders-carousel-vehicles-1260.webp 1260w",
+    "width": 1260,
+    "height": 920
+  },
+  "/assets/Riders/riders-page-hero.png": {
+    "src": "/assets/optimized/assets-riders-riders-page-hero-1920.webp",
+    "srcSet": "/assets/optimized/assets-riders-riders-page-hero-480.webp 480w, /assets/optimized/assets-riders-riders-page-hero-960.webp 960w, /assets/optimized/assets-riders-riders-page-hero-1600.webp 1600w, /assets/optimized/assets-riders-riders-page-hero-1920.webp 1920w",
+    "width": 1920,
+    "height": 1080
+  },
+  "/assets/Vertical Logo.png": {
+    "src": "/assets/optimized/assets-vertical-logo-2400.webp",
+    "srcSet": "/assets/optimized/assets-vertical-logo-480.webp 480w, /assets/optimized/assets-vertical-logo-960.webp 960w, /assets/optimized/assets-vertical-logo-1600.webp 1600w, /assets/optimized/assets-vertical-logo-2400.webp 2400w",
+    "width": 6250,
+    "height": 4829
+  },
+  "/assets/mainPage/QuotesImages/2024MarkhamOVINScootyDemo-048.jpg": {
+    "src": "/assets/optimized/assets-mainpage-quotesimages-2024markhamovinscootydemo-048-2400.webp",
+    "srcSet": "/assets/optimized/assets-mainpage-quotesimages-2024markhamovinscootydemo-048-480.webp 480w, /assets/optimized/assets-mainpage-quotesimages-2024markhamovinscootydemo-048-960.webp 960w, /assets/optimized/assets-mainpage-quotesimages-2024markhamovinscootydemo-048-1600.webp 1600w, /assets/optimized/assets-mainpage-quotesimages-2024markhamovinscootydemo-048-2400.webp 2400w",
+    "width": 4096,
+    "height": 2730
+  },
+  "/assets/mainPage/QuotesImages/City Hall Group Shot - Brampton Launch Photo (2).JPG": {
+    "src": "/assets/optimized/assets-mainpage-quotesimages-city-hall-group-shot---brampton-launch-photo-(2)-2400.webp",
+    "srcSet": "/assets/optimized/assets-mainpage-quotesimages-city-hall-group-shot---brampton-launch-photo-(2)-480.webp 480w, /assets/optimized/assets-mainpage-quotesimages-city-hall-group-shot---brampton-launch-photo-(2)-960.webp 960w, /assets/optimized/assets-mainpage-quotesimages-city-hall-group-shot---brampton-launch-photo-(2)-1600.webp 1600w, /assets/optimized/assets-mainpage-quotesimages-city-hall-group-shot---brampton-launch-photo-(2)-2400.webp 2400w",
+    "width": 3456,
+    "height": 2304
+  },
+  "/assets/mainPage/QuotesImages/DSC_1837.jpg": {
+    "src": "/assets/optimized/assets-mainpage-quotesimages-dsc_1837-2400.webp",
+    "srcSet": "/assets/optimized/assets-mainpage-quotesimages-dsc_1837-480.webp 480w, /assets/optimized/assets-mainpage-quotesimages-dsc_1837-960.webp 960w, /assets/optimized/assets-mainpage-quotesimages-dsc_1837-1600.webp 1600w, /assets/optimized/assets-mainpage-quotesimages-dsc_1837-2400.webp 2400w",
+    "width": 7780,
+    "height": 5187
+  },
+  "/assets/mainPage/QuotesImages/DSC_4516.jpg": {
+    "src": "/assets/optimized/assets-mainpage-quotesimages-dsc_4516-2400.webp",
+    "srcSet": "/assets/optimized/assets-mainpage-quotesimages-dsc_4516-480.webp 480w, /assets/optimized/assets-mainpage-quotesimages-dsc_4516-960.webp 960w, /assets/optimized/assets-mainpage-quotesimages-dsc_4516-1600.webp 1600w, /assets/optimized/assets-mainpage-quotesimages-dsc_4516-2400.webp 2400w",
+    "width": 5631,
+    "height": 3747
+  },
+  "/assets/mainPage/QuotesImages/DSC_4553 (1).jpg": {
+    "src": "/assets/optimized/assets-mainpage-quotesimages-dsc_4553-(1)-2400.webp",
+    "srcSet": "/assets/optimized/assets-mainpage-quotesimages-dsc_4553-(1)-480.webp 480w, /assets/optimized/assets-mainpage-quotesimages-dsc_4553-(1)-960.webp 960w, /assets/optimized/assets-mainpage-quotesimages-dsc_4553-(1)-1600.webp 1600w, /assets/optimized/assets-mainpage-quotesimages-dsc_4553-(1)-2400.webp 2400w",
+    "width": 5871,
+    "height": 3906
+  },
+  "/assets/mainPage/built-for-riders-hero.png": {
+    "src": "/assets/optimized/assets-mainpage-built-for-riders-hero-1844.webp",
+    "srcSet": "/assets/optimized/assets-mainpage-built-for-riders-hero-480.webp 480w, /assets/optimized/assets-mainpage-built-for-riders-hero-960.webp 960w, /assets/optimized/assets-mainpage-built-for-riders-hero-1600.webp 1600w, /assets/optimized/assets-mainpage-built-for-riders-hero-1844.webp 1844w",
+    "width": 1844,
+    "height": 853
+  },
+  "/assets/mainPage/main-pg-riders.png": {
+    "src": "/assets/optimized/assets-mainpage-main-pg-riders-1260.webp",
+    "srcSet": "/assets/optimized/assets-mainpage-main-pg-riders-480.webp 480w, /assets/optimized/assets-mainpage-main-pg-riders-960.webp 960w, /assets/optimized/assets-mainpage-main-pg-riders-1260.webp 1260w",
+    "width": 1260,
+    "height": 920
+  },
+  "/assets/mainPage/main-pg-transit.jpeg": {
+    "src": "/assets/optimized/assets-mainpage-main-pg-transit-736.webp",
+    "srcSet": "/assets/optimized/assets-mainpage-main-pg-transit-480.webp 480w, /assets/optimized/assets-mainpage-main-pg-transit-736.webp 736w",
+    "width": 736,
+    "height": 497
+  },
+  "/assets/mainPage/non-profit.png": {
+    "src": "/assets/optimized/assets-mainpage-non-profit-1260.webp",
+    "srcSet": "/assets/optimized/assets-mainpage-non-profit-480.webp 480w, /assets/optimized/assets-mainpage-non-profit-960.webp 960w, /assets/optimized/assets-mainpage-non-profit-1260.webp 1260w",
+    "width": 1260,
+    "height": 920
+  },
+  "/assets/mainPage/our-solutions-carousel/Gemini_Generated_Image_tnpy9stnpy9stnpy.png": {
+    "src": "/assets/optimized/assets-mainpage-our-solutions-carousel-gemini_generated_image_tnpy9stnpy9stnpy-2400.webp",
+    "srcSet": "/assets/optimized/assets-mainpage-our-solutions-carousel-gemini_generated_image_tnpy9stnpy9stnpy-480.webp 480w, /assets/optimized/assets-mainpage-our-solutions-carousel-gemini_generated_image_tnpy9stnpy9stnpy-960.webp 960w, /assets/optimized/assets-mainpage-our-solutions-carousel-gemini_generated_image_tnpy9stnpy9stnpy-1600.webp 1600w, /assets/optimized/assets-mainpage-our-solutions-carousel-gemini_generated_image_tnpy9stnpy9stnpy-2400.webp 2400w",
+    "width": 2412,
+    "height": 1760
+  },
+  "/assets/mainPage/our-solutions-carousel/ai-ride-guide.png": {
+    "src": "/assets/optimized/assets-mainpage-our-solutions-carousel-ai-ride-guide-2400.webp",
+    "srcSet": "/assets/optimized/assets-mainpage-our-solutions-carousel-ai-ride-guide-480.webp 480w, /assets/optimized/assets-mainpage-our-solutions-carousel-ai-ride-guide-960.webp 960w, /assets/optimized/assets-mainpage-our-solutions-carousel-ai-ride-guide-1600.webp 1600w, /assets/optimized/assets-mainpage-our-solutions-carousel-ai-ride-guide-2400.webp 2400w",
+    "width": 2816,
+    "height": 1536
+  },
+  "/assets/mainPage/our-solutions-carousel/on-demand-mobility.png": {
+    "src": "/assets/optimized/assets-mainpage-our-solutions-carousel-on-demand-mobility-300.webp",
+    "srcSet": "/assets/optimized/assets-mainpage-our-solutions-carousel-on-demand-mobility-300.webp 300w",
+    "width": 300,
+    "height": 240
+  },
+  "/assets/mainPage/our-solutions-carousel/toronto-skyline.png": {
+    "src": "/assets/optimized/assets-mainpage-our-solutions-carousel-toronto-skyline-1260.webp",
+    "srcSet": "/assets/optimized/assets-mainpage-our-solutions-carousel-toronto-skyline-480.webp 480w, /assets/optimized/assets-mainpage-our-solutions-carousel-toronto-skyline-960.webp 960w, /assets/optimized/assets-mainpage-our-solutions-carousel-toronto-skyline-1260.webp 1260w",
+    "width": 1260,
+    "height": 920
+  },
+  "/assets/mainPage/our-solutions-hero.png": {
+    "src": "/assets/optimized/assets-mainpage-our-solutions-hero-1844.webp",
+    "srcSet": "/assets/optimized/assets-mainpage-our-solutions-hero-480.webp 480w, /assets/optimized/assets-mainpage-our-solutions-hero-960.webp 960w, /assets/optimized/assets-mainpage-our-solutions-hero-1600.webp 1600w, /assets/optimized/assets-mainpage-our-solutions-hero-1844.webp 1844w",
+    "width": 1844,
+    "height": 853
+  },
+  "/assets/mainPage/partners-carousel/toronto-skyline.png": {
+    "src": "/assets/optimized/assets-mainpage-partners-carousel-toronto-skyline-1260.webp",
+    "srcSet": "/assets/optimized/assets-mainpage-partners-carousel-toronto-skyline-480.webp 480w, /assets/optimized/assets-mainpage-partners-carousel-toronto-skyline-960.webp 960w, /assets/optimized/assets-mainpage-partners-carousel-toronto-skyline-1260.webp 1260w",
+    "width": 1260,
+    "height": 920
+  },
+  "/assets/scooty-logo-tm.png": {
+    "src": "/assets/optimized/assets-scooty-logo-tm-500.webp",
+    "srcSet": "/assets/optimized/assets-scooty-logo-tm-480.webp 480w, /assets/optimized/assets-scooty-logo-tm-500.webp 500w",
+    "width": 500,
+    "height": 500
+  },
+  "/icons/appstore-icon.png": {
+    "src": "/assets/optimized/icons-appstore-icon-1024.webp",
+    "srcSet": "/assets/optimized/icons-appstore-icon-480.webp 480w, /assets/optimized/icons-appstore-icon-960.webp 960w, /assets/optimized/icons-appstore-icon-1024.webp 1024w",
+    "width": 1024,
+    "height": 1024
+  },
+  "/icons/playstore-icon.png": {
+    "src": "/assets/optimized/icons-playstore-icon-1024.webp",
+    "srcSet": "/assets/optimized/icons-playstore-icon-480.webp 480w, /assets/optimized/icons-playstore-icon-960.webp 960w, /assets/optimized/icons-playstore-icon-1024.webp 1024w",
+    "width": 1024,
+    "height": 1024
+  }
+}

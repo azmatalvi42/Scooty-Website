@@ -32,8 +32,8 @@ export const About = () => {
         />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, x: -28 }}
-            animate={socialsInView ? { opacity: 1, x: 0 } : {}}
+            initial={{ opacity: 0, y: 10 }}
+            animate={socialsInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: EASING }}
             className="text-center"
           >
@@ -63,9 +63,9 @@ export const About = () => {
                   rel="noopener noreferrer"
                   aria-label={social.label}
                   className="w-11 h-11 sm:w-12 sm:h-12 bg-[#FEC001] rounded-xl flex items-center justify-center text-black hover:bg-[#FFD00F] transition-all duration-200"
-                  whileHover={{ scale: 1.1, y: -3, boxShadow: '0 0 24px rgba(254,192,1,0.45)' }}
+                  whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.93 }}
-                  initial={{ opacity: 0, y: 16 }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={socialsInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.4, delay: 0.1 + index * 0.07, ease: EASING }}
                 >

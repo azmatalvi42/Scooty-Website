@@ -1,3 +1,6 @@
+import { RiderCategoryImage } from '../components/ui/RiderCategoryImage';
+import { RidersHeroVideo } from '../components/ui/RidersHeroVideo';
+import { SiteImage } from '../components/ui/SiteImage';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
@@ -37,7 +40,6 @@ type RiderTab = {
   featureColors?: string[];
   bulleted?: boolean;
   highlights: Highlight[];
-  image: string;
 };
 
 const TABS: RiderTab[] = [
@@ -52,7 +54,6 @@ const TABS: RiderTab[] = [
       { value: '2 min', label: 'Setup time', icon: Timer },
       { value: '16+', label: 'Age required', icon: UserCheck },
     ],
-    image: "/assets/Riders/Carousel/riders-carousel.gif"
   },
   {
     icon: Navigation,
@@ -65,7 +66,6 @@ const TABS: RiderTab[] = [
       { value: '5', label: 'Easy Steps', icon: ListChecks },
       { value: 'Beginner', label: 'Friendly', icon: Sparkles },
     ],
-    image: '/assets/Riders/Carousel/riders-carousel-ride.png',
   },
   {
     icon: MapPin,
@@ -84,7 +84,6 @@ const TABS: RiderTab[] = [
     highlights: [
       { value: '20 km/h', label: 'Max speed', icon: Gauge },
     ],
-    image: '/assets/Riders/Carousel/riders-carousel-map.png',
   },
   {
     icon: ParkingSquare,
@@ -96,7 +95,6 @@ const TABS: RiderTab[] = [
     highlights: [
       { value: 'Free Parking', label: 'At Designated Zones', icon: ParkingSquare },
     ],
-    image: '/assets/Riders/Carousel/riders-carousel-parking.png',
   },
   {
     icon: Shield,
@@ -113,7 +111,6 @@ const TABS: RiderTab[] = [
       'Follow local riding rules',
     ],
     highlights: [],
-    image: '/assets/Riders/Carousel/riders-carousel-safety.png',
   },
   {
     icon: Bike,
@@ -140,7 +137,6 @@ const TABS: RiderTab[] = [
       { value: '20 KM/H', label: 'Top speed', icon: Gauge },
       { value: 'GPS tracked', label: '', icon: Satellite },
     ],
-    image: '/assets/Riders/Carousel/riders-carousel-vehicles.png',
   },
 ];
 
@@ -148,14 +144,12 @@ const TABS: RiderTab[] = [
 
 export const RidersPage = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const [direction, setDirection] = useState(1);
 
   const goToTab = (index: number) => {
-    setDirection(index > activeTab ? 1 : -1);
     setActiveTab(index);
   };
   const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.1 });
-  const [contentRef, contentInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [contentRef] = useInView({ triggerOnce: true, threshold: 0.1 });
 
   const current = TABS[activeTab];
   const isGettingStarted = current.slug === 'getting-started';
@@ -163,20 +157,11 @@ export const RidersPage = () => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-black">
-      {/* Hero + Tab nav — share one background image */}
+      {/* Hero and tab navigation share the SCOOTY footage */}
       <section className="relative overflow-hidden">
-        {/* Background image */}
-        <img
-          src="/assets/Riders/riders-page-hero.png"
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover"
-          fetchPriority="high"
-          loading="eager"
-          decoding="async"
-        />
-        {/* Overlay — light tint so the image stays vivid */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-gray-50 dark:to-navy-900" />
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/50 to-transparent" />
+        <RidersHeroVideo />
+        {/* Keep the heading and navigation readable over changing footage. */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/75 pointer-events-none" />
 
         {/* Hero text — evenly spaced with pt-10 rhythm between nav, paragraph, download text, and store icons */}
         <div ref={heroRef} className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-10">
@@ -215,7 +200,7 @@ export const RidersPage = () => {
             >
               <span>Download to start riding</span>
               <span className="flex items-center gap-2 border-l border-black/20 pl-4">
-                <img
+                <SiteImage
                   src="/icons/appstore-icon.png"
                   alt="App Store"
                   className="h-6 sm:h-7 w-auto object-contain"
@@ -223,7 +208,7 @@ export const RidersPage = () => {
                   loading="eager"
                   decoding="async"
                 />
-                <img
+                <SiteImage
                   src="/icons/playstore-icon.png"
                   alt="Google Play"
                   className="h-6 sm:h-7 w-auto object-contain"
@@ -306,7 +291,7 @@ export const RidersPage = () => {
                 {/* Top accent */}
                 <div className="h-1 w-full bg-gradient-to-r from-primary-500 via-primary-400 to-primary-500/30" />
 
-                <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px]">
+                <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr]">
                   {/* Left — Text */}
                   <div className="p-7 sm:p-9 lg:p-12 flex flex-col justify-center">
 
@@ -448,53 +433,9 @@ export const RidersPage = () => {
                     </div>
                   </div>
 
-                  {/*
-                    Right — Image
-                    Recommended carousel image dimensions: 1200×1200px (1:1 square),
-                    or 1200×900px (4:3) with subject centered. The column is portrait
-                    on desktop (~420×600) and landscape on mobile (~375×240), and uses
-                    object-cover — a centered subject in a square source avoids awkward
-                    crops at any breakpoint. Export PNG/WebP at ~150–250 KB.
-                  */}
-                  <div className="relative overflow-hidden min-h-[240px] sm:min-h-[300px] lg:min-h-0 rounded-b-3xl lg:rounded-b-none lg:rounded-r-3xl">
-                    {current.slug === 'where-to-ride' ? (
-                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/25 via-yellow-500/10 to-transparent flex flex-col items-center justify-center p-8 text-center">
-                        <div
-                          className="absolute inset-0 opacity-[0.08]"
-                          style={{
-                            backgroundImage:
-                              'linear-gradient(rgba(254,192,1,1) 1px, transparent 1px), linear-gradient(90deg, rgba(254,192,1,1) 1px, transparent 1px)',
-                            backgroundSize: '40px 40px',
-                          }}
-                        />
-                        <div className="relative w-16 h-16 rounded-2xl bg-primary-500/15 border border-primary-500/30 flex items-center justify-center mb-4">
-                          <MapPin className="w-8 h-8 text-primary-500" />
-                        </div>
-                        <p className="relative text-base font-bold font-display text-gray-800 dark:text-white">
-                          Riding Zone Map
-                        </p>
-                        <p className="relative text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-[260px]">
-                          Live map coming soon. Check the SCOOTY app for current zones.
-                        </p>
-                      </div>
-                    ) : (
-                      <>
-                        <img
-                          src={current.image}
-                          alt={current.label}
-                          className="absolute inset-0 w-full h-full object-cover"
-                          loading="lazy"
-                          decoding="async"
-                        />
-                        {/* Gradient blends into card on desktop */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent lg:bg-gradient-to-r lg:from-yellow-950/30 lg:via-transparent lg:to-transparent" />
-                      </>
-                    )}
-                    {/* Label pill */}
-                    <div className="absolute bottom-4 right-4 flex items-center gap-1.5 bg-black/55 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-white/15">
-                      <current.icon className="w-3 h-3 text-primary-400" />
-                      {current.label}
-                    </div>
+                  {/* Topic-specific photography with stable, generous framing. */}
+                  <div className="flex items-center p-4 sm:p-6 lg:pl-0">
+                    <RiderCategoryImage topic={current.slug} eager />
                   </div>
                 </div>
               </div>

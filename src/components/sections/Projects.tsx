@@ -1,3 +1,4 @@
+import { SiteImage } from '../ui/SiteImage';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { ArrowRight, ChevronLeft, ChevronRight, Shield, Heart, Handshake, Quote, X, Plus } from 'lucide-react';
@@ -65,7 +66,7 @@ const QuoteTextCard = ({
   const ringColor = styleIdx === 0 ? 'focus-visible:ring-black' : 'focus-visible:ring-white';
   return (
     <motion.button
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.55, delay: 0.08 + i * 0.09, ease: REVEAL_EASE }}
       onClick={onClick}
@@ -113,7 +114,7 @@ const QuoteImageCard = ({
     whileHover={{ y: -3 }}
     whileTap={{ scale: 0.985 }}
   >
-    <img
+    <SiteImage
       src={q.image}
       alt={q.name}
       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
@@ -208,7 +209,7 @@ const caseStudies = [
   {
     city: 'Brampton, ON',
     slug: 'brampton',
-    image: 'https://images.pexels.com/photos/1006965/pexels-photo-1006965.jpeg?auto=compress&cs=tinysrgb&w=600',
+    image: '/assets/Cities/Brampton/brampton-hero.png',
     rides: '2.1M rides served',
     emissions: '4,200 tons CO₂ saved',
     highlight: 'Reduced average commute time by 18%',
@@ -216,7 +217,7 @@ const caseStudies = [
   {
     city: 'Barrie, ON',
     slug: 'barrie',
-    image: 'https://images.pexels.com/photos/2614818/pexels-photo-2614818.jpeg?auto=compress&cs=tinysrgb&w=600',
+    image: '/assets/Cities/Barrie/barrie-hero.png',
     rides: '1.5M rides served',
     emissions: '3,100 tons CO₂ saved',
     highlight: 'Fleet utilization increased by 35%',
@@ -224,7 +225,7 @@ const caseStudies = [
   {
     city: 'Metrolinx',
     slug: 'metrolinx',
-    image: 'https://images.pexels.com/photos/3278015/pexels-photo-3278015.jpeg?auto=compress&cs=tinysrgb&w=600',
+    image: '/assets/mainPage/main-pg-transit.jpeg',
     rides: 'GTHA-wide integration',
     emissions: 'First & last-mile transit',
     highlight: 'Proud partners innovating transit across Ontario',
@@ -245,7 +246,7 @@ export const Projects = () => {
       <div ref={valuesRef} className="py-16 sm:py-24 ls:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={valuesInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: REVEAL_EASE }}
             className="text-center mb-12 sm:mb-16"
@@ -303,10 +304,10 @@ export const Projects = () => {
                 <motion.div
                   key={i}
                   layout
-                  initial={{ opacity: 0, y: 24 }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={valuesInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.55, delay: 0.1 + i * 0.12, ease: REVEAL_EASE }}
-                  className={cardClasses}
+                  className={`editorial-value-card ${cardClasses}`}
                 >
                   <motion.div layout="position">
                     <div className={iconWrapClasses}>
@@ -382,7 +383,7 @@ export const Projects = () => {
       <div ref={quotesRef} className="py-16 sm:py-24 ls:py-8 border-t border-gray-100 dark:border-white/[0.05]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={quotesInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: REVEAL_EASE }}
             className="text-center mb-10 sm:mb-14"
@@ -409,7 +410,7 @@ export const Projects = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* ── BUILT PROUDLY IN ONTARIO ── */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={quotesInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2, ease: REVEAL_EASE }}
             className="relative isolate text-center mt-14 sm:mt-20 pt-10 sm:pt-12 border-t border-gray-100 dark:border-white/[0.05]"
@@ -467,7 +468,7 @@ export const Projects = () => {
               </div>
               {/* Image header */}
               <div className="relative h-44 sm:h-72">
-                <img
+                <SiteImage
                   src={governmentQuotes[selectedQuote].image}
                   alt={governmentQuotes[selectedQuote].name}
                   className="absolute inset-0 w-full h-full object-cover object-top"
@@ -525,7 +526,7 @@ export const Projects = () => {
 
         {/* ── Case Studies ── */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.3, ease: REVEAL_EASE }}
           className="mb-8 sm:mb-10 text-center"
@@ -540,7 +541,7 @@ export const Projects = () => {
           {caseStudies.map((study, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 28 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.55, delay: 0.38 + index * 0.12, ease: REVEAL_EASE }}
               className="group"
@@ -548,7 +549,7 @@ export const Projects = () => {
               <Link to={`/partners/${study.slug}`} className="block h-full">
                 <div className="h-full bg-white dark:bg-[#0A0A0A] rounded-2xl overflow-hidden border border-gray-100 dark:border-white/[0.055] hover:shadow-xl hover:shadow-black/5 hover:border-[#FEC001]/20 transition-all duration-300">
                   <div className="h-44 sm:h-48 overflow-hidden">
-                    <img
+                    <SiteImage
                       src={study.image}
                       alt={study.city}
                       className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500"

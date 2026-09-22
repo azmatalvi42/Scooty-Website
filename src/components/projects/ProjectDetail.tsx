@@ -1,3 +1,4 @@
+import { SiteImage } from '../ui/SiteImage';
 import { motion } from 'framer-motion';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -211,7 +212,7 @@ export const ProjectDetail = () => {
             </div>
 
             <div className="relative">
-              <img
+              <SiteImage
                 src={project.image}
                 alt={project.title}
                 className="w-full h-64 lg:h-80 object-cover rounded-xl shadow-lg"
@@ -299,7 +300,7 @@ export const ProjectDetail = () => {
           </h2>
           
           <div className="relative">
-            <img
+            <SiteImage
               src={project.screenshots[currentImageIndex]}
               alt={`${project.title} screenshot ${currentImageIndex + 1}`}
               className="w-full h-64 md:h-96 object-cover rounded-xl shadow-lg"

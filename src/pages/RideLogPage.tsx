@@ -1,3 +1,4 @@
+import { SiteImage } from '../components/ui/SiteImage';
 import { useState, useRef, useEffect } from 'react';
 import {
   motion,
@@ -349,7 +350,7 @@ const NewspaperFront = ({
               </div>
 
               <div className="relative mt-4 aspect-[16/9] overflow-hidden lg:aspect-[16/10]">
-                <img
+                <SiteImage
                   src={lead.image}
                   alt={lead.title}
                   className="absolute inset-0 h-full w-full object-cover grayscale-[0.15] transition-transform duration-700 group-hover:scale-[1.04]"
@@ -384,7 +385,7 @@ const NewspaperFront = ({
               className="group relative flex flex-col border-b border-r border-gray-200 transition-colors hover:bg-gray-50 dark:border-white/10 dark:hover:bg-white/[0.03]"
             >
               <div className="relative aspect-[16/10] overflow-hidden">
-                <img
+                <SiteImage
                   src={p.image}
                   alt={p.title}
                   className="absolute inset-0 h-full w-full object-cover grayscale-[0.2] transition-all duration-700 group-hover:scale-[1.04] group-hover:grayscale-0"
@@ -492,7 +493,7 @@ const RouteStop = ({
         >
           {/* thumbnail */}
           <div className="relative h-44 overflow-hidden sm:h-full sm:min-h-[212px]">
-            <img
+            <SiteImage
               src={post.image}
               alt={post.title}
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"

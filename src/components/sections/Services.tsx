@@ -1,36 +1,13 @@
+import { Link } from 'react-router-dom';
+import { products } from '../../data/products';
+import { SiteImage } from '../ui/SiteImage';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
-const solutions = [
-  {
-    title: 'SCOOTY On-Demand Mobility',
-    description:
-      'Improving the reach of regional transit by resolving the first-and-last-km service gap through on-demand mobility (Transit to Your Doorstep\u00ae).',
-    image: '/assets/mainPage/our-solutions-carousel/Gemini_Generated_Image_tnpy9stnpy9stnpy.png',
-    tag: 'Micromobility',
-    accent: '#FEC001',
-  },
-  {
-    title: 'SCOOTY PAY',
-    description:
-      'Integrated, secure, and scalable payment processing API for transit fare ticketing and 3rd party mobility services.',
-    image: 'https://images.pexels.com/photos/4386431/pexels-photo-4386431.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    tag: 'Payments',
-    accent: '#01FEC0',
-  },
-  {
-    title: 'SCOOTY AI RideGuide',
-    description:
-      'Using conversational AI, real-time service updates, dynamic routing and customer support to enhance the daily transit commuting experience.',
-    image: '/assets/mainPage/our-solutions-carousel/ai-ride-guide.png',
-    tag: 'AI RideGuide',
-    accent: '#01BDFE',
-  },
-];
+const solutions = products;
 
-const AUTO_INTERVAL = 10000;
 const EASING: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
 
 export const Services = () => {
@@ -58,15 +35,10 @@ export const Services = () => {
     setActive(prevIndex);
   }, [active]);
 
-  useEffect(() => {
-    const timer = setInterval(next, AUTO_INTERVAL);
-    return () => clearInterval(timer);
-  }, [next]);
-
   const variants = {
-    enter: (dir: number) => ({ x: dir > 0 ? '55%' : '-55%', opacity: 0 }),
+    enter: (dir: number) => ({ x: dir > 0 ? 12 : -12, opacity: 0 }),
     center: { x: 0, opacity: 1 },
-    exit: (dir: number) => ({ x: dir > 0 ? '-55%' : '55%', opacity: 0 }),
+    exit: (dir: number) => ({ x: dir > 0 ? -12 : 12, opacity: 0 }),
   };
 
   const current = solutions[active];
@@ -102,8 +74,8 @@ export const Services = () => {
 
         {/* Heading */}
         <motion.div
-          initial={{ opacity: 0, x: -28 }}
-          animate={inView ? { opacity: 1, x: 0 } : {}}
+          initial={{ opacity: 0, y: 10 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-10 sm:mb-14"
         >
@@ -122,8 +94,8 @@ export const Services = () => {
 
         {/* Tab selector — scrollable on mobile, no wrapping */}
         <motion.div
-          initial={{ opacity: 0, x: -16 }}
-          animate={inView ? { opacity: 1, x: 0 } : {}}
+          initial={{ opacity: 0, y: 10 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="flex items-center justify-start sm:justify-center gap-2 mb-8 sm:mb-10 overflow-x-auto pb-1 scrollbar-hide"
         >
@@ -131,6 +103,7 @@ export const Services = () => {
             <button
               key={i}
               onClick={() => goTo(i)}
+              aria-pressed={i === active}
               className={`flex-shrink-0 px-4 py-2 rounded-full text-xs sm:text-sm font-bold tracking-wide transition-all duration-200 ${
                 i === active
                   ? 'text-black'
@@ -149,8 +122,8 @@ export const Services = () => {
 
         {/* Carousel */}
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={inView ? { opacity: 1, x: 0 } : {}}
+          initial={{ opacity: 0, y: 10 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
           <AnimatePresence mode="wait" custom={direction}>
@@ -161,10 +134,10 @@ export const Services = () => {
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 0.48, ease: EASING }}
+              transition={{ duration: 0.22, ease: EASING }}
             >
               <div
-                className="rounded-3xl overflow-hidden border bg-white dark:bg-[#0A0A0A] shadow-md dark:shadow-none"
+                className="editorial-solution-card rounded-3xl overflow-hidden border bg-white dark:bg-[#0A0A0A] shadow-md dark:shadow-none"
                 style={{ borderColor: `${current.accent}35` }}
               >
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
@@ -188,18 +161,14 @@ export const Services = () => {
 
                     {/* Bottom row: CTA + arrows */}
                     <div className="flex items-center justify-between mt-8 sm:mt-10">
-                      <motion.button
-                        onClick={() =>
-                          document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
-                        }
+                      <Link
+                        to={`/products/${current.slug}`}
                         className="group inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm text-black transition-all duration-200"
                         style={{ backgroundColor: current.accent }}
-                        whileHover={{ scale: 1.03, boxShadow: `0 0 28px ${current.accent}66` }}
-                        whileTap={{ scale: 0.97 }}
                       >
                         <span>Learn More</span>
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-150" />
-                      </motion.button>
+                      </Link>
 
                       {/* Prev / Next inside card */}
                       <div className="flex items-center gap-2">
@@ -223,10 +192,11 @@ export const Services = () => {
 
                   {/* Right — Image */}
                   <div className="relative min-h-[260px] sm:min-h-[340px] lg:min-h-[460px] ls:min-h-[180px] overflow-hidden">
-                    <img
+                    <SiteImage
                       src={current.image}
-                      alt={current.title}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700"
+                      alt={current.alt}
+                      className={`absolute inset-0 w-full h-full transition-transform duration-700 ${current.image.endsWith('.svg') ? 'object-contain bg-[#101b22]' : 'object-cover'}`}
+                      style={{ objectPosition: current.position }}
                       loading="lazy"
                       decoding="async"
                     />
@@ -258,9 +228,8 @@ export const Services = () => {
                     key={active}
                     className="absolute inset-y-0 left-0 rounded-full"
                     style={{ backgroundColor: s.accent }}
-                    initial={{ width: '0%' }}
                     animate={{ width: '100%' }}
-                    transition={{ duration: AUTO_INTERVAL / 1000, ease: 'linear' }}
+                    transition={{ duration: 0.2 }}
                   />
                 )}
               </button>

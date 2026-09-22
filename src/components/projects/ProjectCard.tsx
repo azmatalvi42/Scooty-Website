@@ -1,3 +1,4 @@
+import { SiteImage } from '../ui/SiteImage';
 import { motion } from 'framer-motion';
 import { ExternalLink, Github, ArrowRight, Calendar, Users } from 'lucide-react';
 import { ProjectData } from '../../data/projects';
@@ -25,7 +26,7 @@ export const ProjectCard = ({ project, index }: ProjectCardProps) => {
         )}
         
         <div className="relative overflow-hidden">
-          <img
+          <SiteImage
             src={project.image}
             alt={project.title}
             className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"

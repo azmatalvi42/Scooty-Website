@@ -1,3 +1,4 @@
+import { SiteImage } from '../components/ui/SiteImage';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
@@ -179,7 +180,7 @@ const socials = [
 ];
 
 const MapleLeaf = ({ className = '' }: { className?: string }) => (
-  <img
+  <SiteImage
     src="/assets/About/maple-leafs.png"
     alt="Maple leaf"
     className={`${className} object-contain`}
@@ -213,10 +214,11 @@ export const AboutPage = () => {
       {/* ── HERO + TAB NAV ── */}
       <section className="relative overflow-hidden">
         {/* Background image */}
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/8/8a/The_Game_%28Unsplash%29.jpg"
+        <SiteImage
+          src="/assets/mainPage/QuotesImages/2024MarkhamOVINScootyDemo-048.jpg"
           alt=""
           className="absolute inset-0 w-full h-full object-cover object-center"
+          sizes="100vw"
           fetchPriority="high"
           loading="eager"
           decoding="async"
@@ -403,7 +405,7 @@ export const AboutPage = () => {
 
                     {/* Right — Image */}
                     <div className="relative overflow-hidden min-h-[240px] sm:min-h-[300px] lg:min-h-0 rounded-b-3xl lg:rounded-b-none lg:rounded-r-3xl">
-                      <img
+                      <SiteImage
                         src={current.image}
                         alt={current.label}
                         className="absolute inset-0 w-full h-full object-cover"
@@ -507,7 +509,7 @@ export const AboutPage = () => {
           >
             <div className="relative">
               <div className="absolute inset-0 bg-red-600/20 rounded-full blur-2xl scale-150" />
-              <MapleLeaf className="relative w-100 h-20 text-red-500" />
+              <MapleLeaf className="relative w-full max-w-[400px] h-20 text-red-500" />
             </div>
           </motion.div>
 
@@ -543,9 +545,9 @@ export const AboutPage = () => {
             initial={{ opacity: 0, scaleX: 0 }}
             animate={canadaInView ? { opacity: 1, scaleX: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.7 }}
-            className="flex items-center justify-center mx-auto w-150 h-80 rounded-lg overflow-hidden mb-12 shadow-lg"
+            className="flex items-center justify-center mx-auto w-full max-w-[600px] h-80 rounded-lg overflow-hidden mb-12 shadow-lg"
           >
-            <img
+            <SiteImage
               src="/assets/About/canada-mask.png"
               alt="Canadian flag"
               className="w-full h-full object-contain"

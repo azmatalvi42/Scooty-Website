@@ -12,7 +12,8 @@
   }
 
   body {
-    @apply bg-white dark:bg-black text-gray-900 dark:text-white;
+    @apply font-sans bg-white dark:bg-black text-gray-900 dark:text-white;
+    font-synthesis: none;
   }
 
   ::selection {
@@ -101,4 +102,370 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #FFD00F;
+}
+
+/* Editorial system: shared surfaces, spacing and responsive compositions. */
+:root {
+  --editorial-page: #fff7dc;
+  --site-gradient: radial-gradient(ellipse at 90% 10%, #fec00155 0%, transparent 55%), linear-gradient(155deg, #fffaf0, #f4e7bc);
+  --editorial-paper: #fff;
+  --editorial-soft: #f5f5f1;
+  --editorial-ink: #181916;
+  --editorial-muted: #62645d;
+  --editorial-border: #dedfd8;
+  --nav-solid: rgba(247, 245, 237, .96);
+  --nav-surface: rgba(247, 245, 237, .85);
+}
+.dark {
+  --editorial-page: #080808;
+  --site-gradient: radial-gradient(ellipse at 90% 10%, #fec00140 0%, transparent 55%), linear-gradient(155deg, #171309, #000000);
+  --editorial-paper: #18150e;
+  --editorial-soft: #241f12;
+  --editorial-ink: #f4f4ed;
+  --editorial-muted: #d0c8b3;
+  --editorial-border: #4a3c17;
+  --nav-solid: rgba(12, 11, 8, .96);
+  --nav-surface: rgba(12, 11, 8, .85);
+}
+html { background: var(--editorial-page); scroll-padding-top: 150px; }
+body { background: var(--editorial-page); background-image: var(--site-gradient); background-attachment: fixed; color: var(--editorial-ink); }
+::selection { background: #fec001; color: #181916; }
+.editorial-shell {
+  width: 100%;
+  margin: 0;
+  background: transparent;
+  isolation: isolate;
+}
+.editorial-shell main {
+  padding-top: 116px;
+  background: transparent;
+}
+.editorial-shell :where(h1, h2, h3, h4) {
+  text-wrap: balance;
+  letter-spacing: -.045em;
+  text-shadow: none;
+}
+.editorial-shell :where(h1, h2).font-display { font-weight: 800; line-height: 1.06; }
+.editorial-shell h2.font-display { font-size: clamp(2.25rem, 4.5vw, 4.3rem); }
+.editorial-shell p { text-wrap: pretty; }
+.editorial-shell :where(a, button, input, textarea, select):focus-visible {
+  outline: 2px solid #a07800;
+  outline-offset: 5px;
+}
+.editorial-shell :where(button, a) { -webkit-tap-highlight-color: transparent; }
+.editorial-shell :where(.rounded-2xl) { border-radius: 26px; }
+.editorial-shell :where(.rounded-3xl) { border-radius: 36px; }
+.editorial-shell :where([class*="shadow"]):not(:focus-visible) { box-shadow: none !important; }
+.editorial-shell :where(.max-w-7xl) { max-width: 1360px; }
+.editorial-shell :where(.grid) > * { min-width: 0; }
+.editorial-shell :where(input, textarea, select) { max-width: 100%; }
+.editorial-shell :where(section) { scroll-margin-top: 140px; }
+.editorial-shell :where(.text-gray-500) { color: var(--editorial-muted); }
+.editorial-shell :where(.text-gray-900) { color: var(--editorial-ink); }
+/* Keep saturated yellow for surfaces; small yellow text needs stronger contrast on paper. */
+html:not(.dark) .editorial-shell :where(.text-primary-500, .text-primary-400, .text-\[\#FEC001\]):not(svg) {
+  color: #806000;
+}
+.editorial-shell main > section:not(#home),
+.editorial-shell main > div { background: transparent; }
+.editorial-shell :is(#services, #riders, #about) > .pointer-events-none,
+.editorial-shell :is(#services, #riders, #about) [aria-hidden][class*="-z-10"],
+.editorial-shell #impact .blur-2xl { opacity: 0; }
+.editorial-shell :is(#services, #riders) { padding-block: clamp(64px, 7.5vw, 112px); }
+.editorial-shell #about { margin: 0; border-top: 1px solid var(--editorial-border); background: transparent; }
+.editorial-shell #about > div { padding-block: clamp(64px, 7vw, 96px); }
+.editorial-shell #about a { border-radius: 50%; }
+.editorial-value-card { border: 1px solid var(--editorial-border) !important; border-radius: 32px; }
+.editorial-value-card:hover { border-color: #a68b33 !important; }
+.editorial-solution-card { background: var(--editorial-soft) !important; border-color: var(--editorial-border) !important; padding: 12px; }
+.editorial-solution-card > .grid > :last-child { border-radius: 26px; }
+.editorial-shell #riders img { border-radius: 32px; }
+
+/* Full-width navigation follows the shared page surface. */
+.editorial-nav {
+  top: 0;
+  left: 0;
+  right: 0;
+  background: transparent;
+  backdrop-filter: blur(16px);
+}
+.editorial-nav-grid { grid-template-columns: minmax(64px, 1fr) auto minmax(180px, 1fr); height: 82px; gap: 16px; }
+.editorial-nav-grid > :nth-child(2) { background: var(--editorial-soft); border-color: var(--editorial-border); padding: 5px; }
+.editorial-nav-grid > :nth-child(2) a { padding: 10px 15px; font-size: 13px; font-weight: 500; }
+.editorial-nav button { box-shadow: none !important; }
+.editorial-nav-grid > :last-child > button { border-radius: 999px; }
+.editorial-nav-grid > :last-child > button:first-child { border-color: var(--editorial-border); background: var(--editorial-soft); }
+
+/* Full-bleed city scene with a legible foreground panel. */
+.editorial-hero {
+  display: flex;
+  position: relative;
+  isolation: isolate;
+  min-height: max(640px, calc(100svh - 116px));
+  width: 100%;
+  margin: 0;
+  padding: clamp(32px, 6vw, 96px);
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+}
+.editorial-hero-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  z-index: 0;
+}
+.editorial-hero-copy {
+  width: 100%;
+  max-width: 1360px;
+  padding: 0;
+  text-align: left;
+}
+.editorial-hero-panel {
+  max-width: 660px;
+  padding: clamp(28px, 4vw, 56px);
+  border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: 24px;
+  background: rgba(19, 29, 24, .94);
+  backdrop-filter: blur(12px);
+}
+.editorial-hero h1.font-display { font-size: clamp(3rem, 4.8vw, 5.2rem); font-weight: 800; line-height: 1.03; letter-spacing: -.065em; }
+.editorial-hero-copy h1 span:first-child { color: #fff; }
+.editorial-hero-copy h1 span:last-child { color: #fec001; }
+.editorial-hero-copy p, .editorial-hero-copy p span { color: #e3e8df; }
+.editorial-hero-copy :is(h1, p, span) { text-shadow: none; filter: none; }
+.editorial-hero-copy p { max-width: 30ch; font-size: clamp(1.1rem, 1.6vw, 1.4rem); font-weight: 400; line-height: 1.5; letter-spacing: -.02em; }
+.editorial-hero-scroll { left: 50%; bottom: 20px; padding: 10px 16px; border-radius: 999px; background: rgba(19, 29, 24, .94); }
+.editorial-hero-scroll :is(span, svg) { color: #fff; }
+.editorial-hero-scroll button { gap: 4px; }
+.editorial-hero-scroll button > div { display: none; }
+
+/* Existing route heroes and media get the same framing without changing their content. */
+.editorial-shell main > div { border-radius: 32px; }
+.editorial-shell main > div > section:first-of-type {
+  margin-inline: 20px;
+  border-radius: 32px;
+  isolation: isolate;
+}
+.editorial-shell main > div > section:first-of-type > img,
+.editorial-shell main > div > section:first-of-type > div > img { border-radius: 32px; }
+.editorial-footer { border-color: var(--editorial-border); background: transparent; }
+.editorial-footer > div { padding-block: 48px; }
+.editorial-footer :is(a, p) { color: var(--editorial-muted); }
+.editorial-footer a:hover { color: var(--editorial-ink); }
+.editorial-footer nav a { padding: 8px 12px; border: 1px solid var(--editorial-border); border-radius: 999px; }
+.editorial-footer a[aria-label] { width: 36px; height: 36px; border-color: var(--editorial-border); border-radius: 50%; }
+.editorial-footer .h-px { background: var(--editorial-border); }
+::-webkit-scrollbar-track { background: var(--editorial-page); }
+::-webkit-scrollbar-thumb { background: #adae9f; border-radius: 10px; }
+
+@media (min-width: 1024px) {
+  .editorial-shell #riders > .max-w-7xl > .grid { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 48px; }
+  .editorial-shell #riders > .max-w-7xl > .grid > :first-child { grid-column: span 5; }
+  .editorial-shell #riders > .max-w-7xl > .grid > :last-child { grid-column: span 7; }
+}
+@media (max-width: 1100px) and (min-width: 1024px) {
+  .editorial-nav-grid { gap: 8px; grid-template-columns: 50px 1fr auto; }
+  .editorial-nav-grid > :nth-child(2) a { padding-inline: 10px; }
+}
+@media (max-width: 1023px) {
+  .editorial-nav-grid { grid-template-columns: 1fr auto; height: 72px; }
+  .editorial-shell main { padding-top: 104px; }
+  .editorial-hero { min-height: max(600px, calc(100svh - 104px)); padding: 40px 24px 88px; }
+  .editorial-hero h1.font-display { font-size: clamp(2.5rem, 5.2vw, 4rem); }
+}
+@media (max-width: 639px) {
+  html { scroll-padding-top: 120px; }
+  .editorial-nav-grid { height: 64px; }
+  .editorial-shell main { padding-top: 96px; }
+  .editorial-hero { min-height: max(620px, calc(100svh - 96px)); padding: 32px 16px 96px; justify-content: flex-start; }
+  .editorial-hero-panel { padding: 28px 24px; border-radius: 20px; }
+  .editorial-hero h1.font-display { font-size: clamp(2.25rem, 9.5vw, 3.6rem); }
+  .editorial-hero-copy p { font-size: 1.05rem; }
+  .editorial-shell h2.font-display { font-size: clamp(2rem, 8.5vw, 3rem); }
+  .editorial-shell :where(.rounded-3xl) { border-radius: 26px; }
+  .editorial-shell #about { margin-inline: 0; }
+  .editorial-shell main > div > section:first-of-type { margin-inline: 10px; border-radius: 24px; }
+  .editorial-solution-card { padding: 6px; }
+  .editorial-solution-card > .grid > :first-child { padding: 26px 20px; }
+  .editorial-footer > div { padding-block: 32px; }
+  .editorial-footer nav { gap: 8px; }
+  .editorial-footer nav a { padding: 7px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .editorial-shell *, .editorial-shell *::before, .editorial-shell *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}
+
+@media (max-width: 1023px) {
+  .editorial-nav > .lg\:hidden {
+    max-height: calc(100dvh - 140px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: 0 0 24px 24px;
+  }
+}
+.editorial-nav > div > .relative.flex > .relative.overflow-hidden {
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* Hero visual only: the existing two-panel composition and foreground stay intact. */
+.mobility-network {
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+  contain: paint;
+  /* Static map-like fallback until canvas paints, or when 2D canvas is unavailable. */
+  background-color: #c5d6ae;
+  background-image:
+    radial-gradient(circle at 48% 48%, #e9b61645 0 2px, transparent 4px),
+    radial-gradient(circle at 70% 64%, #7ba9ac45 0 2px, transparent 4px),
+    repeating-linear-gradient(170deg, transparent 0 46px, #e8e7d9 47px 48px, transparent 49px 92px),
+    repeating-linear-gradient(80deg, transparent 0 62px, #e8e7d9 63px 64px, transparent 65px 126px);
+}
+.mobility-network-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.mobility-network::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(145deg, rgba(255, 250, 227, .08), transparent 45%, rgba(63, 95, 86, .06));
+  box-shadow: inset 0 0 0 1px rgba(80, 109, 94, .12);
+}
+
+/* A continuous city ride, paused outside the viewport and on request. */
+.riders-scene { position: relative; width: 100%; overflow: hidden; border-radius: 32px; background: #e7eee0; }
+.riders-scene svg { display: block; width: 100%; height: auto; }
+.riders-scene-caption { position: absolute; bottom: 20px; left: 20px; right: 64px; display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; color: #243a34; }
+.riders-scene-toggle { position: absolute; bottom: 14px; right: 16px; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: #243a34; color: white; }
+.riding-skyline { animation: riding-travel 32s linear infinite; }
+.riding-trees { animation: riding-travel 12s linear infinite; }
+.riding-road { animation: riding-road 1.2s linear infinite; }
+.riding-wheel { animation: riding-spin 1.4s linear infinite; }
+.riding-crank { animation: riding-spin 2s linear infinite; }
+.riding-body { animation: riding-bob 1.5s ease-in-out infinite alternate; }
+.riding-body-scooter { animation-delay: -.7s; }
+.riding-leg { animation: riding-pedal 1s ease-in-out infinite alternate; transform-origin: 130px 270px; }
+.riders-scene[data-running="false"] svg * { animation-play-state: paused; }
+@keyframes riding-travel { to { transform: translateX(-760px); } }
+@keyframes riding-road { to { transform: translateX(-96px); } }
+@keyframes riding-spin { to { transform: rotate(360deg); } }
+@keyframes riding-bob { to { transform: translateY(2px); } }
+@keyframes riding-pedal { to { transform: rotate(-9deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .riders-scene svg * { animation: none !important; }
+  .riders-scene-toggle { display: none; }
+}
+
+/* Riders guide photography keeps its own proportions as copy length changes. */
+.rider-category-figure { width: 100%; overflow: hidden; border-radius: 24px; background: var(--editorial-soft); border: 1px solid var(--editorial-border); }
+.rider-category-photo { aspect-ratio: 4 / 3; overflow: hidden; }
+.rider-category-scooter { aspect-ratio: 16 / 7; overflow: hidden; border-top: 4px solid var(--editorial-soft); }
+.rider-category-caption { display: flex; align-items: center; gap: 10px; padding: 18px 20px; font-size: 13px; line-height: 1.5; color: var(--editorial-ink); }
+.rider-category-caption > span { width: 7px; height: 7px; flex-shrink: 0; border-radius: 50%; background: #b88c00; }
+
+/* Home: brand gold diffuses into black, with a warm counterpart in light mode. */
+.editorial-shell:has(#home) {
+  --editorial-page: #fff7df;
+  --editorial-paper: #fffaf0;
+  --editorial-soft: #f8edc9;
+  --editorial-border: #dfcc91;
+  --nav-solid: rgba(255, 249, 230, .97);
+  --nav-surface: rgba(255, 249, 230, .92);
+  background:
+    radial-gradient(ellipse 85% 26% at 100% 22%, #fec00199 0%, transparent 72%),
+    radial-gradient(ellipse 80% 22% at 0% 62%, #fec00166 0%, transparent 75%),
+    linear-gradient(180deg, #fff9e6 0%, #f8edca 48%, #fff8df 75%, #ead599 100%);
+}
+.dark .editorial-shell:has(#home) {
+  --editorial-page: #080808;
+  --editorial-paper: #18150e;
+  --editorial-soft: #241f12;
+  --editorial-border: #59471b;
+  --editorial-muted: #d0c8b3;
+  --nav-solid: rgba(12, 11, 8, .97);
+  --nav-surface: rgba(12, 11, 8, .92);
+  background:
+    radial-gradient(ellipse 95% 28% at 100% 24%, #fec00166 0%, #fec00118 45%, transparent 75%),
+    radial-gradient(ellipse 85% 24% at 0% 61%, #fec0014d 0%, #fec0010d 48%, transparent 75%),
+    radial-gradient(ellipse 90% 16% at 90% 100%, #fec00133 0%, transparent 75%),
+    linear-gradient(180deg, #000000 0%, #100d05 42%, #080808 72%, #000000 100%);
+}
+/* Existing decorative glows contain black scrims; the page gradient supplies the atmosphere. */
+.editorial-shell #impact [aria-hidden][class*="-z-10"] { display: none; }
+.dark .editorial-shell:has(#home) :is(#services, #riders, #impact) .dark\:bg-\[\#0A0A0A\] {
+  background-color: var(--editorial-paper);
+}
+.editorial-shell:has(#home) .editorial-value-card { border-color: var(--editorial-border) !important; }
+.editorial-shell:has(#home) .editorial-footer { background: transparent; }
+/* The headline stays in its overlay box, now warm and light over the city. */
+.editorial-hero-panel {
+  background: #fffdf3;
+  backdrop-filter: none;
+  border-color: rgba(255, 255, 255, .8);
+  border-top: 4px solid #fec001;
+}
+.editorial-hero-copy h1 span:first-child { color: #17140b; }
+.editorial-hero-copy h1 span:last-child { color: #806000; }
+.editorial-hero-copy p, .editorial-hero-copy p span { color: #534b35; }
+.editorial-hero-scroll { background: rgba(250, 252, 239, .94); }
+.editorial-hero-scroll :is(span, svg) { color: #17140b; }
+
+/* Keep the Technology hero aligned with the top-led spacing used by the other routes. */
+.technology-hero {
+  min-height: calc(100svh - 116px);
+  height: auto;
+  align-items: flex-start;
+  padding-top: clamp(88px, 12vh, 132px);
+}
+.technology-hero > .relative.z-10 { margin-top: 0; }
+
+.rideguide-phone {
+  position: relative;
+  width: min(100%, 296px);
+  padding: 13px;
+  border: 2px solid #454545;
+  border-radius: 38px;
+  background: linear-gradient(145deg, #343434, #111);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .42), inset 0 0 0 1px rgba(255, 255, 255, .12);
+}
+.rideguide-phone-speaker {
+  position: absolute;
+  z-index: 2;
+  top: 19px;
+  left: 50%;
+  width: 74px;
+  height: 5px;
+  border-radius: 999px;
+  background: #080808;
+  transform: translateX(-50%);
+}
+.rideguide-phone-screen {
+  min-height: 540px;
+  padding: 28px 10px 14px;
+  overflow: hidden;
+  border-radius: 27px;
+  background: linear-gradient(160deg, #151515, #080808 70%);
+}
+.rideguide-phone-screen > div { max-width: none; }
+@media (max-width: 1023px) {
+  .technology-hero {
+    min-height: calc(100svh - 104px);
+    padding-top: clamp(72px, 10vh, 108px);
+  }
+}
+@media (max-width: 639px) {
+  .technology-hero {
+    min-height: calc(100svh - 96px);
+    padding-top: 64px;
+  }
 }

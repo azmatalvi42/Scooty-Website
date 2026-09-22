@@ -1,3 +1,4 @@
+import { SiteImage } from '../ui/SiteImage';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll } from 'framer-motion';
 import { Menu, X, ChevronRight } from 'lucide-react';
@@ -26,7 +27,7 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [announcementVisible, setAnnouncementVisible] = useState(true);
-  const [announcementIndex, setAnnouncementIndex] = useState(0);
+  const announcementIndex = 0;
   const location = useLocation();
   const { scrollYProgress } = useScroll();
 
@@ -37,14 +38,6 @@ export const Navbar = () => {
   }, []);
 
   useEffect(() => { setIsOpen(false); }, [location.pathname]);
-
-  useEffect(() => {
-    if (!announcementVisible) return;
-    const timer = setInterval(() => {
-      setAnnouncementIndex(i => (i + 1) % announcements.length);
-    }, 7000);
-    return () => clearInterval(timer);
-  }, [announcementVisible]);
 
   const handleContact = () => {
     setIsOpen(false);
@@ -57,10 +50,10 @@ export const Navbar = () => {
 
   return (
     <motion.nav
-      initial={{ y: -100, opacity: 0 }}
+      initial={false}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: EASING }}
-      className="fixed top-0 left-0 right-0 z-50"
+      className="editorial-nav fixed top-0 left-0 right-0 z-50"
     >
       {/* ── Announcement bar ── */}
       <AnimatePresence>
@@ -114,8 +107,8 @@ export const Navbar = () => {
       {/* ── Main nav bar ── */}
       <motion.div
         animate={{
-          backgroundColor: scrolled ? 'rgba(0,0,0,0.92)' : 'rgba(0,0,0,0)',
-          borderBottomColor: scrolled ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0)',
+          backgroundColor: scrolled ? 'var(--nav-solid)' : 'var(--nav-surface)',
+          borderBottomColor: scrolled ? 'var(--editorial-border)' : 'transparent',
           backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'blur(0px)',
         }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
@@ -129,13 +122,15 @@ export const Navbar = () => {
         />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Three-column layout: logo | nav (centered) | actions */}
-          <div className="grid grid-cols-[1fr_auto_1fr] items-center h-[4.5rem]">
+          <div className="editorial-nav-grid grid grid-cols-[1fr_auto_1fr] items-center h-[4.5rem]">
 
             {/* ── Logo (left) ── */}
             <motion.div className="flex items-center gap-2.5" whileHover={{ scale: 1.01 }}>
               <Link to="/" className="flex items-center">
-                <img
+                <SiteImage
                   src="/assets/scooty-logo-tm.png"
+                  sizes="64px"
+                  loading="eager"
                   alt="SCOOTY"
                   className="h-10 sm:h-12 w-auto"
                   fetchPriority="high"
@@ -145,7 +140,7 @@ export const Navbar = () => {
             </motion.div>
 
             {/* ── Desktop nav (center) ── */}
-            <div className="hidden md:flex items-center gap-1 rounded-full border border-white/[0.07] bg-white/[0.03] px-1.5 py-1 backdrop-blur-sm">
+            <div className="hidden lg:flex items-center gap-1 rounded-full border border-white/[0.07] bg-white/[0.03] px-1.5 py-1 backdrop-blur-sm">
               {navigation.map((item) => {
                 const isActive = location.pathname === item.href;
                 return (
@@ -153,14 +148,14 @@ export const Navbar = () => {
                     key={item.name}
                     to={item.href}
                     className={`relative px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors duration-200 ${
-                      isActive ? 'text-black' : 'text-white/60 hover:text-white'
+                      isActive ? 'text-black' : 'text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white'
                     }`}
                   >
                     {isActive && (
                       <motion.div
                         layoutId="nav-pill"
                         className="absolute inset-0 rounded-full bg-[#FEC001]"
-                        transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                        transition={{ duration: 0.2, ease: 'easeOut' }}
                       />
                     )}
                     <span className="relative z-10">{item.name}</span>
@@ -175,9 +170,9 @@ export const Navbar = () => {
 
               <motion.button
                 onClick={handleContact}
-                className="hidden md:flex items-center px-5 py-2 bg-[#FEC001] text-black rounded-full text-sm font-bold"
-                whileHover={{ scale: 1.04, boxShadow: '0 0 20px rgba(254,192,1,0.4)' }}
-                whileTap={{ scale: 0.96 }}
+                className="hidden lg:flex items-center px-5 py-2 bg-[#FEC001] text-black rounded-full text-sm font-bold"
+                whileHover={{ y: -1 }}
+                whileTap={{ scale: 0.99 }}
               >
                 Get Started
               </motion.button>
@@ -185,7 +180,7 @@ export const Navbar = () => {
               {/* Mobile hamburger */}
               <motion.button
                 onClick={() => setIsOpen(!isOpen)}
-                className="md:hidden flex items-center justify-center w-9 h-9 rounded-xl bg-white/[0.08] border border-white/[0.1] text-white/70 hover:text-white hover:bg-white/[0.13] transition-all duration-200"
+                className="lg:hidden flex items-center justify-center w-9 h-9 rounded-xl bg-white/[0.08] border border-gray-200 dark:border-white/[0.1] text-gray-800 dark:text-white/70 hover:text-black dark:hover:text-white hover:bg-white/[0.13] transition-all duration-200"
                 whileTap={{ scale: 0.92 }}
                 aria-label="Toggle menu"
               >
@@ -214,11 +209,11 @@ export const Navbar = () => {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: EASING }}
-            className="md:hidden overflow-hidden"
+            className="lg:hidden overflow-hidden"
             style={{
-              background: 'rgba(0,0,0,0.97)',
+              background: 'var(--nav-solid)',
               backdropFilter: 'blur(24px)',
-              borderBottom: '1px solid rgba(255,255,255,0.06)',
+              borderBottom: '1px solid var(--editorial-border)',
             }}
           >
             <div className="px-3 pt-2 pb-5 space-y-1">
@@ -235,8 +230,8 @@ export const Navbar = () => {
                       to={item.href}
                       className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all duration-150 ${
                         isActive
-                          ? 'text-white bg-white/[0.07] border border-white/[0.1]'
-                          : 'text-white/55 hover:text-white hover:bg-white/[0.04]'
+                          ? 'text-black dark:text-white bg-gray-100 dark:bg-white/[0.07] border border-gray-200 dark:border-white/[0.1]'
+                          : 'text-gray-600 dark:text-white/70 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.04]'
                       }`}
                     >
                       <span>{item.name}</span>

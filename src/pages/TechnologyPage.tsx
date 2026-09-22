@@ -11,18 +11,19 @@ import { useRef, useState, useEffect } from 'react';
 import {
   ArrowRight,
   MapPin,
-  CreditCard,
   Bot,
   Bus,
   Navigation,
   Zap,
   MessageSquare,
   Route,
-  RefreshCw,
   Play,
-  Plus,
   Sparkles,
+  ShieldCheck,
+  Radio,
+  Layers,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { ParticleBackground } from '../components/ui/ParticleBackground';
 
@@ -188,171 +189,45 @@ const FirstLastKmDiagram = () => {
   );
 };
 
-/* ── PAY visual (interactive) ── */
-type Tx = { id: number; label: string; amount: string; time: string; icon: typeof Zap; isNew?: boolean };
-
-const SAMPLE_TAPS: Omit<Tx, 'id' | 'time' | 'isNew'>[] = [
-  { label: 'SCOOTY Ride — 1.8 km', amount: '-$1.40', icon: Zap },
-  { label: 'GO Train — Brampton to Union', amount: '-$4.20', icon: Bus },
-  { label: 'SCOOTY Ride — 2.6 km', amount: '-$2.10', icon: Zap },
-  { label: 'SCOOTY Ride — 0.9 km', amount: '-$0.90', icon: Zap },
+/* ── Patchforce operations map (interactive) ── */
+const PATCH_ISSUES = [
+  { id: 'pothole', label: 'Pothole', location: 'Queen St W & Main', color: '#FEC001', icon: 'P' },
+  { id: 'streetlight', label: 'Street light', location: 'Maple Ave & 4th', color: '#7dd3fc', icon: 'L' },
+  { id: 'flooding', label: 'Flooding', location: 'Riverside Trail', color: '#60a5fa', icon: 'F' },
 ];
 
 const PayVisual = () => {
-  const [balance, setBalance] = useState(24.8);
-  const [txs, setTxs] = useState<Tx[]>([
-    { id: 1, label: 'GO Train — Union to Brampton', amount: '-$4.20', time: 'Today 8:42 AM', icon: Bus },
-    { id: 2, label: 'SCOOTY Ride — 2.1 km', amount: '-$1.80', time: 'Today 8:30 AM', icon: Zap },
-    { id: 3, label: 'SCOOTY PAY Top-Up', amount: '+$25.00', time: 'Yesterday', icon: RefreshCw },
-  ]);
-  const [tapPing, setTapPing] = useState(0);
-  const idCounter = useRef(100);
-
-  const handleTap = () => {
-    const sample = SAMPLE_TAPS[Math.floor(Math.random() * SAMPLE_TAPS.length)];
-    const amount = parseFloat(sample.amount.replace(/[^\d.]/g, ''));
-    idCounter.current += 1;
-    const newTx: Tx = {
-      id: idCounter.current,
-      label: sample.label,
-      amount: sample.amount,
-      time: 'Just now',
-      icon: sample.icon,
-      isNew: true,
-    };
-    setBalance((b) => Math.max(0, +(b - amount).toFixed(2)));
-    setTxs((prev) => [newTx, ...prev].slice(0, 4));
-    setTapPing((n) => n + 1);
-  };
-
-  const handleTopUp = () => {
-    idCounter.current += 1;
-    const newTx: Tx = {
-      id: idCounter.current,
-      label: 'SCOOTY PAY Top-Up',
-      amount: '+$25.00',
-      time: 'Just now',
-      icon: RefreshCw,
-      isNew: true,
-    };
-    setBalance((b) => +(b + 25).toFixed(2));
-    setTxs((prev) => [newTx, ...prev].slice(0, 4));
-  };
-
+  const [selected, setSelected] = useState(0);
+  const issue = PATCH_ISSUES[selected];
   return (
-    <div className="relative w-full h-full min-h-[460px] flex items-center justify-center p-8">
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-72 h-72 bg-primary-500/8 rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative w-full max-w-xs space-y-4">
-        {/* Card mockup */}
-        <motion.div
-          initial={{ opacity: 0, y: 20, rotateX: 10 }}
-          animate={{ opacity: 1, y: 0, rotateX: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-          className="relative h-48 rounded-3xl overflow-hidden border border-primary-500/30 shadow-2xl shadow-primary-500/10"
-          style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #2a2200 50%, #1a1a1a 100%)' }}
-        >
-          <div
-            className="absolute inset-0 opacity-[0.08]"
-            style={{
-              backgroundImage: 'radial-gradient(circle, rgba(234,179,8,0.6) 1px, transparent 1px)',
-              backgroundSize: '20px 20px',
-            }}
-          />
-          {/* Tap ripple */}
-          <AnimatePresence>
-            {tapPing > 0 && (
-              <motion.div
-                key={tapPing}
-                initial={{ scale: 0, opacity: 0.6 }}
-                animate={{ scale: 4, opacity: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.9, ease: 'easeOut' }}
-                className="absolute top-1/2 right-8 -translate-y-1/2 w-12 h-12 rounded-full bg-primary-500/40 pointer-events-none"
-              />
-            )}
-          </AnimatePresence>
-
-          <div className="absolute top-4 left-5 right-5 bottom-4 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <div className="text-primary-400 font-bold text-sm tracking-widest">SCOOTY PAY</div>
-              <CreditCard className="w-5 h-5 text-primary-500/60" />
-            </div>
-            <div>
-              <div className="text-white/30 text-xs mb-1">Balance</div>
-              <motion.div
-                key={balance}
-                initial={{ scale: 1.1, color: '#FEC001' }}
-                animate={{ scale: 1, color: '#ffffff' }}
-                transition={{ duration: 0.4 }}
-                className="text-white font-bold text-2xl font-display tabular-nums"
-              >
-                ${balance.toFixed(2)}
-              </motion.div>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="text-gray-500 text-xs">•••• •••• •••• 4291</div>
-              <div className="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center">
-                <Zap className="w-4 h-4 text-black" />
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Action buttons */}
-        <div className="flex gap-2">
-          <motion.button
-            onClick={handleTap}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.96 }}
-            className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 bg-primary-500 hover:bg-primary-400 text-black rounded-2xl text-xs font-bold transition-colors shadow-md shadow-primary-500/25"
-          >
-            <Zap className="w-3.5 h-3.5" />
-            Tap to Pay
-          </motion.button>
-          <motion.button
-            onClick={handleTopUp}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.96 }}
-            className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white rounded-2xl text-xs font-semibold transition-colors"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            Top Up
-          </motion.button>
+    <div className="relative w-full h-full min-h-[520px] flex items-center justify-center p-5 sm:p-7">
+      <div className="relative w-full max-w-md overflow-hidden rounded-3xl border border-primary-500/30 bg-[#162520] shadow-2xl shadow-black/30">
+        <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+          <div><div className="text-primary-400 text-sm font-bold tracking-widest">PATCHFORCE</div><div className="text-[10px] text-white/45">Public works operations</div></div>
+          <Layers className="h-5 w-5 text-primary-400" />
         </div>
-
-        {/* Transaction rows */}
-        <div className="space-y-2">
-          <AnimatePresence initial={false}>
-            {txs.map((tx) => (
-              <motion.div
-                key={tx.id}
-                layout
-                initial={tx.isNew ? { opacity: 0, y: -10, scale: 0.96 } : { opacity: 0, x: 20 }}
-                animate={{ opacity: 1, y: 0, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.4, type: 'spring', stiffness: 260, damping: 22 }}
-                className="flex items-center gap-3 bg-white/5 border border-white/10 hover:border-primary-500/30 rounded-2xl px-4 py-3 transition-colors"
-              >
-                <div className="w-8 h-8 rounded-xl bg-primary-500/10 flex items-center justify-center flex-shrink-0">
-                  <tx.icon className="w-4 h-4 text-primary-400" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-white text-xs font-medium truncate">{tx.label}</div>
-                  <div className="text-gray-500 text-xs">{tx.time}</div>
-                </div>
-                <div
-                  className={`text-xs font-semibold flex-shrink-0 tabular-nums ${
-                    tx.amount.startsWith('+') ? 'text-green-400' : 'text-gray-300'
-                  }`}
-                >
-                  {tx.amount}
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+        <div className="relative h-80 sm:h-[25rem] overflow-hidden bg-[#f5f2ea]" style={{ backgroundImage: 'linear-gradient(18deg, transparent 42%, #d6dde4 43% 47%, #b8c5d0 48% 49%, transparent 50%), linear-gradient(112deg, transparent 44%, #d6dde4 45% 49%, #b8c5d0 50% 51%, transparent 52%), linear-gradient(#e6e9ed 1px, transparent 1px), linear-gradient(90deg, #e6e9ed 1px, transparent 1px)', backgroundSize: '100% 100%, 100% 100%, 42px 42px, 42px 42px' }}>
+          <div className="absolute left-[8%] top-[7%] h-[30%] w-[25%] rounded-[42%] bg-[#dcebd5] opacity-80" />
+          <div className="absolute right-[7%] bottom-[9%] h-[26%] w-[27%] rounded-[45%] bg-[#e0eedb] opacity-80" />
+          <div className="absolute -right-[10%] top-0 h-full w-[18%] rotate-[9deg] bg-[#a9e0e7] opacity-90" />
+          <div className="absolute left-[9%] top-[17%] text-[10px] font-bold uppercase tracking-[.18em] text-[#719078]">Cedar Park</div>
+          <div className="absolute right-[16%] bottom-[18%] text-[10px] font-bold uppercase tracking-[.18em] text-[#719078]">Riverside</div>
+          <div className="absolute left-[44%] bottom-[8%] rotate-[-18deg] text-[9px] font-semibold uppercase tracking-[.16em] text-[#718096]">Main Street</div>
+          <div className="absolute left-[58%] top-[21%] rotate-[58deg] text-[9px] font-semibold uppercase tracking-[.14em] text-[#718096]">Maple Avenue</div>
+          <div className="absolute left-[22%] bottom-[32%] rotate-[26deg] text-[9px] font-semibold uppercase tracking-[.14em] text-[#718096]">Queen Street</div>
+          {PATCH_ISSUES.map((item, index) => (
+            <button key={item.id} type="button" onClick={() => setSelected(index)} aria-label={`Show ${item.label} issue`} className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${[29, 66, 48][index]}%`, top: `${[34, 58, 76][index]}%` }}>
+              <span className={`absolute inset-0 rounded-full animate-ping ${selected === index ? 'opacity-30' : 'opacity-0'}`} style={{ backgroundColor: item.color }} />
+              <span className="relative grid h-9 w-9 rotate-45 place-items-center rounded-[5px] border-2 border-white text-xs font-black text-[#162520] shadow-lg" style={{ backgroundColor: '#FEC001' }}><span className="-rotate-45">{item.icon}</span></span>
+              <span className="absolute left-1/2 top-11 -translate-x-1/2 whitespace-nowrap rounded bg-white/90 px-1.5 py-0.5 text-[9px] font-bold text-[#425466] shadow-sm">{item.label}</span>
+            </button>
+          ))}
+          <div className="absolute bottom-3 left-3 rounded-full bg-white/75 px-2.5 py-1 text-[10px] font-semibold text-[#31483d] backdrop-blur">Live municipal map · 3 open issues</div>
+        </div>
+        <div className="p-4">
+          <div className="mb-3 flex items-center justify-between"><span className="text-[10px] font-bold uppercase tracking-wider text-white/45">Selected report</span><span className="rounded-full px-2 py-1 text-[10px] font-bold" style={{ backgroundColor: `${issue.color}33`, color: issue.color }}>Needs review</span></div>
+          <div className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl text-sm font-black text-[#162520]" style={{ backgroundColor: issue.color }}>{issue.icon}</span><div><div className="text-sm font-bold text-white">{issue.label}</div><div className="text-xs text-white/50">{issue.location}</div></div></div>
+          <div className="mt-4 flex gap-2">{PATCH_ISSUES.map((item, index) => <button key={item.id} type="button" onClick={() => setSelected(index)} className={`flex-1 rounded-xl border px-2 py-2 text-[10px] font-semibold transition-colors ${selected === index ? 'border-primary-500/60 bg-primary-500/15 text-primary-300' : 'border-white/10 text-white/50 hover:border-white/25'}`}>{item.label}</button>)}</div>
         </div>
       </div>
     </div>
@@ -437,7 +312,10 @@ const RideGuideVisual = () => {
         <div className="w-72 h-72 bg-primary-500/8 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative w-full max-w-xs space-y-3 flex flex-col">
+      <div className="rideguide-phone">
+        <div className="rideguide-phone-speaker" aria-hidden="true" />
+        <div className="rideguide-phone-screen">
+        <div className="relative w-full max-w-xs space-y-3 flex flex-col">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -558,8 +436,250 @@ const RideGuideVisual = () => {
           </div>
           <MessageSquare className="w-3.5 h-3.5 text-primary-500/60" />
         </motion.div>
+        </div>
+        </div>
       </div>
     </div>
+  );
+};
+
+/* ── Product model ─────────────────────────────────────────────
+   Every string below is drawn from the page's own approved copy or
+   the interactive visuals above — no fabricated metrics or claims. */
+type Feature = { icon: LucideIcon; label: string };
+type Product = {
+  id: string;
+  n: string;
+  icon: LucideIcon;
+  shortName: string;
+  tagline: string;
+  titleTop: string;
+  titleAccent: string;
+  titleBottom?: string;
+  description: string;
+  features: Feature[];
+  cta: { label: string; href: string };
+  Visual: () => JSX.Element;
+};
+
+const PRODUCTS: Product[] = [
+  {
+    id: 'on-demand',
+    n: '01',
+    icon: Zap,
+    shortName: 'On-Demand Mobility',
+    tagline: 'Closing the first & last-km gap, on demand.',
+    titleTop: 'SCOOTY',
+    titleAccent: 'On-Demand',
+    titleBottom: 'Mobility',
+    description:
+      'Improving the reach of regional transit by resolving the first-and-last-km service gap through on-demand mobility (Transit to Your Doorstep®).',
+    features: [
+      { icon: Route, label: 'First & last-km' },
+      { icon: Bus, label: 'Bus · LRT · GO Train' },
+      { icon: Navigation, label: 'Door-to-door' },
+    ],
+    cta: { label: 'Learn More', href: '/riders' },
+    Visual: FirstLastKmDiagram,
+  },
+  {
+    id: 'patchforce',
+    n: '02',
+    icon: Layers,
+    shortName: 'Patchforce',
+    tagline: 'From resident report to documented repair.',
+    titleTop: '',
+    titleAccent: 'Patchforce',
+    description:
+      'AI-native reporting and operations for municipal public works. A resident’s photo becomes a ranked, routed and fully documented repair.',
+    features: [
+      { icon: MapPin, label: 'Resident reports' },
+      { icon: Zap, label: 'Ranked & routed' },
+      { icon: ShieldCheck, label: 'Fully documented' },
+    ],
+    cta: { label: 'Learn More', href: '/products/patchforce' },
+    Visual: PayVisual,
+  },
+  {
+    id: 'rideguide',
+    n: '03',
+    icon: Bot,
+    shortName: 'AI RideGuide',
+    tagline: 'Conversational, real-time transit intelligence.',
+    titleTop: 'SCOOTY AI',
+    titleAccent: 'RideGuide',
+    description:
+      'Using conversational AI, real-time service updates, dynamic routing and customer support to enhance the daily transit commuting experience.',
+    features: [
+      { icon: Bot, label: 'Conversational AI' },
+      { icon: Radio, label: 'Real-time updates' },
+      { icon: Route, label: 'Dynamic routing' },
+    ],
+    cta: { label: 'Learn More', href: '/partners' },
+    Visual: RideGuideVisual,
+  },
+];
+
+/* ── Feature chip row ── */
+const FeatureChips = ({ features }: { features: Feature[] }) => (
+  <div className="flex flex-wrap gap-2.5 mb-9">
+    {features.map((f) => (
+      <span
+        key={f.label}
+        className="inline-flex items-center gap-1.5 pl-2.5 pr-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-medium text-gray-300"
+      >
+        <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary-500/12">
+          <f.icon className="w-3 h-3 text-primary-400" />
+        </span>
+        {f.label}
+      </span>
+    ))}
+  </div>
+);
+
+/* ── Products overview (delivers the hero's "three products, one platform" promise) ── */
+const ProductIndex = ({ products }: { products: Product[] }) => {
+  const [ref, inView] = useSection();
+  return (
+    <section className="relative bg-black pt-24 pb-8 overflow-hidden">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={ref}>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7 }}
+          className="text-center max-w-2xl mx-auto mb-14"
+        >
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-white leading-tight">
+            Three products working as one
+          </h2>
+          <p className="text-gray-400 mt-4 text-base sm:text-lg leading-relaxed">
+            On-demand mobility, unified payments, and AI transit intelligence — built to move
+            people the entire way, not just part of it.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {products.map((p, i) => (
+            <motion.a
+              key={p.id}
+              href={`#${p.id}`}
+              initial={{ opacity: 0, y: 30 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.15 + i * 0.12 }}
+              whileHover={{ y: -6 }}
+              className="group relative flex flex-col rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm p-7 hover:border-primary-500/40 hover:bg-white/[0.05] transition-colors duration-300"
+            >
+              <div className="flex items-start justify-between mb-8">
+                <div className="w-12 h-12 rounded-2xl bg-primary-500/10 border border-primary-500/20 flex items-center justify-center group-hover:bg-primary-500 group-hover:border-primary-500 transition-colors duration-300">
+                  <p.icon className="w-6 h-6 text-primary-400 group-hover:text-black transition-colors duration-300" />
+                </div>
+                <span className="text-5xl font-black font-display leading-none text-white/[0.06] group-hover:text-primary-500/25 transition-colors duration-300">
+                  {p.n}
+                </span>
+              </div>
+              <h3 className="text-xl font-bold font-display text-white mb-2">{p.shortName}</h3>
+              <p className="text-sm text-gray-400 leading-relaxed mb-6 flex-1">{p.tagline}</p>
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-primary-400">
+                Explore
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </motion.a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ── One product section (alternating layout, data-driven) ── */
+const ProductSection = ({ product, index }: { product: Product; index: number }) => {
+  const navigate = useNavigate();
+  const [ref, inView] = useSection();
+  const reversed = index % 2 === 1; // 02 puts the visual on the left
+  const tone = reversed ? 'bg-gray-950' : 'bg-black';
+  const { Visual } = product;
+
+  const text = (
+    <motion.div
+      initial={{ opacity: 0, x: reversed ? 40 : -40 }}
+      animate={inView ? { opacity: 1, x: 0 } : {}}
+      transition={{ duration: 0.8 }}
+      className={reversed ? 'order-1 lg:order-2' : ''}
+    >
+      <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary-500 text-black text-xs font-bold rounded-full mb-6 tracking-wide uppercase">
+        <product.icon className="w-3.5 h-3.5" />
+        Product {product.n}
+      </div>
+      <h2 className="text-5xl md:text-6xl font-bold font-display text-white leading-tight mb-6">
+        {product.titleTop && <>{product.titleTop}<br /></>}
+        <span className="text-primary-500">{product.titleAccent}</span>
+        {product.titleBottom && (
+          <>
+            <br />
+            {product.titleBottom}
+          </>
+        )}
+      </h2>
+      <p className="text-lg text-gray-400 leading-relaxed mb-8 max-w-lg">{product.description}</p>
+      <FeatureChips features={product.features} />
+      <motion.button
+        onClick={() => navigate(product.cta.href)}
+        className="group inline-flex items-center gap-2 px-7 py-3.5 bg-primary-500 text-black rounded-full font-semibold hover:bg-primary-400 transition-all duration-300 shadow-lg shadow-primary-500/20"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <span>{product.cta.label}</span>
+        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+      </motion.button>
+    </motion.div>
+  );
+
+  const visual = (
+    <motion.div
+      initial={{ opacity: 0, x: reversed ? -40 : 40 }}
+      animate={inView ? { opacity: 1, x: 0 } : {}}
+      transition={{ duration: 0.8, delay: 0.2 }}
+      className={reversed ? 'order-2 lg:order-1' : ''}
+    >
+      <TiltCard className="rounded-3xl overflow-hidden border border-white/8 bg-white/[0.03] backdrop-blur-sm">
+        <Visual />
+      </TiltCard>
+    </motion.div>
+  );
+
+  return (
+    <section id={product.id} ref={ref} className={`relative py-28 scroll-mt-24 overflow-hidden ${tone}`}>
+      {/* Texture */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: reversed
+            ? 'linear-gradient(rgba(234,179,8,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(234,179,8,0.5) 1px, transparent 1px)'
+            : 'radial-gradient(circle, rgba(234,179,8,0.8) 1px, transparent 1px)',
+          backgroundSize: reversed ? '60px 60px' : '30px 30px',
+        }}
+      />
+      <div
+        className={`absolute top-0 h-full w-1/2 from-primary-500/[0.04] to-transparent ${
+          reversed ? 'left-0 bg-gradient-to-r' : 'right-0 bg-gradient-to-l'
+        }`}
+      />
+      {/* Editorial watermark number */}
+      <div
+        className={`pointer-events-none absolute top-1/2 -translate-y-1/2 text-[16rem] leading-none font-black font-display text-white/[0.015] select-none hidden xl:block ${
+          reversed ? 'right-8' : 'left-8'
+        }`}
+      >
+        {product.n}
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          {text}
+          {visual}
+        </div>
+      </div>
+    </section>
   );
 };
 
@@ -571,9 +691,6 @@ export const TechnologyPage = () => {
   const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
-  const [s1Ref, s1InView] = useSection();
-  const [s2Ref, s2InView] = useSection();
-  const [s3Ref, s3InView] = useSection();
   const [ctaRef, ctaInView] = useSection();
 
   return (
@@ -581,20 +698,32 @@ export const TechnologyPage = () => {
       <ParticleBackground absolute />
 
       {/* ── HERO ── */}
-      <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section ref={heroRef} className="technology-hero relative h-screen flex items-center justify-center overflow-hidden">
         <motion.div style={{ y: heroY }} className="absolute inset-0">
           <img
-            src="https://images.pexels.com/photos/1031698/pexels-photo-1031698.jpeg?auto=compress&cs=tinysrgb&w=1920"
-            alt=""
-            className="w-full h-full object-cover"
+            src="/assets/mainPage/our-solutions-hero.png"
+            alt="A commuter on a SCOOTY e-scooter beside a city bus and transit shelter at sunset"
+            className="w-full h-full object-cover object-center"
             fetchPriority="high"
             loading="eager"
             decoding="async"
           />
         </motion.div>
+        {/* Cinematic overlay stack — darken, vignette, brand wash, bottom fade to black.
+           The photo is a bright golden-hour scene, so the centre carries an extra
+           scrim to keep the headline legible over the sun flare. */}
         <div className="absolute inset-0 bg-black/45" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black" />
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/50 to-transparent" />
+        <div
+          className="absolute inset-0"
+          style={{ background: 'radial-gradient(75% 70% at 50% 52%, rgba(0,0,0,0.55) 0%, transparent 70%)' }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: 'radial-gradient(120% 90% at 50% 25%, transparent 35%, rgba(0,0,0,0.6) 100%)' }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/60 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-2/3 h-2/3 bg-primary-500/[0.06] blur-[120px] rounded-full pointer-events-none" />
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
@@ -608,6 +737,7 @@ export const TechnologyPage = () => {
           style={{ opacity: heroOpacity }}
           className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6"
         >
+
           <motion.h1
             initial={{ opacity: 0, x: -32 }}
             animate={{ opacity: 1, x: 0 }}
@@ -671,168 +801,13 @@ export const TechnologyPage = () => {
         </motion.div>
       </section>
 
-      {/* ── PRODUCT 1: ON-DEMAND MOBILITY ── */}
-      <section id="on-demand" ref={s1Ref} className="relative py-28 bg-black overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: 'radial-gradient(circle, rgba(234,179,8,0.8) 1px, transparent 1px)',
-            backgroundSize: '30px 30px',
-          }}
-        />
-        <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-primary-500/3 to-transparent" />
+      {/* ── PRODUCTS OVERVIEW ── */}
+      <ProductIndex products={PRODUCTS} />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              animate={s1InView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary-500 text-black text-xs font-bold rounded-full mb-6 tracking-wide uppercase">
-                <Zap className="w-3.5 h-3.5" />
-                Product 01
-              </div>
-              <h2 className="text-5xl md:text-6xl font-bold font-display text-white leading-tight mb-6">
-                SCOOTY<br />
-                <span className="text-primary-500">On-Demand</span><br />
-                Mobility
-              </h2>
-              <p className="text-lg text-gray-400 leading-relaxed mb-10 max-w-lg">
-                Improving the reach of regional transit by resolving the first-and-last-km service gap through on-demand mobility (Transit to Your Doorstep®).
-              </p>
-              <motion.button
-                onClick={() => navigate('/riders')}
-                className="group inline-flex items-center gap-2 px-7 py-3.5 bg-primary-500 text-black rounded-full font-semibold hover:bg-primary-400 transition-all duration-300 shadow-lg shadow-primary-500/20"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <span>Learn More</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </motion.button>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={s1InView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <TiltCard className="rounded-3xl overflow-hidden border border-white/8 bg-white/[0.03] backdrop-blur-sm">
-                <FirstLastKmDiagram />
-              </TiltCard>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── PRODUCT 2: SCOOTY PAY ── */}
-      <section id="pay" ref={s2Ref} className="relative py-28 bg-gray-950 overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.025]"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(234,179,8,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(234,179,8,0.5) 1px, transparent 1px)',
-            backgroundSize: '60px 60px',
-          }}
-        />
-        <div className="absolute left-0 top-0 w-1/2 h-full bg-gradient-to-r from-primary-500/3 to-transparent" />
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              animate={s2InView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="order-2 lg:order-1"
-            >
-              <TiltCard className="rounded-3xl overflow-hidden border border-white/8 bg-white/[0.03] backdrop-blur-sm">
-                <PayVisual />
-              </TiltCard>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={s2InView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8 }}
-              className="order-1 lg:order-2"
-            >
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary-500 text-black text-xs font-bold rounded-full mb-6 tracking-wide uppercase">
-                <CreditCard className="w-3.5 h-3.5" />
-                Product 02
-              </div>
-              <h2 className="text-5xl md:text-6xl font-bold font-display text-white leading-tight mb-6">
-                SCOOTY<br />
-                <span className="text-primary-500">PAY</span>
-              </h2>
-              <p className="text-lg text-gray-400 leading-relaxed mb-10 max-w-lg">
-                Seamlessly integrated, secure, and scalable payment processing for transit ticketing and 3rd party mobility services through a unified MaaS platform.
-              </p>
-              <motion.button
-                onClick={() => navigate('/partners')}
-                className="group inline-flex items-center gap-2 px-7 py-3.5 bg-primary-500 text-black rounded-full font-semibold hover:bg-primary-400 transition-all duration-300 shadow-lg shadow-primary-500/20"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <span>Learn More</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </motion.button>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── PRODUCT 3: AI RIDEGUIDE ── */}
-      <section id="rideguide" ref={s3Ref} className="relative py-28 bg-black overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: 'radial-gradient(circle, rgba(234,179,8,0.8) 1px, transparent 1px)',
-            backgroundSize: '30px 30px',
-          }}
-        />
-        <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-primary-500/3 to-transparent" />
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              animate={s3InView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary-500 text-black text-xs font-bold rounded-full mb-6 tracking-wide uppercase">
-                <Bot className="w-3.5 h-3.5" />
-                Product 03
-              </div>
-              <h2 className="text-5xl md:text-6xl font-bold font-display text-white leading-tight mb-6">
-                SCOOTY AI<br />
-                <span className="text-primary-500">RideGuide</span>
-              </h2>
-              <p className="text-lg text-gray-400 leading-relaxed mb-10 max-w-lg">
-                Using conversational AI, real-time service updates, dynamic routing and customer support to enhance the daily transit commuting experience.
-              </p>
-              <motion.button
-                onClick={() => navigate('/partners')}
-                className="group inline-flex items-center gap-2 px-7 py-3.5 bg-primary-500 text-black rounded-full font-semibold hover:bg-primary-400 transition-all duration-300 shadow-lg shadow-primary-500/20"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <span>Learn More</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </motion.button>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={s3InView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <TiltCard className="rounded-3xl overflow-hidden border border-white/8 bg-white/[0.03] backdrop-blur-sm">
-                <RideGuideVisual />
-              </TiltCard>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+      {/* ── PRODUCT SECTIONS ── */}
+      {PRODUCTS.map((product, i) => (
+        <ProductSection key={product.id} product={product} index={i} />
+      ))}
 
       {/* ── CTA ── */}
       <section ref={ctaRef} className="py-24 bg-primary-500 relative overflow-hidden">

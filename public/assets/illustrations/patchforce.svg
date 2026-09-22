@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+<rect width="800" height="600" fill="#172720"/>
+<g font-family="Arial, sans-serif">
+<text x="56" y="64" fill="#a9c8a0" font-size="13" letter-spacing="3">PATCHFORCE / REPORT TO REPAIR</text>
+<rect x="56" y="103" width="284" height="380" rx="22" fill="#23392d" stroke="#50664f"/>
+<rect x="73" y="122" width="250" height="216" rx="12" fill="#bacab0"/>
+<path d="M73 210h250v128H73z" fill="#7e8f7b"/>
+<path d="m73 179 250 14v40L73 219z" fill="#e0e5d2"/>
+<path d="m110 254 30-19 52 9 34-8 49 33-19 27-79 10-54-19z" fill="#4b5d4a"/>
+<path d="m139 261 37-7 35 11 38 4-19 17-67-2z" fill="#344631"/>
+<path d="M92 142h20m-20 0v20m190-20h-20m20 0v20M92 317h20m-20 0v-20m190 20h-20m20 0v-20" stroke="#f5f4dd" stroke-width="3"/>
+<circle cx="100" cy="377" r="10" fill="#fec001"/>
+<text x="121" y="383" fill="#fff" font-size="18" font-weight="bold">Resident photo</text>
+<text x="83" y="424" fill="#becdb7" font-size="15">The starting point for action.</text>
+<path d="M356 296h61m-9-8 9 8-9 8" stroke="#fec001" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M458 193v247" stroke="#526e52" stroke-width="2" stroke-dasharray="4 6"/>
+<g>
+<rect x="430" y="123" width="314" height="94" rx="16" fill="#294333" stroke="#536e51"/>
+<circle cx="462" cy="157" r="14" fill="#a9c8a0"/><text x="458" y="162" fill="#172720" font-size="13" font-weight="bold">1</text>
+<text x="490" y="164" fill="#fff" font-size="21" font-weight="bold">Ranked</text>
+<text x="453" y="193" fill="#becdb7" font-size="14">Give the report a place in the work.</text>
+<rect x="430" y="252" width="314" height="94" rx="16" fill="#294333" stroke="#536e51"/>
+<circle cx="462" cy="286" r="14" fill="#a9c8a0"/><text x="458" y="291" fill="#172720" font-size="13" font-weight="bold">2</text>
+<text x="490" y="293" fill="#fff" font-size="21" font-weight="bold">Routed</text>
+<text x="453" y="322" fill="#becdb7" font-size="14">Connect the repair to the right team.</text>
+<rect x="430" y="381" width="314" height="102" rx="16" fill="#fec001"/>
+<path d="m449 416 8 8 16-19" stroke="#172720" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="490" y="423" fill="#172720" font-size="21" font-weight="bold">Documented</text>
+<text x="453" y="459" fill="#344631" font-size="14">A complete record of the repair.</text>
+</g>
+<text x="56" y="548" fill="#becdb7" font-size="15">AI-native operations for municipal public works.</text>
+</g>
+</svg>

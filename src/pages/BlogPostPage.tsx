@@ -1,3 +1,4 @@
+import { SiteImage } from '../components/ui/SiteImage';
 import { useParams, Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, ArrowUpRight, Clock, Calendar, Lightbulb } from 'lucide-react';
@@ -115,11 +116,12 @@ export const BlogPostPage = () => {
       {/* ── Hero ── */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img
+          <SiteImage
             src={post.image}
             alt={post.title}
             className="h-full w-full object-cover"
-            fetchPriority="high"
+            sizes="100vw"
+          fetchPriority="high"
             decoding="async"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/40" />
@@ -241,7 +243,7 @@ export const BlogPostPage = () => {
                     className="group relative flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all hover:border-[#FEC001]/40 hover:shadow-lg dark:border-white/[0.07] dark:bg-[#0A0A0A]"
                   >
                     <div className="relative h-36 overflow-hidden">
-                      <img
+                      <SiteImage
                         src={p.image}
                         alt={p.title}
                         className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"

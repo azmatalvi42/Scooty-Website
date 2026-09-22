@@ -1,6 +1,7 @@
+import { RiderCategoryImage } from '../components/ui/RiderCategoryImage';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, AlertTriangle, CheckCircle, XCircle, Bike, ExternalLink } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, CheckCircle, XCircle, Bike } from 'lucide-react';
 
 // ─── Reusable components ─────────────────────────────────────────────────────
 
@@ -328,6 +329,7 @@ export const RiderDetailPage = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="bg-white dark:bg-navy-800 rounded-2xl p-8 border border-gray-200 dark:border-white/10"
           >
+            <div className="mb-8"><RiderCategoryImage topic={topic!} eager /></div>
             {data.content}
           </motion.div>
         </div>

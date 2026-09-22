@@ -26,7 +26,7 @@ const socials = [
 ];
 
 export const Footer = () => (
-  <footer className="bg-black border-t border-white/[0.05]">
+  <footer className="editorial-footer bg-black border-t border-white/[0.05]">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
 
       {/* Top row: logo + nav + socials */}
