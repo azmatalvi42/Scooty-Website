@@ -1,4 +1,3 @@
-import { SiteImage } from '../ui/SiteImage';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll } from 'framer-motion';
 import { Menu, X, ChevronRight } from 'lucide-react';
@@ -127,12 +126,22 @@ export const Navbar = () => {
             {/* ── Logo (left) ── */}
             <motion.div className="flex items-center gap-2.5" whileHover={{ scale: 1.01 }}>
               <Link to="/" className="flex items-center">
-                <SiteImage
-                  src="/assets/scooty-logo-tm.png"
-                  sizes="64px"
-                  loading="eager"
+                {/* Dark wordmark on light surfaces, white wordmark in dark mode. */}
+                <img
+                  src="/assets/optimized/scooty-logo-horizontal.webp"
+                  width={721}
+                  height={176}
                   alt="SCOOTY"
-                  className="h-10 sm:h-12 w-auto"
+                  className="scooty-horizontal-logo block dark:hidden h-9 sm:h-11 w-auto object-contain"
+                  fetchPriority="high"
+                  decoding="async"
+                />
+                <img
+                  src="/assets/optimized/scooty-logo-horizontal-white.webp"
+                  width={721}
+                  height={176}
+                  alt="SCOOTY"
+                  className="scooty-horizontal-logo hidden dark:block h-9 sm:h-11 w-auto object-contain"
                   fetchPriority="high"
                   decoding="async"
                 />

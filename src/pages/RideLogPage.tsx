@@ -353,7 +353,7 @@ const NewspaperFront = ({
                 <SiteImage
                   src={lead.image}
                   alt={lead.title}
-                  className="absolute inset-0 h-full w-full object-cover grayscale-[0.15] transition-transform duration-700 group-hover:scale-[1.04]"
+                  className="blog-card-image absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                   loading="eager"
                   decoding="async"
                 />
@@ -388,7 +388,7 @@ const NewspaperFront = ({
                 <SiteImage
                   src={p.image}
                   alt={p.title}
-                  className="absolute inset-0 h-full w-full object-cover grayscale-[0.2] transition-all duration-700 group-hover:scale-[1.04] group-hover:grayscale-0"
+                  className="blog-card-image absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                   loading="lazy"
                   decoding="async"
                 />
@@ -489,28 +489,15 @@ const RouteStop = ({
           animate={inView ? { opacity: 1, y: 0 } : reduce ? {} : { opacity: 0, y: 24 }}
           transition={{ duration: 0.55, ease: EASE }}
           whileHover={reduce ? undefined : { y: -4 }}
-          className="group relative grid overflow-hidden rounded-2xl border border-gray-200 bg-white transition-colors duration-300 hover:border-[#FEC001]/40 hover:shadow-xl focus-within:ring-2 focus-within:ring-[#FEC001]/50 dark:border-white/[0.07] dark:bg-[#0A0A0A] sm:grid-cols-[clamp(220px,34%,300px)_1fr]"
+          className="group relative grid overflow-hidden rounded-2xl border border-gray-200 bg-white transition-colors duration-300 hover:border-[#FEC001]/40 hover:shadow-xl focus-within:ring-2 focus-within:ring-[#FEC001]/50 dark:border-white/[0.07] dark:bg-[#0A0A0A]"
         >
-          {/* thumbnail */}
-          <div className="relative h-44 overflow-hidden sm:h-full sm:min-h-[212px]">
-            <SiteImage
-              src={post.image}
-              alt={post.title}
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              loading="lazy"
-              decoding="async"
-            />
-            <Halftone className="opacity-[0.12]" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent sm:bg-gradient-to-r sm:from-transparent sm:to-black/20" />
-            <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-black/55 px-2.5 py-1 font-news text-[10px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-md">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#FEC001]" />
-              {post.stop}
-            </span>
-          </div>
-
+          {/* Text-only: the front-page grid above already shows each story's photo. */}
           {/* content */}
           <div className="flex flex-col p-5 sm:p-6">
             <div className="mb-3 flex items-center gap-3">
+              <span className="font-news text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 dark:text-white/45">
+                {post.stop}
+              </span>
               <LineBadge category={post.category} />
               {active && (
                 <span className="ml-auto inline-flex items-center gap-1.5 font-news text-[10px] font-bold uppercase tracking-[0.18em] text-[#B88400] dark:text-[#FEC001]">

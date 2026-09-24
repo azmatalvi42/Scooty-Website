@@ -224,23 +224,74 @@ html:not(.dark) .editorial-shell :where(.text-primary-500, .text-primary-400, .t
   text-align: left;
 }
 .editorial-hero-panel {
-  max-width: 660px;
-  padding: clamp(28px, 4vw, 56px);
+  width: fit-content;
+  max-width: 520px;
+  padding: clamp(22px, 2.6vw, 36px);
   border: 1px solid rgba(255, 255, 255, .2);
   border-radius: 24px;
   background: rgba(19, 29, 24, .94);
   backdrop-filter: blur(12px);
 }
-.editorial-hero h1.font-display { font-size: clamp(3rem, 4.8vw, 5.2rem); font-weight: 800; line-height: 1.03; letter-spacing: -.065em; }
+.editorial-hero h1.font-display { font-size: clamp(2.4rem, 3.6vw, 3.9rem); font-weight: 800; line-height: 1.03; letter-spacing: -.065em; }
 .editorial-hero-copy h1 span:first-child { color: #fff; }
 .editorial-hero-copy h1 span:last-child { color: #fec001; }
 .editorial-hero-copy p, .editorial-hero-copy p span { color: #e3e8df; }
 .editorial-hero-copy :is(h1, p, span) { text-shadow: none; filter: none; }
-.editorial-hero-copy p { max-width: 30ch; font-size: clamp(1.1rem, 1.6vw, 1.4rem); font-weight: 400; line-height: 1.5; letter-spacing: -.02em; }
+.editorial-hero-copy p { max-width: 30ch; font-size: clamp(1rem, 1.3vw, 1.2rem); font-weight: 400; line-height: 1.5; letter-spacing: -.02em; }
 .editorial-hero-scroll { left: 50%; bottom: 20px; padding: 10px 16px; border-radius: 999px; background: rgba(19, 29, 24, .94); }
 .editorial-hero-scroll :is(span, svg) { color: #fff; }
 .editorial-hero-scroll button { gap: 4px; }
 .editorial-hero-scroll button > div { display: none; }
+
+.partner-rail {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  min-height: 132px;
+  padding: 0 clamp(20px, 5vw, 72px);
+  overflow: hidden;
+  border-bottom: 1px solid var(--editorial-border);
+  background: color-mix(in srgb, var(--editorial-paper) 88%, transparent);
+}
+.partner-rail-label {
+  flex: 0 0 auto;
+  color: var(--editorial-muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+/* Capped narrower than one set of logos, so the looping copy never shows a logo twice at once. */
+.partner-rail-viewport { min-width: 0; max-width: 2000px; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
+.partner-rail-track { display: flex; width: max-content; align-items: center; animation: partner-marquee 28s linear infinite; }
+.partner-rail-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-right: 42px;
+  min-width: 220px;
+  padding: 14px 18px;
+  border: 1px solid;
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  color: var(--editorial-ink);
+  font-size: clamp(13px, 1.4vw, 16px);
+  font-weight: 700;
+  letter-spacing: -.02em;
+  white-space: nowrap;
+}
+.partner-rail-logo-box { display: grid; place-items: center; width: 52px; height: 52px; flex: 0 0 auto; overflow: hidden; border-radius: 12px; background: rgba(255,255,255,.84); }
+.partner-rail-logo { width: 100%; height: 100%; padding: 5px; object-fit: contain; }
+.partner-rail-abbr { color: #303932; font-size: 12px; font-weight: 900; letter-spacing: .06em; }
+.partner-rail-copy { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.partner-rail-copy > span { color: var(--editorial-ink); font-size: 14px; font-weight: 800; line-height: 1.1; white-space: nowrap; }
+.partner-rail-copy small { font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
+.scooty-horizontal-logo { mix-blend-mode: normal; }
+@media (max-width: 639px) { .partner-rail-label { display: none; } .partner-rail-logo { max-width: 92px; height: 24px; } }
+@keyframes partner-marquee { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .partner-rail-track { animation-play-state: paused; } }
 
 /* Existing route heroes and media get the same framing without changing their content. */
 .editorial-shell main > div { border-radius: 32px; }
@@ -274,15 +325,15 @@ html:not(.dark) .editorial-shell :where(.text-primary-500, .text-primary-400, .t
   .editorial-nav-grid { grid-template-columns: 1fr auto; height: 72px; }
   .editorial-shell main { padding-top: 104px; }
   .editorial-hero { min-height: max(600px, calc(100svh - 104px)); padding: 40px 24px 88px; }
-  .editorial-hero h1.font-display { font-size: clamp(2.5rem, 5.2vw, 4rem); }
+  .editorial-hero h1.font-display { font-size: clamp(2.25rem, 4.6vw, 3.4rem); }
 }
 @media (max-width: 639px) {
   html { scroll-padding-top: 120px; }
   .editorial-nav-grid { height: 64px; }
   .editorial-shell main { padding-top: 96px; }
   .editorial-hero { min-height: max(620px, calc(100svh - 96px)); padding: 32px 16px 96px; justify-content: flex-start; }
-  .editorial-hero-panel { padding: 28px 24px; border-radius: 20px; }
-  .editorial-hero h1.font-display { font-size: clamp(2.25rem, 9.5vw, 3.6rem); }
+  .editorial-hero-panel { padding: 22px 20px; border-radius: 20px; }
+  .editorial-hero h1.font-display { font-size: clamp(2rem, 8.5vw, 3rem); }
   .editorial-hero-copy p { font-size: 1.05rem; }
   .editorial-shell h2.font-display { font-size: clamp(2rem, 8.5vw, 3rem); }
   .editorial-shell :where(.rounded-3xl) { border-radius: 26px; }
@@ -351,16 +402,13 @@ html:not(.dark) .editorial-shell :where(.text-primary-500, .text-primary-400, .t
 .riding-trees { animation: riding-travel 12s linear infinite; }
 .riding-road { animation: riding-road 1.2s linear infinite; }
 .riding-wheel { animation: riding-spin 1.4s linear infinite; }
-.riding-crank { animation: riding-spin 2s linear infinite; }
 .riding-body { animation: riding-bob 1.5s ease-in-out infinite alternate; }
 .riding-body-scooter { animation-delay: -.7s; }
-.riding-leg { animation: riding-pedal 1s ease-in-out infinite alternate; transform-origin: 130px 270px; }
 .riders-scene[data-running="false"] svg * { animation-play-state: paused; }
 @keyframes riding-travel { to { transform: translateX(-760px); } }
 @keyframes riding-road { to { transform: translateX(-96px); } }
 @keyframes riding-spin { to { transform: rotate(360deg); } }
 @keyframes riding-bob { to { transform: translateY(2px); } }
-@keyframes riding-pedal { to { transform: rotate(-9deg); } }
 @media (prefers-reduced-motion: reduce) {
   .riders-scene svg * { animation: none !important; }
   .riders-scene-toggle { display: none; }
@@ -372,6 +420,18 @@ html:not(.dark) .editorial-shell :where(.text-primary-500, .text-primary-400, .t
 .rider-category-scooter { aspect-ratio: 16 / 7; overflow: hidden; border-top: 4px solid var(--editorial-soft); }
 .rider-category-caption { display: flex; align-items: center; gap: 10px; padding: 18px 20px; font-size: 13px; line-height: 1.5; color: var(--editorial-ink); }
 .rider-category-caption > span { width: 7px; height: 7px; flex-shrink: 0; border-radius: 50%; background: #b88c00; }
+
+/* Give the About and Ride Log slides a consistent editorial crop and full-colour
+   photography so each card reads as a finished story, not a thumbnail. */
+.about-tab-image,
+.blog-card-image {
+  object-position: center 48%;
+  transition: transform .7s cubic-bezier(.22, 1, .36, 1), filter .35s ease;
+}
+.about-tab-image { filter: saturate(1.04) contrast(1.02); }
+.blog-card-image { filter: saturate(1.08) contrast(1.03); }
+.group:hover .about-tab-image,
+.group:hover .blog-card-image { filter: saturate(1.14) contrast(1.05); }
 
 /* Home: brand gold diffuses into black, with a warm counterpart in light mode. */
 .editorial-shell:has(#home) {

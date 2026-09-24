@@ -339,8 +339,8 @@ const ProudPartnersMarquee = () => {
         </p>
       </div>
 
-      {/* Marquee track */}
-      <div className="relative">
+      {/* Marquee track — capped narrower than one set of logos so none shows twice at once. */}
+      <div className="relative max-w-[1900px] mx-auto overflow-hidden">
         {/* Left fade edge */}
         <div
           className="absolute left-0 top-0 bottom-0 w-24 sm:w-40 z-10 pointer-events-none"

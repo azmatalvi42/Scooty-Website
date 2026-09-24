@@ -2,7 +2,7 @@ import { SiteImage } from '../ui/SiteImage';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { ArrowRight, ChevronLeft, ChevronRight, Shield, Heart, Handshake, Quote, X, Plus } from 'lucide-react';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { governmentQuotes } from '../../data/projects';
 
@@ -238,6 +238,17 @@ export const Projects = () => {
   const [quotesRef, quotesInView] = useInView({ triggerOnce: true, threshold: 0.06 });
   const [selectedQuote, setSelectedQuote] = useState<number | null>(null);
   const [expandedValue, setExpandedValue] = useState<number | null>(null);
+  // Tallest core-value copy block; every card reserves this much so the cards rest at equal
+  // heights without the grid stretching them (which made all three grow when one opened).
+  const valueCopyRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [valueCopyHeight, setValueCopyHeight] = useState(0);
+  useEffect(() => {
+    const blocks = valueCopyRefs.current.filter((el): el is HTMLDivElement => Boolean(el));
+    const measure = () => setValueCopyHeight(Math.max(0, ...blocks.map(el => el.offsetHeight)));
+    const observer = new ResizeObserver(measure);
+    blocks.forEach(el => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section id="impact" ref={ref} className="relative overflow-hidden">
@@ -272,7 +283,11 @@ export const Projects = () => {
             </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+          {/* items-start: opening one card must not stretch its row-mates to the same height. */}
+          <div
+            className="grid grid-cols-1 md:grid-cols-3 items-start gap-5 sm:gap-6"
+            style={{ '--value-copy-h': `${valueCopyHeight}px` } as React.CSSProperties}
+          >
             {coreValues.map((v, i) => {
               const isCourtesy = v.title === 'Courtesy';
               const isOutlined = v.title === 'Safety' || v.title === 'Partnership';
@@ -303,23 +318,24 @@ export const Projects = () => {
               return (
                 <motion.div
                   key={i}
-                  layout
                   initial={{ opacity: 0, y: 10 }}
                   animate={valuesInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.55, delay: 0.1 + i * 0.12, ease: REVEAL_EASE }}
                   className={`editorial-value-card ${cardClasses}`}
                 >
-                  <motion.div layout="position">
-                    <div className={iconWrapClasses}>
-                      <v.icon className={iconClasses} />
+                  <div className="md:min-h-[var(--value-copy-h)]">
+                    <div ref={el => { valueCopyRefs.current[i] = el; }}>
+                      <div className={iconWrapClasses}>
+                        <v.icon className={iconClasses} />
+                      </div>
+                      <h3 className={titleClasses}>
+                        {v.title}
+                      </h3>
+                      <p className={descClasses}>
+                        {v.description}
+                      </p>
                     </div>
-                    <h3 className={titleClasses}>
-                      {v.title}
-                    </h3>
-                    <p className={descClasses}>
-                      {v.description}
-                    </p>
-                  </motion.div>
+                  </div>
 
                   <button
                     onClick={() => setExpandedValue(isExpanded ? null : i)}

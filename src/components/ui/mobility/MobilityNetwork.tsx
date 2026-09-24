@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { advanceTraffic } from './traffic';
-import { createMobilityScene, drawMobilityFlow, drawMobilityMap, prepareMobilitySprites, MAP_HEIGHT, MAP_WIDTH } from './scene';
+import { createMobilityScene, drawMobilityFlow, drawMobilityMap, prepareMobilitySprites, setSceneLogo, MAP_HEIGHT, MAP_WIDTH } from './scene';
 
-const PLAYBACK_RATE = 2;
+const PLAYBACK_RATE = 3.2;
 
 /** Decorative, locally rendered illustration. No map tiles, location access, or network requests. */
 export function MobilityNetwork() {
@@ -86,12 +86,28 @@ export function MobilityNetwork() {
       scale = Math.max(width / MAP_WIDTH, height / MAP_HEIGHT) * 1.08;
       offsetX = (width - MAP_WIDTH * scale) / 2;
       offsetY = (height - MAP_HEIGHT * scale) / 2;
+      render();
+      syncAnimation();
+    }
+
+    function render() {
       background.setTransform(dpr * scale, 0, 0, dpr * scale, dpr * offsetX, dpr * offsetY);
       drawMobilityMap(background, scene);
       prepareMobilitySprites(scene, dpr * scale);
       draw();
-      syncAnimation();
     }
+
+    // GO signage and the SCOOTY blimp use the real logos; re-cache sprites as each one loads.
+    const logoImages = ([['go', '/assets/Cities/go-transit-logo.svg'], ['scooty', '/assets/partners-transparent/scooty-horizontal-logo.png']] as const).map(([kind, src]) => {
+      const image = new Image();
+      image.onload = () => {
+        if (disposed) return;
+        setSceneLogo(kind, image);
+        if (width && height) render();
+      };
+      image.src = src;
+      return image;
+    });
 
     const resizeObserver = new ResizeObserver(resize);
     const intersectionObserver = new IntersectionObserver(([entry]) => {
@@ -107,6 +123,7 @@ export function MobilityNetwork() {
 
     return () => {
       disposed = true;
+      logoImages.forEach(image => { image.onload = null; });
       cancelAnimationFrame(frame);
       resizeObserver.disconnect();
       intersectionObserver.disconnect();

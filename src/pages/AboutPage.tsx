@@ -44,7 +44,7 @@ const TABS = [
       { value: '2023', label: 'Founded', icon: Calendar },
       { value: '100%', label: 'Canadian', icon: Flag },
     ] as { value: string; label: string; icon: LucideIcon }[],
-    image: '/assets/mainPage/QuotesImages/DSC_1837.jpg',
+    image: '/assets/Cities/Burlington/burlington-rider.png',
   },
   {
     icon: Zap,
@@ -63,7 +63,7 @@ const TABS = [
       { value: '3', label: 'Core Products', icon: Zap },
       { value: '5+', label: 'Cities Served', icon: MapPin },
     ] as { value: string; label: string; icon: LucideIcon }[],
-    image: '/assets/mainPage/QuotesImages/2024MarkhamOVINScootyDemo-048.jpg',
+    image: '/assets/mainPage/built-for-riders-hero.png',
   },
   {
     icon: Flag,
@@ -82,7 +82,7 @@ const TABS = [
       { value: 'Ontario', label: 'Home Base', icon: Home },
       { value: 'Canada', label: 'Born & Built', icon: Flag },
     ] as { value: string; label: string; icon: LucideIcon }[],
-    image: '/assets/mainPage/QuotesImages/City Hall Group Shot - Brampton Launch Photo (2).JPG',
+    image: '/assets/Cities/Brampton/brampton-cityhall.JPG',
   },
   {
     icon: Globe,
@@ -102,7 +102,7 @@ const TABS = [
       { value: '5', label: 'Platforms', icon: Globe },
       { value: 'Daily', label: 'Updates', icon: Clock },
     ] as { value: string; label: string; icon: LucideIcon }[],
-    image: '/assets/Partners/brampton-partnership.JPG',
+    image: '/assets/Partners/DSC02478.JPG',
   },
 ];
 
@@ -193,15 +193,12 @@ const MapleLeaf = ({ className = '' }: { className?: string }) => (
 
 export const AboutPage = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const [direction, setDirection] = useState(1);
-
   const goToTab = (index: number) => {
-    setDirection(index > activeTab ? 1 : -1);
     setActiveTab(index);
   };
 
   const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.1 });
-  const [contentRef, contentInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [contentRef] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [missionRef, missionInView] = useInView({ triggerOnce: true, threshold: 0.05 });
   const [canadaRef, canadaInView] = useInView({ triggerOnce: true, threshold: 0.05 });
   const [socialsRef, socialsInView] = useInView({ triggerOnce: true, threshold: 0.05 });
@@ -408,7 +405,7 @@ export const AboutPage = () => {
                       <SiteImage
                         src={current.image}
                         alt={current.label}
-                        className="absolute inset-0 w-full h-full object-cover"
+                        className="about-tab-image absolute inset-0 w-full h-full object-cover"
                         loading="lazy"
                         decoding="async"
                       />

@@ -50,7 +50,7 @@ export const POSTS: Post[] = [
     "readTime": "4 min read",
     "date": "Jun 2, 2026",
     "author": "City Team",
-    "image": "/assets/mainPage/our-solutions-carousel/toronto-skyline.png",
+    "image": "/assets/Cities/Barrie/barrie-hero.png",
     "featured": true,
     "body": [
       {
