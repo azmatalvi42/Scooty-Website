@@ -1,4 +1,3 @@
-import { RidersAnimation } from '../ui/RidersAnimation';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +19,13 @@ const perks = [
     title: 'Ride Safe, Ride Smart',
     description: 'Up-to-date technology, built-in safety features and 24/7 multilingual support.',
   },
+];
+
+const rideMaps = [
+  { src: '/assets/mainPage/ride-arcs-markham.webp', alt: 'Animated map of SCOOTY ride arcs across Downtown Markham' },
+  { src: '/assets/mainPage/ride-arcs-burlington.webp', alt: 'Animated map of SCOOTY ride arcs along the Burlington Centennial Trail' },
+  { src: '/assets/mainPage/ride-arcs-barrie.webp', alt: 'Animated map of SCOOTY ride arcs on the Barrie waterfront' },
+  { src: '/assets/mainPage/ride-arcs-brampton.webp', alt: 'Animated map of SCOOTY ride arcs across Brampton' },
 ];
 
 const EASING: [number, number, number, number] = [0.16, 1, 0.3, 1];
@@ -133,7 +139,25 @@ export const ChatbotDemo = () => {
             transition={{ duration: 0.65, delay: 0.12, ease: EASING }}
             className="relative flex justify-center"
           >
-            <RidersAnimation />
+            {/* Animated WebPs made from the "<City> Ride Arcs.gif" files at tile size (same frames, ~6% of
+                the weight). Plain imgs, not SiteImage: the responsive exports would flatten them to one frame. */}
+            <div className="grid w-full grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+              {rideMaps.map((map) => (
+                // Small radius so the corner doesn't clip the city label baked into each map.
+                <div key={map.src} className="overflow-hidden rounded-[10px] bg-[#0a0a0a] ring-1 ring-black/5 dark:ring-white/10">
+                  <img
+                    src={map.src}
+                    alt={map.alt}
+                    width={720}
+                    height={405}
+                    loading="lazy"
+                    decoding="async"
+                    className="block w-full h-auto"
+                    style={{ borderRadius: 0 }} // opt out of the section's 32px image radius
+                  />
+                </div>
+              ))}
+            </div>
           </motion.div>
 
         </div>

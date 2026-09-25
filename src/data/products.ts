@@ -21,7 +21,7 @@ export const products = [
     sectionTitle: 'Guidance for the whole journey.', workflowTitle: 'Plan. Connect. Go.',
     description: 'Conversational AI, real-time service updates and dynamic routing to help people navigate their daily transit commute.',
     image: '/assets/illustrations/ride-guide.svg',
-    alt: 'RideGuide illustration connecting walking, riding and transit', position: 'center', accent: '#01BDFE',
+    alt: 'RideGuide illustration connecting walking, riding and transit', position: 'center', accent: '#01BDFE', backdrop: '#101b22',
     introduction: 'Bring the pieces of a transit trip together. AI RideGuide helps commuters find routes, understand service updates and get support along the way.',
     features: [
       { title: 'Ask naturally', text: 'Use conversational trip planning to find a way from where you are to where you need to be.' },
@@ -37,7 +37,7 @@ export const products = [
     sectionTitle: 'A clear path from report to repair.', workflowTitle: 'See it. Route it. Repair it.',
     description: 'AI-native reporting and operations for municipal public works. Turn a resident’s photo into a ranked, routed and fully documented repair.',
     image: '/assets/illustrations/patchforce.svg',
-    alt: 'Patchforce workflow showing a resident photo becoming a ranked, routed and documented repair', position: 'center', accent: '#A9C8A0',
+    alt: 'Patchforce workflow showing a resident photo becoming a ranked, routed and documented repair', position: 'center', accent: '#A9C8A0', backdrop: '#172720',
     introduction: 'Connect what residents see with the work that needs to happen. Patchforce brings reporting, prioritization, routing and repair documentation into one public-works workflow.',
     features: [
       { title: 'Start with a photo', text: 'A resident’s photo becomes the starting point for a public-works report.' },

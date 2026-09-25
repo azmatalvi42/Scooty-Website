@@ -1,7 +1,7 @@
 import { MobilityNetwork } from '../ui/mobility/MobilityNetwork';
 import { motion } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
-import { SiteImage } from '../ui/SiteImage';
+import { PartnerMarquee } from '../ui/PartnerMarquee';
 
 const EASING: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const partners = [
@@ -12,25 +12,20 @@ const partners = [
   { name: 'Richmond Hill', tagline: 'Municipality Partner', accent: '#6B4C9A' },
   { name: 'Barrie', logo: '/assets/partners-transparent/barrie.png', tagline: 'Municipality Partner', accent: '#1A4A7A' },
   { name: 'OVIN', tagline: 'Innovation Partner', accent: '#C56B18' },
-  { name: 'scaleAI', tagline: 'Technology Partner', accent: '#4D3A8C' },
+  { name: 'TMU', logo: '/assets/Partners/Marquee/tmu-logo.jpg', tagline: 'Academic Partner', accent: '#002B5C' },
+  { name: 'DMZ', tagline: 'Innovation Partner', accent: '#C56B18' },
 ];
+// Municipalities scroll along the bottom row; transit, academic and innovation partners along the top.
+const toMarquee = ({ name, logo }: (typeof partners)[number]) => ({ name, img: logo });
+const municipal = (partner: (typeof partners)[number]) => partner.tagline === 'Municipality Partner';
 
 const PartnerRail = () => (
-  <div className="partner-rail" aria-label="Proud partners">
-    <div className="partner-rail-label">Proud partners</div>
-    <div className="partner-rail-viewport">
-      <div className="partner-rail-track">
-        {[...partners, ...partners].map((partner, index) => (
-          <span className="partner-rail-item" key={`${partner.name}-${index}`} style={{ borderColor: `${partner.accent}40`, background: `linear-gradient(135deg, ${partner.accent}18, transparent)` }}>
-            <span className="partner-rail-logo-box">
-              {partner.logo ? <SiteImage src={partner.logo} alt={partner.name} className="partner-rail-logo" /> : <span className="partner-rail-abbr">{partner.name.slice(0, 3).toUpperCase()}</span>}
-            </span>
-            <span className="partner-rail-copy"><span>{partner.name}</span><small style={{ color: partner.accent }}>{partner.tagline}</small></span>
-          </span>
-        ))}
-      </div>
-    </div>
-  </div>
+  <section className="home-partners py-20 sm:py-28" aria-labelledby="home-partners-heading">
+    <h2 id="home-partners-heading" className="mb-12 sm:mb-16 px-4 text-center text-3xl sm:text-4xl font-bold font-display text-gray-900 dark:text-white tracking-tight">
+      Proud <span className="text-[#FEC001]">partners</span>
+    </h2>
+    <PartnerMarquee top={partners.filter(p => !municipal(p)).map(toMarquee)} bottom={partners.filter(municipal).map(toMarquee)} />
+  </section>
 );
 
 export const Hero = () => {

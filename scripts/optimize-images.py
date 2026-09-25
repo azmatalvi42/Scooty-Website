@@ -12,7 +12,12 @@ for source in sorted((root / 'public').rglob('*')):
     if source.suffix.lower() not in {'.png', '.jpg', '.jpeg', '.webp'} or output in source.parents:
         continue
     key = '/' + source.relative_to(root / 'public').as_posix()
-    im = ImageOps.exif_transpose(Image.open(source))
+    im = Image.open(source)
+    # Resizing would keep only the first frame, so animations are served as-is. (Camera JPEGs can
+    # report is_animated too, for their embedded previews; those are still photos.)
+    if getattr(im, 'is_animated', False) and im.format in ('GIF', 'WEBP', 'PNG'):
+        continue
+    im = ImageOps.exif_transpose(im)
     if im.mode not in ('RGB', 'RGBA'):
         im = im.convert('RGBA' if 'transparency' in im.info else 'RGB')
     # Keep the original composition; object-position controls contextual crops.

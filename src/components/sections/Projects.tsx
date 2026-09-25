@@ -118,6 +118,7 @@ const QuoteImageCard = ({
       src={q.image}
       alt={q.name}
       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+      style={{ objectPosition: q.imagePosition }}
       loading="lazy"
       decoding="async"
     />
@@ -205,30 +206,28 @@ const QuotesScroller = ({
   );
 };
 
+/** Facts mirror each partner's city page (CityPage.tsx). */
 const caseStudies = [
   {
-    city: 'Brampton, ON',
+    city: 'Brampton',
     slug: 'brampton',
     image: '/assets/Cities/Brampton/brampton-hero.png',
-    rides: '2.1M rides served',
-    emissions: '4,200 tons CO₂ saved',
-    highlight: 'Reduced average commute time by 18%',
+    meta: 'Since April 2023 · E-Scooters',
+    summary: 'Our first Ontario deployment: city-wide e-scooters in one of Canada\'s fastest-growing cities.',
   },
   {
-    city: 'Barrie, ON',
+    city: 'Barrie',
     slug: 'barrie',
     image: '/assets/Cities/Barrie/barrie-hero.png',
-    rides: '1.5M rides served',
-    emissions: '3,100 tons CO₂ saved',
-    highlight: 'Fleet utilization increased by 35%',
+    meta: 'Since June 2024 · E-Bikes',
+    summary: 'E-bikes along the waterfront, with every ride starting and ending at Centennial Park.',
   },
   {
     city: 'Metrolinx',
     slug: 'metrolinx',
-    image: '/assets/mainPage/main-pg-transit.jpeg',
-    rides: 'GTHA-wide integration',
-    emissions: 'First & last-mile transit',
-    highlight: 'Proud partners innovating transit across Ontario',
+    image: '/assets/mainPage/metrolinx.jpg',
+    meta: 'Since 2024 · Transit partner',
+    summary: 'Closing the first-and-last-mile gap to and from the GO Transit network across the GTHA.',
   },
 ];
 
@@ -424,7 +423,7 @@ export const Projects = () => {
         />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* ── BUILT PROUDLY IN ONTARIO ── */}
+          {/* ── BUILT PROUDLY IN CANADA ── */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={quotesInView ? { opacity: 1, y: 0 } : {}}
@@ -446,7 +445,7 @@ export const Projects = () => {
               </p>
               <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-6">
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-gray-900 dark:text-white tracking-tight">
-                  Built Proudly in <span className="text-yellow-500">Ontario</span>
+                  Built Proudly in <span className="text-yellow-500">Canada</span>
                 </h2>
                 <MapleLeafSVG className="w-9 h-10 sm:w-11 sm:h-12 text-red-500 dark:text-red-400 flex-shrink-0" />
               </div>
@@ -539,59 +538,51 @@ export const Projects = () => {
 
       {/* ── CASE STUDIES ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 ls:py-8">
-
-        {/* ── Case Studies ── */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.3, ease: REVEAL_EASE }}
-          className="mb-8 sm:mb-10 text-center"
+          className="flex items-end justify-between gap-6 mb-8 sm:mb-10"
         >
-          <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">Impact in Action</p>
           <h3 className="text-2xl sm:text-3xl font-bold font-display text-gray-900 dark:text-white tracking-tight">
             Case Studies
           </h3>
+          <Link
+            to="/partners"
+            className="group/all inline-flex items-center gap-1.5 text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          >
+            All partners
+            <ArrowRight className="w-4 h-4 transition-transform group-hover/all:translate-x-0.5" />
+          </Link>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-10">
           {caseStudies.map((study, index) => (
             <motion.div
-              key={index}
+              key={study.slug}
               initial={{ opacity: 0, y: 10 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.55, delay: 0.38 + index * 0.12, ease: REVEAL_EASE }}
-              className="group"
             >
-              <Link to={`/partners/${study.slug}`} className="block h-full">
-                <div className="h-full bg-white dark:bg-[#0A0A0A] rounded-2xl overflow-hidden border border-gray-100 dark:border-white/[0.055] hover:shadow-xl hover:shadow-black/5 hover:border-[#FEC001]/20 transition-all duration-300">
-                  <div className="h-44 sm:h-48 overflow-hidden">
-                    <SiteImage
-                      src={study.image}
-                      alt={study.city}
-                      className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                  <div className="p-5 sm:p-6">
-                    <h4 className="text-base sm:text-lg font-bold font-display text-gray-900 dark:text-white mb-3 tracking-tight">
-                      {study.city}
-                    </h4>
-                    <div className="space-y-1.5 mb-4">
-                      <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{study.rides}</p>
-                      <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{study.emissions}</p>
-                    </div>
-                    <div className="px-3 py-2.5 bg-[#FEC001]/10 border border-[#FEC001]/20 rounded-xl">
-                      <p className="text-xs sm:text-sm font-semibold text-[#DFA400] dark:text-[#FEC001] leading-snug">
-                        {study.highlight}
-                      </p>
-                    </div>
-                    <div className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-[#FEC001] group-hover:gap-2.5 transition-all duration-200">
-                      <span>View Case Study</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </div>
-                  </div>
+              <Link to={`/partners/${study.slug}`} className="group block rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FEC001] focus-visible:ring-offset-4 dark:focus-visible:ring-offset-black">
+                <div className="aspect-[4/3] overflow-hidden rounded-2xl bg-gray-100 dark:bg-white/5">
+                  <SiteImage
+                    src={study.image}
+                    alt={study.city}
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                  />
                 </div>
+                <p className="mt-5 text-[13px] text-gray-500 dark:text-gray-500">{study.meta}</p>
+                <div className="mt-1 flex items-center justify-between gap-4">
+                  <h4 className="text-xl font-bold font-display text-gray-900 dark:text-white tracking-tight">
+                    {study.city}
+                  </h4>
+                  <ArrowRight className="w-5 h-5 shrink-0 text-gray-300 dark:text-gray-600 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-[#FEC001]" />
+                </div>
+                <p className="mt-2 text-[15px] leading-relaxed text-gray-600 dark:text-gray-400">
+                  {study.summary}
+                </p>
               </Link>
             </motion.div>
           ))}

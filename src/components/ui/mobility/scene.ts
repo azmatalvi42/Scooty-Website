@@ -1,4 +1,4 @@
-import { createTraffic, signalPhase, type Traffic } from './traffic';
+import { createTraffic, renderPosition, signalPhase, stepAlpha, type Traffic } from './traffic';
 import { CROSSINGS, LEAF, RAIL_COLUMNS, RIVER, YACHT, crossingLift, yachtX, type Crossing } from './river';
 
 export { RAIL_COLUMNS };
@@ -25,12 +25,13 @@ export const MAP_HEIGHT = 1000;
 const STEP = 112;
 /**
  * Street cross-section, measured from a road's centre line: asphalt to 14 (one 14-wide lane each way),
- * then pavement to 26 carrying a kerbside bike lane (14.5–21.5) and a footway (21.5–28.5).
+ * then pavement to 26 carrying a bike lane (17.5–24.5) set back from the kerb, so an angled rider on a
+ * corner curve stays clear of the buses.
  * Lots start beyond 26, so nothing is built on the pavement.
  */
 const ROAD_HALF = 14;
 const PAVEMENT = 12;
-const BIKE_LANE = { from: 14.5, to: 21.5 };
+const BIKE_LANE = { from: 17.5, to: 24.5 };
 const GOLD = '#e9b616';
 const GO_GREEN = ['#5a8a37', '#4a7729', '#3b5f21'] as const;
 /** River water spans world y 716–800; boats keep to lanes inside it. */
@@ -58,6 +59,13 @@ export function setSceneLogo(kind: keyof typeof logos, image: HTMLImageElement) 
 export const GO_STATIONS = [{ col: 0, row: 2 }, { col: 6, row: 3 }];
 /** Station platforms span these offsets within their block; trains stop centred on the platform. */
 export const PLATFORM = { x: 61, top: 16, bottom: 96 };
+/** GO carriage length, width and spacing (centre to centre); traffic.ts sizes the whole train from these. */
+export const TRAIN_CAR = { length: 52, width: 14, pitch: 53 };
+/**
+ * Carriages are drawn in slices this long, each depth-sorted on its own. Sorting a whole carriage by
+ * its centre let platform canopies and trackside buildings flip in front of / behind it mid-pass.
+ */
+const TRAIN_SLICE = 13;
 const COLS = 8;
 const ROWS = 8;
 
@@ -125,6 +133,11 @@ export function createMobilityScene(): MobilityScene {
     { kind: 'park', x: 2 * STEP + 25, y: STEP + 25, width: 64, depth: 62 },
     { kind: 'park', x: 3 * STEP + 25, y: 5 * STEP + 25, width: 64, depth: 62 },
   ];
+  // Every facility sits centred in its block, 56 × 50, well inside the bike lane and footway that ring it.
+  for (const field of facilities) {
+    const u = Math.floor(field.x / STEP) * STEP, v = Math.floor(field.y / STEP) * STEP;
+    Object.assign(field, { x: u + 28, y: v + 31, width: 56, depth: 50 });
+  }
   const add = (kind: Scenery['kind'], x: number, y: number, width: number, depth: number, height: number, variant = 0) => scenery.push({ kind, x, y, width, depth, height, variant });
   for (let y = 0; y < 6; y++) {
     for (let x = 1; x < 7; x++) {
@@ -137,7 +150,7 @@ export function createMobilityScene(): MobilityScene {
         const variant = [0, 1, 2, 3, 4, 7, 8, 9, 10][(x * 7 + y * 3) % 9];
         const tower = (x === 3 && y === 3) || (x === 4 && y === 1) || (x === 1 && y === 2);
         add('building', u + 30, v + 30, variant === 7 ? 52 : 37, variant === 8 ? 43 : 36, tower ? 110 + x * 7 : variant === 7 ? 15 : variant === 8 ? 23 : variant === 9 ? 34 : variant === 10 ? 28 : 24 + variant * 7, tower ? 5 : variant);
-        if (!tower && variant < 7 && (x + y) % 2 === 0) add('building', u + 72, v + 49, 13, 25, 24, 1);
+        if (!tower && variant < 7 && (x + y) % 2 === 0) add('building', u + 70, v + 49, 12, 25, 24, 1);
         add('tree', u + 83, v + 24, 18, 18, 27, x % 3);
         if (!hubCells.some(([hx, hy]) => hx === x && hy === y + 1)) add('tree', u + 29, v + 83, 19, 19, 28, y % 3); // Else the stop's shelter stands here.
       } else {
@@ -146,12 +159,14 @@ export function createMobilityScene(): MobilityScene {
         add('tree', u + 86, v + 85, 15, 15, 20, 2);
         add('bench', u + 46, v + 84, 18, 4, 5);
         if (facility?.kind === 'park') {
-          add('tree', u + 35, v + 35, 19, 19, 29, 0);
-          add('tree', u + 82, v + 39, 19, 19, 26, 2);
-          add('bench', u + 70, v + 71, 16, 4, 5);
+          // Park trees in opposite corners, clear of the loop the strollers walk.
+          add('tree', u + 33, v + 36, 19, 19, 29, 0);
+          add('tree', u + 79, v + 76, 19, 19, 26, 2);
         }
       }
-      if ((x + y) % 2 === 0) add('lamp', u + 15, v + 15, 2, 2, 36);
+      // Street lamps stand mid-block on the inner edge of the pavement, clear of the bike lane and of the
+      // corner a turning bus sweeps.
+      if ((x + y) % 2 === 0) add('lamp', u + 26, v + 56, 2, 2, 36);
       if (y === 5) {
         add('tree', u + 25, 700, 19, 19, 28, 1);
         add('bench', u + 60, 699, 18, 4, 5);
@@ -194,7 +209,7 @@ export function createMobilityScene(): MobilityScene {
       const depth = southBank ? 34 : variant === 8 ? 43 : 35;
       add('building', u + 31, southBank ? RIVER.bottom + 12 : v + 31, variant === 7 ? 52 : 37, depth, height, variant);
       if (southBank && variant !== 7) add('tree', u + 76, RIVER.bottom + 12, 18, 18, 27, hash % 3); // Riverside tree beside the house.
-      if (variant < 4 && hash % 2 === 0 && !southBank) add('building', u + 72, v + 36, 13, 25, 22, (variant + 1) % 4);
+      if (variant < 4 && hash % 2 === 0 && !southBank) add('building', u + 70, v + 36, 12, 25, 22, (variant + 1) % 4);
       if (!southBank) add('tree', u + 82, v + 72, 20, 20, 28, hash % 3);
       if (hash % 3 === 0 && !southBank) add('tree', u + 30, v + 80, 18, 18, 25, (hash + 1) % 3);
     }
@@ -221,7 +236,7 @@ export function createMobilityScene(): MobilityScene {
   }
   hubs.forEach((p, i) => {
     add('shelter', p.x + 30, p.y - 40, 22, 7, 10, i); // ~2.6 m tall bus-stop shelter.
-    add('dock', p.x - 58, p.y - 38, 25, 8, 12, i);
+    add('dock', p.x - 72, p.y - 38, 25, 8, 12, i); // Clear of the junction's signal post.
   });
   facilities.forEach(field => {
     if (field.kind !== 'soccer' && field.kind !== 'basketball') return;
@@ -231,7 +246,48 @@ export function createMobilityScene(): MobilityScene {
     add(kind, field.x + field.width - 1, field.y + field.depth / 2 - 8, 4, 16, h, 1);
   });
   scenery.sort((a, b) => a.x + a.y + (a.width + a.depth) / 2 - b.x - b.y - (b.width + b.depth) / 2);
-  return { streets, routes, hubs, docks, connections: [], facilities, traffic: createTraffic(), scenery, sprites: new Map() };
+  const traffic = createTraffic();
+  return { streets, routes, hubs, docks, connections: [], facilities, traffic, scenery: clearOfPaths(scenery, traffic), sprites: new Map() };
+}
+
+/**
+ * Drops street furniture that stands where riders or walkers actually travel (their real paths, curves
+ * included), so no figure ever rides or walks through a tree, bench, lamp, dock or shelter. Trees keep
+ * their canopy clear too, since a 2.5× figure's head reaches canopy height.
+ */
+function clearOfPaths(scenery: Scenery[], traffic: Traffic) {
+  const CELL = 16, points = new Map<number, Point[]>(), seen = new Set<Traffic['actors'][number]['path']>();
+  const key = (cx: number, cy: number) => cx * 7919 + cy;
+  for (const actor of traffic.actors) {
+    if (!['bike', 'scooter', 'walker'].includes(actor.kind) || seen.has(actor.path)) continue;
+    seen.add(actor.path);
+    const pts = actor.path.points;
+    for (let i = 1; i < pts.length; i++) {
+      const a = pts[i - 1], b = pts[i], n = Math.max(1, Math.ceil(Math.hypot(b.x - a.x, b.y - a.y) / 3));
+      for (let k = 0; k < n; k++) {
+        const q = { x: a.x + (b.x - a.x) * k / n, y: a.y + (b.y - a.y) * k / n };
+        const cell = key(Math.floor(q.x / CELL), Math.floor(q.y / CELL));
+        const bucket = points.get(cell);
+        if (bucket) bucket.push(q); else points.set(cell, [q]);
+      }
+    }
+  }
+  // Clearance from a path's centre line: the figure's drawn half-width (~5) plus the object's own reach.
+  const reach: Partial<Record<Scenery['kind'], number>> = { tree: 19, lamp: 7, bench: 7, dock: 8, shelter: 8, goal: 7, hoop: 7 };
+  return scenery.filter(o => {
+    const r = reach[o.kind];
+    if (r === undefined) return true;
+    const [left, top, right, bottom] = o.kind === 'tree' || o.kind === 'lamp' ? [o.x, o.y, o.x, o.y] : [o.x, o.y, o.x + o.width, o.y + o.depth];
+    for (let cx = Math.floor((left - r) / CELL); cx <= Math.floor((right + r) / CELL); cx++) {
+      for (let cy = Math.floor((top - r) / CELL); cy <= Math.floor((bottom + r) / CELL); cy++) {
+        for (const q of points.get(key(cx, cy)) ?? []) {
+          const dx = Math.max(left - q.x, 0, q.x - right), dy = Math.max(top - q.y, 0, q.y - bottom);
+          if (dx * dx + dy * dy < r * r) return false;
+        }
+      }
+    }
+    return true;
+  });
 }
 
 function polygon(ctx: CanvasRenderingContext2D, points: Point[], fill: string, stroke?: string) {
@@ -534,18 +590,16 @@ export function drawMobilityMap(ctx: CanvasRenderingContext2D, scene: MobilitySc
     else plane(ctx, x - PAVEMENT, y, w + PAVEMENT * 2, d, '#e8e7d9');
   }
   for (const [x, y, w, d] of roads) plane(ctx, x, y, w, d, '#adaeaa');
-  // Kerbside bike lanes ring each block (scooters and bikes circulate on them, never on the road).
+  // Bike lanes ring each block the riders' routes use (scooters and bikes ride them, never the road).
   const lane = BIKE_LANE.to - BIKE_LANE.from;
-  for (let by = -5; by <= 12; by++) for (let bx = -5; bx <= 13; bx++) {
-    if (by === 6 || RAIL_COLUMNS.includes(bx)) continue;
-    const u = bx * STEP, v = by * STEP, p = project({ x: u + STEP / 2, y: v + STEP / 2 });
-    if (p.x < -150 || p.x > MAP_WIDTH + 150 || p.y < -150 || p.y > MAP_HEIGHT + 150) continue;
+  for (let by = -2; by <= 5; by++) for (let bx = -3; bx <= 8; bx++) {
+    if (RAIL_COLUMNS.includes(bx)) continue;
+    const u = bx * STEP, v = by * STEP;
     const near = BIKE_LANE.from, far = STEP - BIKE_LANE.to, span = STEP - 2 * BIKE_LANE.from;
-    const top = by === 7 ? null : v + near; // The south bank's top edge is the embankment.
-    if (top !== null) plane(ctx, u + near, top, span, lane, '#bcd8ab');
+    plane(ctx, u + near, v + near, span, lane, '#bcd8ab');
     plane(ctx, u + near, v + far, span, lane, '#bcd8ab');
-    plane(ctx, u + near, by === 7 ? RIVER.bottom + 8 : v + near, lane, by === 7 ? v + STEP - BIKE_LANE.from - RIVER.bottom - 8 : span, '#bcd8ab');
-    plane(ctx, u + far, by === 7 ? RIVER.bottom + 8 : v + near, lane, by === 7 ? v + STEP - BIKE_LANE.from - RIVER.bottom - 8 : span, '#bcd8ab');
+    plane(ctx, u + near, v + near, lane, span, '#bcd8ab');
+    plane(ctx, u + far, v + near, lane, span, '#bcd8ab');
   }
   // Dashed lane markings and zebra crossings give the street plan human scale.
   for (let row = 0; row < 8; row++) for (let col = 0; col < 8; col++) {
@@ -886,11 +940,16 @@ function drawGoBus(ctx: CanvasRenderingContext2D, p: Point, angle: number, detai
   if (detailed && Math.abs(sin) < .2) wallLogo(ctx, 'go', project({ x: p.x + (length / 2 - nose / 2) * cos, y: p.y + width / 2 + .2 }, 3.6 * zs), 15);
 }
 
-function drawVehicle(ctx: CanvasRenderingContext2D, p: Point, angle: number, kind: 'car' | 'bus' | 'train', variant: number, detailed = true) {
-  // Car 4.4 × 2.1 × 1.6 m; SCOOTY city bus 11.5 × 2.6 × 3 m; GO bi-level carriage 10.4 × 2.9 × 4.2 m
-  // (shortened to suit the blocks). All at VEHICLE_SCALE; the bus is capped to its lane and the road between junctions.
-  const [length, width] = { car: [26, 12], bus: [56, 14], train: [60, 16] }[kind];
-  const zs = VEHICLE_SCALE;
+/**
+ * `span` draws only that stretch of the body along its length (local units, from -length/2), so a
+ * long vehicle can be drawn as separately sorted slices; `shadow` is off for slices, whose
+ * carriage shadow is drawn once beneath everything.
+ */
+function drawVehicle(ctx: CanvasRenderingContext2D, p: Point, angle: number, kind: 'car' | 'bus' | 'train', variant: number, detailed = true, span?: [number, number], shadow = true) {
+  // Car 4.4 × 2.1 × 1.6 m; SCOOTY city bus 11.5 × 2.6 × 3 m; GO bi-level carriage (shortened and a
+  // little under scale, to suit the blocks). All at VEHICLE_SCALE; the bus is capped to its lane and the road between junctions.
+  const [length, width] = { car: [26, 12], bus: [56, 14], train: [TRAIN_CAR.length, TRAIN_CAR.width] }[kind];
+  const zs = VEHICLE_SCALE * (kind === 'train' ? .85 : 1);
   const cos = Math.cos(angle), sin = Math.sin(angle);
   const world = (x: number, y: number) => ({ x: p.x + x * cos - y * sin, y: p.y + x * sin + y * cos });
   const local = (x: number, y: number, z = 0) => project(world(x, y), z);
@@ -906,7 +965,7 @@ function drawVehicle(ctx: CanvasRenderingContext2D, p: Point, angle: number, kin
   };
   const glass = ['#658e95', '#31575e', '#294e55'] as const;
   const x = -length / 2, y = -width / 2;
-  polygon(ctx, [local(x + 1, y + 1), local(x + length + 1, y + 1), local(x + length + 1, y + width + 1), local(x + 1, y + width + 1)], '#43585335');
+  if (shadow) polygon(ctx, [local(x + 1, y + 1), local(x + length + 1, y + 1), local(x + length + 1, y + width + 1), local(x + 1, y + width + 1)], '#43585335');
   if (kind === 'car') {
     const paint = [['#f4d49c', '#dfa66f', '#b47a5e'], ['#8bd1d7', '#58a7bb', '#397f9b'], ['#e89594', '#c9717d', '#a75068'], ['#bba9e0', '#927bbd', '#715b97']][variant % 4];
     body(x, y, length, width, 1, 2.6, paint);
@@ -920,14 +979,20 @@ function drawVehicle(ctx: CanvasRenderingContext2D, p: Point, angle: number, kin
     if (detailed) body(x, y, length, width, 5.5, 3.8, glass);
     body(x, y, length, width, detailed ? 9.3 : 5.5, detailed ? 1.9 : 5.7, paint);
   } else {
-    // GO bi-level coach: green skirt, white body, two decks of tinted windows.
-    body(x, y, length, width, 2, 3, ['#eef0e8', GO_GREEN[1], GO_GREEN[2]]);
+    // GO bi-level coach: green skirt, white body, two decks of tinted windows. Slices overlap their
+    // neighbours by a hair so no seam shows between them.
+    const [a0, a1] = span ?? [x, x + length];
+    if (a1 <= a0) return; // An empty span draws only the shadow.
+    const sx = Math.max(x, a0 - .3), sl = Math.min(x + length, a1 + .3) - sx;
+    body(sx, y, sl, width, 2, 3, ['#eef0e8', GO_GREEN[1], GO_GREEN[2]]);
     if (detailed) {
-      body(x, y, length, width, 5, 3, glass);
-      body(x, y, length, width, 8, 2, ['#eef0e8', '#eef0e8', '#d5daca']);
-      body(x, y, length, width, 10, 3, glass);
-      body(x, y, length, width, 13, 3, ['#d5daca', '#eef0e8', '#d5daca']);
-    } else body(x, y, length, width, 5, 11, ['#d5daca', '#eef0e8', '#d5daca']);
+      body(sx, y, sl, width, 5, 3, glass);
+      body(sx, y, sl, width, 8, 2, ['#eef0e8', '#eef0e8', '#d5daca']);
+      body(sx, y, sl, width, 10, 3, glass);
+      body(sx, y, sl, width, 13, 3, ['#d5daca', '#eef0e8', '#d5daca']);
+    } else body(sx, y, sl, width, 5, 11, ['#d5daca', '#eef0e8', '#d5daca']);
+    if (detailed) for (const u of [x + 4, x + length - 4]) if (u >= a0 && u < a1) for (const v of [y, y + width]) ellipse(ctx, local(u, v, 1.5), 1.6, 1.9, '#344844');
+    return;
   }
   if (detailed) for (const u of [x + 4, x + length - 4]) for (const v of [y, y + width]) ellipse(ctx, local(u, v, 1.5), 1.6, 1.9, '#344844');
 }
@@ -974,28 +1039,43 @@ function drawFerrisWheel(ctx: CanvasRenderingContext2D, field: MobilityScene['fa
 }
 
 /** Cached scenery and moving vehicles share a painter's order, so riders pass behind buildings. */
-export function drawMobilityFlow(ctx: CanvasRenderingContext2D, scene: MobilityScene, seconds: number, compact: boolean) {
-  const entities: { depth: number; draw: () => void }[] = scene.scenery.map(o => ({
-    depth: o.x + o.y + (o.width + o.depth) / 2,
-    draw: () => {
-      const sprite = scene.sprites.get(o);
-      if (sprite) ctx.drawImage(sprite.image, sprite.x, sprite.y, sprite.width, sprite.height);
-      else drawScenery(ctx, o);
-    },
-  }));
+/** Visible part of the map, in projected (screen) map units; anything outside it is skipped. */
+export type MapView = { left: number; top: number; right: number; bottom: number };
+
+/**
+ * Cached scenery and moving vehicles share a painter's order, so riders pass behind buildings.
+ * Moving actors are drawn between fixed traffic steps (interpolated), and only what `view` shows is drawn.
+ */
+export function drawMobilityFlow(ctx: CanvasRenderingContext2D, scene: MobilityScene, seconds: number, compact: boolean, view?: MapView) {
+  const inView = (p: Point, margin = 60) => !view || (p.x > view.left - margin && p.x < view.right + margin && p.y > view.top - margin && p.y < view.bottom + margin);
+  const seen = (p: Point, z = 0, margin = 60) => inView(project(p, z), margin);
+  const entities: { depth: number; draw: () => void }[] = [];
+  // Ground-level shadows of long vehicles, drawn before (under) everything that is depth-sorted.
+  const groundShadows: (() => void)[] = [];
+  for (const o of scene.scenery) {
+    const sprite = scene.sprites.get(o);
+    if (view && sprite && (sprite.x > view.right || sprite.x + sprite.width < view.left || sprite.y > view.bottom || sprite.y + sprite.height < view.top)) continue;
+    entities.push({
+      depth: o.x + o.y + (o.width + o.depth) / 2,
+      draw: sprite ? () => ctx.drawImage(sprite.image, sprite.x, sprite.y, sprite.width, sprite.height) : () => drawScenery(ctx, o),
+    });
+  }
   for (const field of scene.facilities) {
     const cx = field.x + field.width / 2, cy = field.y + field.depth / 2;
+    if (!seen({ x: cx, y: cy }, 0, 120)) continue;
     if (field.kind === 'fair') {
       entities.push({ depth: cx + cy + 6, draw: () => drawFerrisWheel(ctx, field, seconds, compact) });
       continue;
     }
     const skating = field.kind === 'rink', park = field.kind === 'park';
-    const count = compact ? (park ? 2 : 4) : (park ? 3 : 6);
+    // A few players, each in their own corner of the pitch (or evenly spaced round the rink or path), so
+    // the enlarged figures never touch each other or the goals.
+    const count = park ? 2 : skating ? 3 : 4;
     for (let i = 0; i < count; i++) {
       const phase = seconds * (skating ? .48 : park ? .13 : .65) + i * Math.PI * 2 / count;
       const p = skating || park
-        ? { x: cx + Math.cos(phase) * field.width * (park ? .23 : .32), y: cy + Math.sin(phase) * field.depth * (park ? .23 : .32) }
-        : { x: field.x + 10 + i % 3 * 20 + Math.sin(phase) * 5, y: field.y + 13 + Math.floor(i / 3) * 26 + Math.cos(phase * 1.3) * 6 };
+        ? { x: cx + Math.cos(phase) * field.width * (park ? .23 : .3), y: cy + Math.sin(phase) * field.depth * (park ? .23 : .3) }
+        : { x: field.x + 16 + (i % 2) * (field.width - 32) + Math.sin(phase) * 4, y: field.y + 14 + Math.floor(i / 2) * (field.depth - 28) + Math.cos(phase * 1.3) * 4 };
       const color = skating || park ? ['#d56c66', '#597dac', '#d2a62c', '#8d73ae'][i % 4] : i % 2 ? '#f1d058' : '#4c81b6';
       entities.push({ depth: p.x + p.y, draw: () => drawPerson(ctx, p, seconds * 5 + i, color, skating) });
     }
@@ -1010,32 +1090,50 @@ export function drawMobilityFlow(ctx: CanvasRenderingContext2D, scene: MobilityS
   }
   // Every crossing is a drawbridge. Each north leaf sorts behind the river's centre and each south
   // leaf in front of it: boats pass under a lowered deck (drawn before both leaves) and between
-  // raised leaves (drawn between them). The yacht and the lifts follow the traffic clock, which the
-  // GO trains' rail signals also use, so a train is never on a bridge while it lifts.
-  const time = scene.traffic.time;
+  // raised leaves (drawn between them). The yacht, the lifts and the traffic lights follow the traffic
+  // clock (including the part-step since the last update), which the GO trains' rail signals also use,
+  // so a train is never on a bridge while it lifts and a light never shows other than what traffic obeys.
+  const alpha = stepAlpha(scene.traffic);
+  const time = scene.traffic.time + scene.traffic.accumulator;
   const spans = CROSSINGS.map(c => ({ c, lift: crossingLift(c.x, time) * LEAF.maxAngle, north: c.x + YACHT.lane - 30, south: c.x + YACHT.lane + 30 }));
   for (const span of spans) {
+    if (!seen({ x: span.c.x, y: YACHT.lane }, 30, 140)) continue;
     entities.push({ depth: span.north, draw: () => drawBridgeLeaf(ctx, span.c, 1, span.lift) });
     entities.push({ depth: span.south, draw: () => drawBridgeLeaf(ctx, span.c, -1, span.lift) });
   }
   const spanAt = (x: number, reach: number) => spans.find(({ c }) => Math.abs(x - c.x) < c.halfWidth + reach);
   const yachtPosition = yachtX(time);
   const yachtSpan = spanAt(yachtPosition, YACHT.halfLength + 20);
-  entities.push({ depth: yachtSpan ? (yachtSpan.north + yachtSpan.south) / 2 : yachtPosition + YACHT.lane, draw: () => drawYacht(ctx, yachtPosition, seconds) });
-  entities.push({ depth: FLAG.x + FLAG.y + 5, draw: () => drawFlag(ctx, seconds) });
+  if (seen({ x: yachtPosition, y: YACHT.lane }, 20, 120)) {
+    entities.push({ depth: yachtSpan ? (yachtSpan.north + yachtSpan.south) / 2 : yachtPosition + YACHT.lane, draw: () => drawYacht(ctx, yachtPosition, seconds) });
+  }
+  if (seen(FLAG, 30)) entities.push({ depth: FLAG.x + FLAG.y + 5, draw: () => drawFlag(ctx, seconds) });
   for (const boat of BOATS) {
     const p = boatPosition(boat, seconds);
-    entities.push({ depth: p.x + p.y, draw: () => drawBoat(ctx, boat, p, seconds) });
+    if (seen(p, 10)) entities.push({ depth: p.x + p.y, draw: () => drawBoat(ctx, boat, p, seconds) });
   }
   for (const actor of scene.traffic.actors) {
-    const p = actor.position;
+    const p = renderPosition(actor, alpha);
     if (actor.kind === 'train') {
+      const cos = Math.cos(p.angle), sin = Math.sin(p.angle), half = TRAIN_CAR.length / 2;
       for (let carriage = -1; carriage <= 1; carriage++) {
-        const car = { x: p.x + Math.cos(p.angle) * carriage * 61, y: p.y + Math.sin(p.angle) * carriage * 61 };
-        const onBridge = car.y > LEAF.north - 30 && car.y < LEAF.south + 30 ? spanAt(car.x, 0) : undefined;
-        entities.push({ depth: onBridge ? Math.max(onBridge.south + .5, car.x + car.y) : car.x + car.y, draw: () => drawVehicle(ctx, car, p.angle, 'train', actor.id, !compact) });
+        const car = { x: p.x + cos * carriage * TRAIN_CAR.pitch, y: p.y + sin * carriage * TRAIN_CAR.pitch };
+        if (!seen(car, 10, 90)) continue;
+        groundShadows.push(() => drawVehicle(ctx, car, p.angle, 'train', actor.id, false, [0, 0])); // shadow only
+        for (let a0 = -half; a0 < half - 1e-6; a0 += TRAIN_SLICE) {
+          const a1 = Math.min(half, a0 + TRAIN_SLICE), mid = (a0 + a1) / 2;
+          const slice = { x: car.x + cos * mid, y: car.y + sin * mid };
+          const onBridge = slice.y > LEAF.north - 30 && slice.y < LEAF.south + 30 ? spanAt(slice.x, 0) : undefined;
+          entities.push({
+            depth: onBridge ? Math.max(onBridge.south + .5, slice.x + slice.y) : slice.x + slice.y,
+            draw: () => drawVehicle(ctx, car, p.angle, 'train', actor.id, !compact, [a0, a1], false),
+          });
+        }
       }
-    } else if (actor.kind === 'walker') {
+      continue;
+    }
+    if (!seen(p, 10, 50)) continue;
+    if (actor.kind === 'walker') {
       entities.push({ depth: p.x + p.y, draw: () => {
         // Pedestrian ~1.75 m tall, drawn at PERSON_SCALE.
         const k = PERSON_SCALE, stride = Math.sin(actor.travelled * 1.8 / k) * .7 * k;
@@ -1055,8 +1153,13 @@ export function drawMobilityFlow(ctx: CanvasRenderingContext2D, scene: MobilityS
     }
   }
   for (let row = 1; row <= 5; row++) for (let col = 1; col <= 6; col++) {
-    const p = { x: col * STEP - 17, y: row * STEP - 17 };
-    const phase = signalPhase(seconds, col, row);
+    // Signal posts stand just inside the block corner: clear of the corner a turning bus sweeps and of the
+    // riders' curve round it.
+    const p = { x: col * STEP - 34, y: row * STEP - 34 };
+    // No post where that corner holds a field or park (it would stand on the pitch).
+    if (scene.facilities.some(f => p.x > f.x - 4 && p.x < f.x + f.width + 4 && p.y > f.y - 4 && p.y < f.y + f.depth + 4)) continue;
+    if (!seen(p, 20)) continue;
+    const phase = signalPhase(time, col, row);
     entities.push({ depth: p.x + p.y, draw: () => {
       line(ctx, project(p), project(p, 24), '#466775', 1.2);
       box(ctx, p.x - 2, p.y - 2, 4, 4, 8, ['#456070', '#344b5b', '#253e4c'], 21);
@@ -1068,7 +1171,8 @@ export function drawMobilityFlow(ctx: CanvasRenderingContext2D, scene: MobilityS
   // ground along the buildings' sun direction.
   const blimp = blimpPosition(seconds);
   drawBlimpShadow(ctx, blimp);
-  entities.forEach(entity => entity.draw());
+  for (const shadow of groundShadows) shadow();
+  for (const entity of entities) entity.draw();
   drawBlimp(ctx, blimp, seconds);
 }
 

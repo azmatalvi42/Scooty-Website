@@ -1,33 +1,116 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
-<rect width="800" height="600" fill="#172720"/>
-<g font-family="Arial, sans-serif">
-<text x="56" y="64" fill="#a9c8a0" font-size="13" letter-spacing="3">PATCHFORCE / REPORT TO REPAIR</text>
-<rect x="56" y="103" width="284" height="380" rx="22" fill="#23392d" stroke="#50664f"/>
-<rect x="73" y="122" width="250" height="216" rx="12" fill="#bacab0"/>
-<path d="M73 210h250v128H73z" fill="#7e8f7b"/>
-<path d="m73 179 250 14v40L73 219z" fill="#e0e5d2"/>
-<path d="m110 254 30-19 52 9 34-8 49 33-19 27-79 10-54-19z" fill="#4b5d4a"/>
-<path d="m139 261 37-7 35 11 38 4-19 17-67-2z" fill="#344631"/>
-<path d="M92 142h20m-20 0v20m190-20h-20m20 0v20M92 317h20m-20 0v-20m190 20h-20m20 0v-20" stroke="#f5f4dd" stroke-width="3"/>
-<circle cx="100" cy="377" r="10" fill="#fec001"/>
-<text x="121" y="383" fill="#fff" font-size="18" font-weight="bold">Resident photo</text>
-<text x="83" y="424" fill="#becdb7" font-size="15">The starting point for action.</text>
-<path d="M356 296h61m-9-8 9 8-9 8" stroke="#fec001" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M458 193v247" stroke="#526e52" stroke-width="2" stroke-dasharray="4 6"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="760" viewBox="0 0 1600 760" font-family="Arial, Helvetica, sans-serif">
+<defs>
+  <radialGradient id="bg" cx=".5" cy=".42" r=".8"><stop stop-color="#20382b"/><stop offset="1" stop-color="#172720"/></radialGradient>
+  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#fff" stroke-opacity=".035"/></pattern>
+  <linearGradient id="asphalt" x2="0" y2="1"><stop stop-color="#76806f"/><stop offset="1" stop-color="#4e584b"/></linearGradient>
+  <pattern id="grain" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="4" cy="5" r="1.4" fill="#fff" fill-opacity=".12"/><circle cx="15" cy="13" r="1.2" fill="#000" fill-opacity=".18"/><circle cx="9" cy="18" r="1" fill="#fff" fill-opacity=".08"/></pattern>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dy="16" stdDeviation="20" flood-color="#000" flood-opacity=".35"/></filter>
+  <g id="pothole">
+    <path d="M-66-18C-56-48-6-56 26-42 59-28 76-6 64 22 52 50 4 60-30 48-60 37-76 12-66-18Z" fill="#2f372d"/>
+    <path d="M-46-13C-36-30 0-34 22-22 42-10 48 10 36 26 22 42-14 44-34 32-50 22-54 2-46-13Z" fill="#1f251e"/>
+    <path d="M-62-22C-50-46-6-52 24-40" fill="none" stroke="#98a291" stroke-width="3" stroke-linecap="round"/>
+    <path d="M64 12l26 8 12-6M-66 6l-24 10-8 14M10 52l6 22" fill="none" stroke="#353d33" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <g id="check" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M-7 0l5 5 10-11"/></g>
+</defs>
+
+<rect width="1600" height="760" fill="url(#bg)"/>
+<rect width="1600" height="760" fill="url(#grid)"/>
+<text x="90" y="62" fill="#a9c8a0" font-size="15" letter-spacing="4">PATCHFORCE · REPORT TO REPAIR</text>
+
+<!-- Flow line joining the four stages -->
+<path d="M392 380H1230" stroke="#fec001" stroke-width="3" stroke-dasharray="2 12" stroke-linecap="round"/>
+<g fill="#fec001"><path d="M418 368l14 12-14 12z"/><path d="M806 368l14 12-14 12z"/><path d="M1186 368l14 12-14 12z"/></g>
+
+<!-- 1 · Resident photo -->
+<g filter="url(#shadow)">
+  <rect x="90" y="96" width="302" height="590" rx="44" fill="#0c1510" stroke="#50664f" stroke-width="2"/>
+  <rect x="104" y="110" width="274" height="562" rx="32" fill="#1d3024"/>
+</g>
+<rect x="201" y="122" width="80" height="20" rx="10" fill="#0c1510"/>
+<text x="124" y="180" fill="#fff" font-size="20" font-weight="700">New report</text>
+<clipPath id="cam"><rect x="118" y="198" width="246" height="270" rx="16"/></clipPath>
+<g clip-path="url(#cam)">
+  <rect x="118" y="198" width="246" height="270" fill="url(#asphalt)"/>
+  <rect x="118" y="198" width="246" height="270" fill="url(#grain)"/>
+  <path d="M142 198V468" stroke="#e9e4c8" stroke-width="7"/>
+  <path d="M322 198V468" stroke="#e9d27a" stroke-width="7" stroke-dasharray="38 30"/>
+  <use href="#pothole" transform="translate(234 338)"/>
+</g>
+<rect x="154" y="278" width="170" height="124" rx="10" fill="none" stroke="#fec001" stroke-width="3" stroke-dasharray="10 7"/>
+<rect x="154" y="252" width="84" height="26" rx="6" fill="#fec001"/>
+<text x="165" y="271" fill="#172720" font-size="15" font-weight="700">Pothole</text>
+<path d="M132 214h22m-22 0v22M350 214h-22m22 0v22M132 452h22m-22 0v-22M350 452h-22m22 0v-22" stroke="#f5f4dd" stroke-width="3" stroke-linecap="round"/>
+<rect x="118" y="486" width="246" height="58" rx="14" fill="#294333"/>
+<path d="M146 504c-7 0-12 5-12 11 0 9 12 19 12 19s12-10 12-19c0-6-5-11-12-11z" fill="#fec001"/>
+<circle cx="146" cy="515" r="4" fill="#294333"/>
+<rect x="172" y="504" width="130" height="10" rx="5" fill="#8fae8a"/>
+<rect x="172" y="522" width="84" height="8" rx="4" fill="#5d7a5c"/>
+<rect x="118" y="596" width="246" height="56" rx="28" fill="#fec001"/>
+<text x="241" y="631" text-anchor="middle" fill="#172720" font-size="20" font-weight="700">Send report</text>
+
+<!-- 2 · Ranked -->
+<g filter="url(#shadow)"><rect x="452" y="150" width="336" height="460" rx="26" fill="#23392d" stroke="#50664f" stroke-width="2"/></g>
+<circle cx="490" cy="194" r="16" fill="#a9c8a0"/><text x="490" y="200" text-anchor="middle" fill="#172720" font-size="16" font-weight="700">1</text>
+<text x="518" y="202" fill="#fff" font-size="24" font-weight="700">Ranked</text>
 <g>
-<rect x="430" y="123" width="314" height="94" rx="16" fill="#294333" stroke="#536e51"/>
-<circle cx="462" cy="157" r="14" fill="#a9c8a0"/><text x="458" y="162" fill="#172720" font-size="13" font-weight="bold">1</text>
-<text x="490" y="164" fill="#fff" font-size="21" font-weight="bold">Ranked</text>
-<text x="453" y="193" fill="#becdb7" font-size="14">Give the report a place in the work.</text>
-<rect x="430" y="252" width="314" height="94" rx="16" fill="#294333" stroke="#536e51"/>
-<circle cx="462" cy="286" r="14" fill="#a9c8a0"/><text x="458" y="291" fill="#172720" font-size="13" font-weight="bold">2</text>
-<text x="490" y="293" fill="#fff" font-size="21" font-weight="bold">Routed</text>
-<text x="453" y="322" fill="#becdb7" font-size="14">Connect the repair to the right team.</text>
-<rect x="430" y="381" width="314" height="102" rx="16" fill="#fec001"/>
-<path d="m449 416 8 8 16-19" stroke="#172720" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="490" y="423" fill="#172720" font-size="21" font-weight="bold">Documented</text>
-<text x="453" y="459" fill="#344631" font-size="14">A complete record of the repair.</text>
+  <rect x="472" y="236" width="296" height="72" rx="14" fill="#2c4736" stroke="#fec001" stroke-width="2.5"/>
+  <clipPath id="t1"><rect x="486" y="248" width="48" height="48" rx="9"/></clipPath>
+  <g clip-path="url(#t1)"><rect x="486" y="248" width="48" height="48" fill="#5b6559"/><use href="#pothole" transform="translate(510 272) scale(.3)"/></g>
+  <rect x="548" y="256" width="136" height="11" rx="5.5" fill="#dfe8d9"/>
+  <rect x="548" y="277" width="92" height="9" rx="4.5" fill="#7d9a7a"/>
+  <g fill="#fec001"><rect x="712" y="280" width="8" height="12" rx="2"/><rect x="726" y="270" width="8" height="22" rx="2"/><rect x="740" y="258" width="8" height="34" rx="2"/></g>
 </g>
-<text x="56" y="548" fill="#becdb7" font-size="15">AI-native operations for municipal public works.</text>
+<g fill="#213829">
+  <rect x="472" y="322" width="296" height="72" rx="14"/><rect x="472" y="408" width="296" height="72" rx="14"/><rect x="472" y="494" width="296" height="72" rx="14"/>
 </g>
+<g fill="#3e5744"><rect x="486" y="334" width="48" height="48" rx="9"/><rect x="486" y="420" width="48" height="48" rx="9"/><rect x="486" y="506" width="48" height="48" rx="9"/></g>
+<g fill="#6f8c6c"><rect x="548" y="342" width="120" height="11" rx="5.5"/><rect x="548" y="428" width="140" height="11" rx="5.5"/><rect x="548" y="514" width="104" height="11" rx="5.5"/></g>
+<g fill="#4c664d"><rect x="548" y="363" width="80" height="9" rx="4.5"/><rect x="548" y="449" width="96" height="9" rx="4.5"/><rect x="548" y="535" width="70" height="9" rx="4.5"/></g>
+<g fill="#a9c8a0"><rect x="712" y="366" width="8" height="12" rx="2"/><rect x="726" y="356" width="8" height="22" rx="2"/><rect x="740" y="344" width="8" height="34" rx="2" fill-opacity=".25"/>
+<rect x="712" y="452" width="8" height="12" rx="2"/><rect x="726" y="442" width="8" height="22" rx="2" fill-opacity=".25"/><rect x="740" y="430" width="8" height="34" rx="2" fill-opacity=".25"/>
+<rect x="712" y="538" width="8" height="12" rx="2" fill-opacity=".25"/><rect x="726" y="528" width="8" height="22" rx="2" fill-opacity=".25"/><rect x="740" y="516" width="8" height="34" rx="2" fill-opacity=".25"/></g>
+
+<!-- 3 · Routed -->
+<g filter="url(#shadow)"><rect x="840" y="150" width="336" height="460" rx="26" fill="#23392d" stroke="#50664f" stroke-width="2"/></g>
+<circle cx="878" cy="194" r="16" fill="#a9c8a0"/><text x="878" y="200" text-anchor="middle" fill="#172720" font-size="16" font-weight="700">2</text>
+<text x="906" y="202" fill="#fff" font-size="24" font-weight="700">Routed</text>
+<clipPath id="map"><rect x="860" y="236" width="296" height="230" rx="16"/></clipPath>
+<g clip-path="url(#map)">
+  <rect x="860" y="236" width="296" height="230" fill="#1b2f23"/>
+  <g fill="#253d2e"><rect x="872" y="248" width="70" height="62" rx="8"/><rect x="960" y="248" width="92" height="62" rx="8"/><rect x="1070" y="248" width="80" height="62" rx="8"/><rect x="872" y="328" width="70" height="56" rx="8"/><rect x="960" y="328" width="92" height="56" rx="8"/><rect x="1070" y="328" width="80" height="56" rx="8"/><rect x="872" y="402" width="70" height="56" rx="8"/><rect x="960" y="402" width="92" height="56" rx="8"/><rect x="1070" y="402" width="80" height="56" rx="8"/></g>
+  <rect x="960" y="402" width="92" height="56" rx="8" fill="#2d5a3c"/>
+  <path d="M908 432V393H1061V319H1098" fill="none" stroke="#fec001" stroke-width="12" stroke-opacity=".25" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M908 432V393H1061V319H1098" fill="none" stroke="#fec001" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="12 9"/>
+</g>
+<g transform="translate(908 432)"><circle r="20" fill="#a9c8a0"/><path d="M-11-4h13v11h-13zM2 0h5l4 4v3H2z" fill="#172720"/><circle cx="-6" cy="8" r="3" fill="#a9c8a0" stroke="#172720" stroke-width="2"/><circle cx="7" cy="8" r="3" fill="#a9c8a0" stroke="#172720" stroke-width="2"/></g>
+<path d="M1098 284c-11 0-19 8-19 18 0 14 19 30 19 30s19-16 19-30c0-10-8-18-19-18z" fill="#fec001" stroke="#172720" stroke-width="2"/>
+<circle cx="1098" cy="302" r="6" fill="#172720"/>
+<rect x="860" y="484" width="296" height="82" rx="14" fill="#2c4736"/>
+<circle cx="902" cy="525" r="22" fill="#a9c8a0"/>
+<circle cx="902" cy="518" r="7" fill="#23392d"/><path d="M889 537c3-8 8-11 13-11s10 3 13 11" fill="#23392d"/>
+<rect x="938" y="512" width="120" height="11" rx="5.5" fill="#dfe8d9"/>
+<rect x="938" y="532" width="80" height="9" rx="4.5" fill="#7d9a7a"/>
+<rect x="1080" y="510" width="60" height="30" rx="15" fill="#fec001"/>
+<g transform="translate(1110 525)" stroke="#172720"><use href="#check"/></g>
+
+<!-- 4 · Documented -->
+<g filter="url(#shadow)"><rect x="1230" y="150" width="300" height="460" rx="26" fill="#fec001"/></g>
+<circle cx="1268" cy="194" r="16" fill="#172720"/>
+<g transform="translate(1268 196)" stroke="#fec001"><use href="#check"/></g>
+<text x="1296" y="202" fill="#172720" font-size="24" font-weight="700">Documented</text>
+<clipPath id="before"><rect x="1250" y="236" width="124" height="116" rx="12"/></clipPath>
+<clipPath id="after"><rect x="1386" y="236" width="124" height="116" rx="12"/></clipPath>
+<g clip-path="url(#before)"><rect x="1250" y="236" width="124" height="116" fill="url(#asphalt)"/><rect x="1250" y="236" width="124" height="116" fill="url(#grain)"/><use href="#pothole" transform="translate(1312 294) scale(.62)"/></g>
+<g clip-path="url(#after)"><rect x="1386" y="236" width="124" height="116" fill="url(#asphalt)"/><rect x="1386" y="236" width="124" height="116" fill="url(#grain)"/><rect x="1414" y="266" width="68" height="56" rx="6" fill="#434b40" stroke="#6b7466" stroke-width="2"/></g>
+<g fill="#3a4a2a" font-size="15" font-weight="700" text-anchor="middle"><text x="1312" y="376">Before</text><text x="1448" y="376">After</text></g>
+<path d="M1250 400H1510" stroke="#172720" stroke-opacity=".2" stroke-width="2"/>
+<g font-size="19" font-weight="700" fill="#172720">
+  <circle cx="1266" cy="436" r="14" fill="#172720"/><g transform="translate(1266 437)" stroke="#fec001"><use href="#check"/></g><text x="1294" y="443">Reported</text>
+  <circle cx="1266" cy="484" r="14" fill="#172720"/><g transform="translate(1266 485)" stroke="#fec001"><use href="#check"/></g><text x="1294" y="491">Routed</text>
+  <circle cx="1266" cy="532" r="14" fill="#172720"/><g transform="translate(1266 533)" stroke="#fec001"><use href="#check"/></g><text x="1294" y="539">Repaired</text>
+</g>
+<path d="M1266 450V470M1266 498V518" stroke="#172720" stroke-width="3"/>
+
+<text x="1530" y="716" text-anchor="end" fill="#becdb7" font-size="17">AI-native operations for municipal public works.</text>
 </svg>

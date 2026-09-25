@@ -141,6 +141,11 @@ const cityData: Record<string, {
         title: 'Partnership in Action',
         caption: 'Out on the trails with City of Barrie leadership — a program built shoulder-to-shoulder with the community.',
       },
+      {
+        src: '/assets/Cities/Barrie/barrie-scooty-waterfront.png',
+        title: 'On the Waterfront',
+        caption: 'SCOOTY e-bikes out on Barrie\'s waterfront path.',
+      },
     ],
     vehicles: ['E-Bikes'],
     stats: [
@@ -209,6 +214,16 @@ const cityData: Record<string, {
         src: '/assets/Cities/Markham/markham-helmet.jpg',
         title: 'Built for Safety',
         caption: 'SCOOTY helmets and dual-vehicle fleet — e-scooters and e-bikes side-by-side.',
+      },
+      {
+        src: '/assets/Cities/Markham/2024MarkhamOVINScootyDemo-062.jpg',
+        title: 'Two Ways to Ride',
+        caption: 'E-scooters and e-bikes side by side at the 2024 Markham OVIN demo.',
+      },
+      {
+        src: '/assets/Cities/Markham/2024MarkhamOVINScootyDemo-065.jpg',
+        title: 'Demo Day',
+        caption: 'SCOOTY at the 2024 Markham OVIN demo.',
       },
     ],
     vehicles: ['E-Scooters', 'E-Bikes'],
@@ -324,8 +339,7 @@ const cityData: Record<string, {
     tagline: 'Proud partners with Metrolinx, innovating transit across the Greater Toronto and Hamilton Area.',
     overview:
       'SCOOTY is proud to partner with Metrolinx — the Crown agency responsible for regional transit across the Greater Toronto and Hamilton Area — to help reimagine how people connect to and from the GO Transit network. Our partnership focuses on closing the first-and-last-mile gap that prevents riders from choosing transit over the car. By integrating SCOOTY\'s on-demand micromobility and AI-powered RideGuide technology with Metrolinx\'s regional network, we are making it easier than ever for commuters across Ontario to choose sustainable, connected transit.',
-    heroImage:
-      'https://images.pexels.com/photos/3278015/pexels-photo-3278015.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    heroImage: '/assets/mainPage/metrolinx.jpg',
     vehicles: ['E-Scooters', 'E-Bikes'],
     stats: [
       { label: 'Partner Type', value: 'Transit Agency' },
@@ -640,12 +654,15 @@ export const CityPage = () => {
                 const onlyOne = data.gallery!.length === 1;
                 // Layout:
                 //  - 1 image  → full-width spotlight
-                //  - 2+ images → first spans two rows on desktop; others stack
+                //  - 2 images  → side by side
+                //  - 3+ images → first spans two rows on desktop; others stack
                 const span = onlyOne
                   ? 'sm:col-span-2 aspect-[16/9]'
-                  : i === 0
-                    ? 'sm:row-span-2 aspect-[4/5] sm:aspect-auto sm:h-full'
-                    : 'aspect-[16/10]';
+                  : data.gallery!.length === 2
+                    ? 'aspect-[16/10]'
+                    : i === 0
+                      ? 'sm:row-span-2 aspect-[4/5] sm:aspect-auto sm:h-full'
+                      : 'aspect-[16/10]';
                 return (
                   <motion.div
                     key={i}

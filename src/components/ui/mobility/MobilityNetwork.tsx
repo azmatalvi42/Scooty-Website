@@ -1,20 +1,23 @@
 import { useEffect, useRef } from 'react';
 import { advanceTraffic } from './traffic';
-import { createMobilityScene, drawMobilityFlow, drawMobilityMap, prepareMobilitySprites, setSceneLogo, MAP_HEIGHT, MAP_WIDTH } from './scene';
+import { createMobilityScene, drawMobilityFlow, drawMobilityMap, prepareMobilitySprites, setSceneLogo, MAP_HEIGHT, MAP_WIDTH, type MapView } from './scene';
 
 const PLAYBACK_RATE = 3.2;
 
 /** Decorative, locally rendered illustration. No map tiles, location access, or network requests. */
 export function MobilityNetwork() {
   const hostRef = useRef<HTMLDivElement>(null);
+  const baseRef = useRef<HTMLCanvasElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const host = hostRef.current;
     const canvas = canvasRef.current;
-    if (!host || !canvas) return;
-    const context = canvas.getContext('2d', { alpha: false });
-    const base = document.createElement('canvas');
+    const base = baseRef.current;
+    if (!host || !canvas || !base) return;
+    // Two stacked layers: the static ground is painted once into the lower canvas, and each frame only
+    // clears and redraws the transparent upper one (the compositor combines them for free).
+    const context = canvas.getContext('2d');
     const baseContext = base.getContext('2d', { alpha: false });
     if (!context || !baseContext) return;
     const ctx = context;
@@ -35,24 +38,35 @@ export function MobilityNetwork() {
     let compact = false;
     let lastFrame = 0;
     let time = 0;
+    let view: MapView | undefined;
+    // Frame pacing: up to ~60 fps, dropping to a steady ~30 fps (rather than stuttering) on devices that
+    // can't draw a frame in time, and returning to 60 once they can.
+    const FAST = 1000 / 60, SLOW = 1000 / 30;
+    let frameInterval = FAST;
+    let drawCost = 0;
 
     function draw() {
       ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.drawImage(base, 0, 0);
+      ctx.clearRect(0, 0, surface.width, surface.height);
       ctx.setTransform(dpr * scale, 0, 0, dpr * scale, dpr * offsetX, dpr * offsetY);
-      drawMobilityFlow(ctx, scene, reducedMotion.matches ? 0 : time, compact);
+      drawMobilityFlow(ctx, scene, reducedMotion.matches ? 0 : time, compact, view);
     }
 
     function tick(now: number) {
       frame = 0;
       if (disposed || !visible || document.hidden || reducedMotion.matches) return;
-      const interval = 1000 / (compact ? 30 : 60);
-      if (now - lastFrame >= interval) {
+      // A few ms of tolerance absorbs requestAnimationFrame timestamp jitter, so a 60 Hz display draws
+      // every frame and a 120 Hz one exactly every other frame, instead of skipping at random.
+      if (now - lastFrame >= frameInterval - 3) {
         const elapsed = Math.min((now - lastFrame) / 1000, .1) * PLAYBACK_RATE;
         time += elapsed;
+        const started = performance.now();
         advanceTraffic(scene.traffic, elapsed);
         lastFrame = now;
         draw();
+        drawCost = drawCost * .9 + (performance.now() - started) * .1;
+        if (frameInterval === FAST && drawCost > 12) frameInterval = SLOW;
+        else if (frameInterval === SLOW && drawCost < 7) frameInterval = FAST;
       }
       frame = requestAnimationFrame(tick);
     }
@@ -86,6 +100,8 @@ export function MobilityNetwork() {
       scale = Math.max(width / MAP_WIDTH, height / MAP_HEIGHT) * 1.08;
       offsetX = (width - MAP_WIDTH * scale) / 2;
       offsetY = (height - MAP_HEIGHT * scale) / 2;
+      // Visible part of the map, so drawing skips everything the crop hides (most of it on a phone).
+      view = { left: -offsetX / scale, top: -offsetY / scale, right: (width - offsetX) / scale, bottom: (height - offsetY) / scale };
       render();
       syncAnimation();
     }
@@ -139,6 +155,7 @@ export function MobilityNetwork() {
 
   return (
     <div ref={hostRef} className="editorial-hero-media mobility-network" aria-hidden="true">
+      <canvas ref={baseRef} className="mobility-network-canvas" />
       <canvas ref={canvasRef} className="mobility-network-canvas" />
     </div>
   );

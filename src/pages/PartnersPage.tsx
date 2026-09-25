@@ -1,7 +1,10 @@
 import { SiteImage } from '../components/ui/SiteImage';
+import { EditorialCarousel } from '../components/ui/EditorialCarousel';
+import { SlideOverlay, CaptionList } from '../components/ui/TabCarouselCaption';
+import { PartnerMarquee } from '../components/ui/PartnerMarquee';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import {
   Shield,
@@ -25,8 +28,6 @@ import {
   Clock,
   Network,
   Star,
-  ChevronLeft,
-  ChevronRight,
   TrendingUp,
   Sparkles,
 } from 'lucide-react';
@@ -152,7 +153,8 @@ const partnerSolutions = [
     icon: GraduationCap,
     title: 'Transit',
     subtitle: 'Academic Programs',
-    image: '/assets/Cities/Burlington/burlington-hero.png',
+    image: '/assets/Partners/WhatsApp Image 2025-08-09 at 15.09.56 (1).jpeg',
+    imagePosition: '50% 40%',
     description:
       'SCOOTY provides turnkey micromobility programs designed for academic environments. Our solutions combine vehicles, software, operations, and research opportunities that support campus mobility needs.',
     features: [
@@ -170,7 +172,7 @@ const partnerSolutions = [
     icon: Home,
     title: 'Developers',
     subtitle: 'Real Estate & Development',
-    image: '/assets/Cities/Brampton/brampton-hero.png',
+    image: '/assets/Partners/vic-fideli.jpeg',
     description:
       'Build communities designed for the future of transportation. SCOOTY helps developers create connected neighborhoods where residents can live, work, and move sustainably.',
     features: [
@@ -319,103 +321,31 @@ const proudPartners = [
   },
 ];
 
-const ProudPartnersMarquee = () => {
-  // Double the array for seamless infinite loop (CSS translateX -50%)
-  const track = [...proudPartners, ...proudPartners];
-
-  return (
-    <section className="relative z-10 py-14 sm:py-20 bg-gray-50 dark:bg-black border-t border-gray-100 dark:border-white/[0.05] overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none opacity-0 dark:opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle, rgba(234,179,8,0.8) 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
-      {/* Heading */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 sm:mb-12 text-center">
-        <p className="text-xs font-bold tracking-[0.2em] text-[#FEC001] uppercase mb-3">
-          Trusted By
-        </p>
-        <h2 className="text-3xl sm:text-4xl font-bold font-display text-gray-900 dark:text-white tracking-tight">
-          Our Proud <span className="text-[#FEC001]">Partners</span>
-        </h2>
-        <p className="mt-3 text-sm sm:text-base text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
-          Working alongside leading municipalities, transit agencies, and academic institutions across Ontario.
-        </p>
-      </div>
-
-      {/* Marquee track — capped narrower than one set of logos so none shows twice at once. */}
-      <div className="relative max-w-[1900px] mx-auto overflow-hidden">
-        {/* Left fade edge */}
-        <div
-          className="absolute left-0 top-0 bottom-0 w-24 sm:w-40 z-10 pointer-events-none"
-          style={{ background: 'linear-gradient(to right, var(--fade-bg), transparent)' }}
-        />
-        {/* Right fade edge */}
-        <div
-          className="absolute right-0 top-0 bottom-0 w-24 sm:w-40 z-10 pointer-events-none"
-          style={{ background: 'linear-gradient(to left, var(--fade-bg), transparent)' }}
-        />
-
-        {/* We use two wrapper divs — one for light mode, one for dark — to manage the fade colour */}
-        <style>{`
-          :root { --fade-bg: #F9FAFB; }
-          .dark { --fade-bg: #000000; }
-        `}</style>
-
-        <div
-          className="flex w-max animate-marquee"
-          style={{ gap: '20px', paddingInline: '10px' }}
-          onMouseEnter={e => (e.currentTarget.style.animationPlayState = 'paused')}
-          onMouseLeave={e => (e.currentTarget.style.animationPlayState = 'running')}
-        >
-          {track.map((partner, i) => (
-            <div
-              key={i}
-              className="flex-shrink-0 flex items-center gap-4 px-5 sm:px-6 py-4 sm:py-5 rounded-2xl border backdrop-blur-sm select-none"
-              style={{
-                background: partner.bg,
-                borderColor: partner.border,
-                minWidth: '220px',
-              }}
-            >
-              {/* Logo */}
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex-shrink-0 overflow-hidden bg-white flex items-center justify-center">
-                <SiteImage
-                  src={partner.img}
-                  alt={partner.name}
-                  className="w-full h-full object-contain p-1"
-                />
-              </div>
-
-              {/* Text */}
-              <div className="min-w-0">
-                <p className="text-sm sm:text-base font-bold text-gray-900 dark:text-white leading-tight whitespace-nowrap">
-                  {partner.name}
-                </p>
-                <p
-                  className="text-[10px] sm:text-xs font-semibold mt-0.5 uppercase tracking-wider"
-                  style={{ color: partner.accent, opacity: 0.8 }}
-                >
-                  {partner.tagline}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Bottom note */}
-      <p className="text-center text-xs text-gray-400 dark:text-gray-600 mt-8 tracking-wide">
-        🍁 &nbsp;Proud to serve communities across Ontario
+const ProudPartnersMarquee = () => (
+  <section className="relative z-10 py-20 sm:py-28 bg-gray-50 dark:bg-black border-t border-gray-100 dark:border-white/[0.05] overflow-hidden">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 sm:mb-16 text-center">
+      <h2 className="text-3xl sm:text-4xl font-bold font-display text-gray-900 dark:text-white tracking-tight">
+        Our Proud <span className="text-[#FEC001]">Partners</span>
+      </h2>
+      <p className="mt-4 text-sm sm:text-base text-gray-500 dark:text-gray-400 max-w-md mx-auto leading-relaxed">
+        Working alongside leading municipalities, transit agencies, and academic institutions across Ontario.
       </p>
-    </section>
-  );
-};
+    </div>
+
+    {/* Municipalities scroll along the bottom row; transit and academic partners along the top. */}
+    <PartnerMarquee
+      top={proudPartners.filter(p => p.tagline !== 'Municipality Partner')}
+      bottom={proudPartners.filter(p => p.tagline === 'Municipality Partner')}
+    />
+  </section>
+);
 
 /* ─────────────────────────────────────────── COMPONENT ─── */
 
 export const PartnersPage = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const [direction, setDirection] = useState(1);
 
   const goToTab = (index: number) => {
-    setDirection(index > activeTab ? 1 : -1);
     setActiveTab(index);
   };
 
@@ -426,11 +356,10 @@ export const PartnersPage = () => {
   const [locationsRef, locationsInView] = useInView({ triggerOnce: true, threshold: 0.05 });
   const [safetyRef, safetyInView] = useInView({ triggerOnce: true, threshold: 0.05 });
 
-  const current = partnerSolutions[activeTab];
 
   return (
     <div className="relative min-h-screen bg-white dark:bg-black">
-      {/* ── HERO + TAB NAV ── */}
+      {/* ── HERO ── */}
       <section className="relative z-10 overflow-hidden">
         {/* Background image */}
         <SiteImage
@@ -447,7 +376,7 @@ export const PartnersPage = () => {
         <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-black/80 to-transparent" />
 
         {/* Hero text */}
-        <div ref={heroRef} className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-14">
+        <div ref={heroRef} className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-24">
           <motion.h1
             initial={{ opacity: 0, x: -32 }}
             animate={heroInView ? { opacity: 1, x: 0 } : {}}
@@ -483,8 +412,11 @@ export const PartnersPage = () => {
             </motion.button>
           </motion.div>
         </div>
+      </section>
 
-        {/* Tab nav — bottom of hero */}
+      {/* ── TAB CARDS ── */}
+      <section ref={contentRef} className="relative z-10 py-10 bg-gray-50 dark:bg-black overflow-hidden">
+        {/* Tab nav — sits below the hero, above the tab cards */}
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
           <motion.div
             initial={{ opacity: 0, x: -24 }}
@@ -492,7 +424,7 @@ export const PartnersPage = () => {
             transition={{ duration: 0.6, delay: 0.65 }}
           >
             <div className="overflow-x-auto pb-1 flex justify-start sm:justify-center scrollbar-hide">
-              <div className="inline-flex gap-2 bg-white/10 backdrop-blur-md rounded-2xl p-2 border border-white/20 shadow-lg shrink-0">
+              <div className="inline-flex gap-2 bg-white dark:bg-white/10 backdrop-blur-md rounded-2xl p-2 border border-gray-200 dark:border-white/20 shadow-lg shrink-0">
                 {partnerSolutions.map((sol, index) => {
                   const isActive = index === activeTab;
                   return (
@@ -502,7 +434,7 @@ export const PartnersPage = () => {
                       className={`relative flex flex-col items-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl text-xs font-medium transition-all duration-200 min-w-[64px] sm:min-w-[76px] ${
                         isActive
                           ? 'bg-primary-500 text-black shadow-md shadow-primary-500/40'
-                          : 'text-white/70 hover:text-white hover:bg-white/15'
+                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-white/70 dark:hover:text-white dark:hover:bg-white/15'
                       }`}
                     >
                       <sol.icon className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -514,168 +446,42 @@ export const PartnersPage = () => {
             </div>
           </motion.div>
         </div>
-      </section>
 
-      {/* ── TAB CARDS ── */}
-      <section ref={contentRef} className="relative z-10 py-10 bg-gray-50 dark:bg-black overflow-hidden">
         <div className="absolute inset-0 pointer-events-none opacity-0 dark:opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle, rgba(234,179,8,0.8) 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative">
-            {/* Left arrow */}
-            <button
-              onClick={() => goToTab((activeTab - 1 + partnerSolutions.length) % partnerSolutions.length)}
-              className="absolute -left-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-navy-800 border border-yellow-500/30 shadow-md hover:bg-primary-500 hover:border-primary-500 hover:text-black text-gray-600 dark:text-gray-300 transition-all duration-200"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-
-            {/* Right arrow */}
-            <button
-              onClick={() => goToTab((activeTab + 1) % partnerSolutions.length)}
-              className="absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-navy-800 border border-yellow-500/30 shadow-md hover:bg-primary-500 hover:border-primary-500 hover:text-black text-gray-600 dark:text-gray-300 transition-all duration-200"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -40 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="relative overflow-hidden bg-gradient-to-br from-yellow-500/15 via-yellow-500/5 to-transparent border border-yellow-500/25 rounded-3xl shadow-lg">
-                  {/* Top accent */}
-                  <div className="h-1 w-full bg-gradient-to-r from-primary-500 via-primary-400 to-primary-500/30" />
-
-                  <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px]">
-                    {/* Left — Text */}
-                    <div className="p-7 sm:p-9 lg:p-12 flex flex-col justify-center">
-                      {/* Badge */}
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold mb-5 w-fit bg-primary-500/10 border border-primary-500/20 text-primary-600 dark:text-primary-400">
-                        <current.icon className="w-3 h-3" />
-                        {current.subtitle}
-                      </div>
-
-                      <h3 className="text-3xl sm:text-4xl font-bold font-display text-gray-900 dark:text-white mb-3">
-                        {current.title}
-                      </h3>
-
-                      <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-6 max-w-sm">
-                        {current.description}
-                      </p>
-
-                      {/* Features */}
-                      <motion.div
-                        className="flex flex-col gap-2 mb-7"
-                        initial="hidden"
-                        animate="show"
-                        variants={{
-                          hidden: {},
-                          show: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } },
-                        }}
-                      >
-                        {current.features.map((feature, i) => (
-                          <motion.div
-                            key={i}
-                            variants={{
-                              hidden: { opacity: 0, x: -12 },
-                              show: { opacity: 1, x: 0 },
-                            }}
-                            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                            whileHover={{ x: 3 }}
-                            className="flex items-center gap-3 py-1 group cursor-default"
-                          >
-                            <span className="w-5 h-5 rounded-full bg-primary-500 text-black text-[10px] font-bold flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110">{i + 1}</span>
-                            <span className="text-sm font-medium text-gray-700 dark:text-gray-200">{feature}</span>
-                          </motion.div>
-                        ))}
-                      </motion.div>
-
-                      {/* Stats row */}
-                      <motion.div
-                        className="flex gap-3 mb-7 flex-wrap"
-                        initial="hidden"
-                        animate="show"
-                        variants={{
-                          hidden: {},
-                          show: { transition: { staggerChildren: 0.08, delayChildren: 0.35 } },
-                        }}
-                      >
-                        {current.highlights.map((h, i) => {
-                          const HighlightIcon = h.icon;
-                          return (
-                            <motion.div
-                              key={i}
-                              variants={{
-                                hidden: { opacity: 0, y: 12, scale: 0.94 },
-                                show: { opacity: 1, y: 0, scale: 1 },
-                              }}
-                              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                              whileHover={{ y: -3, scale: 1.03 }}
-                              className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-navy-700/50 border border-yellow-500 dark:border-navy-600/60 backdrop-blur-sm text-center min-w-[110px] min-h-[92px] flex flex-col items-center justify-center gap-1 cursor-default hover:shadow-lg hover:shadow-primary-500/20 transition-shadow"
-                            >
-                              {HighlightIcon && <HighlightIcon className="w-5 h-5 text-primary-500" />}
-                              <div className="text-sm font-black font-display text-primary-500 leading-tight whitespace-nowrap">{h.value}</div>
-                              {h.label && (
-                                <div className="text-[11px] text-gray-500 dark:text-gray-400 leading-tight">{h.label}</div>
-                              )}
-                            </motion.div>
-                          );
-                        })}
-                      </motion.div>
-
-                      {/* CTA */}
-                      <div>
-                        <motion.button
-                          className="group inline-flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-black rounded-full text-sm font-semibold hover:bg-primary-400 transition-all duration-300 w-fit shadow-md shadow-primary-500/25 hover:shadow-lg hover:shadow-primary-500/35"
-                          whileHover={{ scale: 1.04 }}
-                          whileTap={{ scale: 0.97 }}
-                        >
-                          <span>Learn More</span>
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </motion.button>
-                      </div>
-                    </div>
-
-                    {/* Right — Image */}
-                    <div className="relative overflow-hidden min-h-[240px] sm:min-h-[300px] lg:min-h-0 rounded-b-3xl lg:rounded-b-none lg:rounded-r-3xl">
-                      <SiteImage
-                        src={current.image}
-                        alt={current.title}
-                        className="absolute inset-0 w-full h-full object-cover"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent lg:bg-gradient-to-r lg:from-yellow-950/30 lg:via-transparent lg:to-transparent" />
-                      {/* Label pill */}
-                      <div className="absolute bottom-4 right-4 flex items-center gap-1.5 bg-black/55 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-white/15">
-                        <current.icon className="w-3 h-3 text-primary-400" />
-                        {current.title}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Dots */}
-                <div className="flex justify-center gap-2 mt-5">
-                  {partnerSolutions.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => goToTab(index)}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${
-                        index === activeTab
-                          ? 'w-8 bg-primary-500'
-                          : 'w-1.5 bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
+        <EditorialCarousel
+          items={partnerSolutions}
+          active={activeTab}
+          onActiveChange={setActiveTab}
+          getKey={(sol) => sol.title}
+          getLabel={(sol) => sol.title}
+          aspect={0.5625}
+          phoneAspect={0.75}
+          minHeight={540}
+          phoneMinHeight={560}
+          label="Partner solutions"
+          trackId="partners-track"
+          renderSlide={(sol, active) => (
+            <>
+              <SiteImage
+                src={sol.image}
+                alt={sol.title}
+                draggable={false}
+                className={`w-full h-full object-cover transition-[filter] duration-500 ${active ? '' : 'saturate-[.75] group-hover/card:saturate-100'}`}
+                style={{ objectPosition: 'imagePosition' in sol ? sol.imagePosition : 'center' }}
+                sizes="(min-width: 768px) 62vw, 100vw"
+              />
+              <SlideOverlay
+                icon={sol.icon}
+                eyebrow={sol.subtitle}
+                title={sol.title}
+                description={sol.description}
+                details={<CaptionList items={sol.features} />}
+                stats={sol.highlights}
+                active={active}
+              />
+            </>
+          )}
+        />
       </section>
 
       {/* ── OUR PROUD PARTNERS ── */}

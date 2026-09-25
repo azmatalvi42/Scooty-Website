@@ -19,7 +19,7 @@ export function ProductPage() {
           <p className="text-lg leading-relaxed text-gray-500 mb-8 max-w-xl">{product.description}</p>
           <Link to={product.href} className="inline-flex items-center gap-3 px-6 py-3 rounded-full text-black font-semibold" style={{ background: product.accent }}>{product.cta}<ArrowRight size={18} /></Link>
         </div>
-        {product.slug === 'micromobility' ? <RidersAnimation /> : <div className="overflow-hidden rounded-3xl bg-[#172720]"><SiteImage src={product.image} alt={product.alt} loading="eager" className="w-full aspect-[4/3] object-contain" /></div>}
+        {product.slug === 'micromobility' ? <RidersAnimation /> : <div className="overflow-hidden rounded-3xl" style={{ backgroundColor: product.backdrop }}><SiteImage src={product.image} alt={product.alt} loading="eager" className="w-full aspect-[4/3] object-contain" /></div>}
       </div>
       {product.features.length > 0 && <section className="py-16 sm:py-24">
         <h2 className="font-display mb-6">{product.sectionTitle}</h2>

@@ -351,6 +351,8 @@ export interface GovernmentQuote {
   name: string;
   title: string;
   image: string;
+  /** CSS object-position for the quote card's crop (defaults to centre). */
+  imagePosition?: string;
 }
 
 // Testimonials rendered in the "What people are saying about SCOOTY" carousel
@@ -366,13 +368,14 @@ export const governmentQuotes: GovernmentQuote[] = [
     quote: "As our automotive and mobility sectors continue to advance, so too will new and innovative solutions for transportation in Ontario like Scooty Mobility Inc.’s micro-mobility e-scooter project. We congratulate Scooty Mobility Inc. and the City of Markham on this exciting new partnership, and for showcasing the best of what Ontario talent and innovation has to offer.",
     name: "Vic Fedeli",
     title: "Minister of Economic Development, Job Creation and Trade",
-    image: "/assets/mainPage/QuotesImages/DSC_4553 (1).jpg",
+    image: "/assets/mainPage/other/vic-fideli.jpeg",
+    imagePosition: "35% 20%",
   },
   {
     quote: "I have been pleased to watch Brampton's SCOOTY demonstrate their tech-focused, partnership-based approach to local mobility and connections to transit. Great transit makes for thriving communities, and SCOOTY is a great part of our transit mix.",
     name: "Patrick Brown",
     title: "Mayor, City of Brampton",
-    image: "/assets/mainPage/QuotesImages/DSC_1837.jpg",
+    image: "/assets/mainPage/QuotesImages/City Hall Group Shot - Brampton Launch Photo (2).JPG",
   },
   {
     quote: "The city has been pleased with our work with SCOOTY to support the needs of transit riders and improve connections to and from transit stops across the city. Having multi-modal commuting options connected through a unified transit fare is essential to encourage residents and visitors of Brampton to use transit, attracting investment and promoting economic activity.",
@@ -402,7 +405,8 @@ export const governmentQuotes: GovernmentQuote[] = [
     quote: "I am very pleased to see the successful delivery of the SCOOTY Transit API in partnership with the City of Brampton, Brampton Transit, Metrolinx and the Ontario Vehicle Innovation Network. SCOOTY was incubated at the TMU Brampton Venture Zone, it epitomizes TMU’s community-focused, bold approach to entrepreneurship.",
     name: "Dr. Mohamed Lachemi",
     title: "President and Vice-Chancellor of Toronto Metropolitan University",
-    image: "/assets/mainPage/QuotesImages/City Hall Group Shot - Brampton Launch Photo (2).JPG",
+    image: "/assets/Cities/dr-lachemi.jpeg",
+    imagePosition: "40% 18%",
   },
   {
     quote: "SCOOTY exemplifies the kind of company incubators aspire to support. Their motivation, creativity, and innovative spirit consistently drive them to add collective value, with a clear focus on delivering real community benefits.",

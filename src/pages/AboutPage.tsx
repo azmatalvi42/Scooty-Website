@@ -1,6 +1,8 @@
 import { SiteImage } from '../components/ui/SiteImage';
+import { EditorialCarousel } from '../components/ui/EditorialCarousel';
+import { SlideOverlay, CaptionList } from '../components/ui/TabCarouselCaption';
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import {
   Heart,
@@ -14,9 +16,6 @@ import {
   ExternalLink,
   Users,
   Flag,
-  ChevronLeft,
-  ChevronRight,
-  ArrowRight,
   Calendar,
   MapPin,
   Home,
@@ -44,7 +43,8 @@ const TABS = [
       { value: '2023', label: 'Founded', icon: Calendar },
       { value: '100%', label: 'Canadian', icon: Flag },
     ] as { value: string; label: string; icon: LucideIcon }[],
-    image: '/assets/Cities/Burlington/burlington-rider.png',
+    image: '/assets/About/WhatsApp Image 2025-08-09 at 15.09.56 (2).jpeg',
+    imagePosition: '50% 45%',
   },
   {
     icon: Zap,
@@ -63,7 +63,8 @@ const TABS = [
       { value: '3', label: 'Core Products', icon: Zap },
       { value: '5+', label: 'Cities Served', icon: MapPin },
     ] as { value: string; label: string; icon: LucideIcon }[],
-    image: '/assets/mainPage/built-for-riders-hero.png',
+    image: '/assets/About/2024MarkhamOVINScootyDemo-059.jpg',
+    imagePosition: '50% 30%',
   },
   {
     icon: Flag,
@@ -82,7 +83,8 @@ const TABS = [
       { value: 'Ontario', label: 'Home Base', icon: Home },
       { value: 'Canada', label: 'Born & Built', icon: Flag },
     ] as { value: string; label: string; icon: LucideIcon }[],
-    image: '/assets/Cities/Brampton/brampton-cityhall.JPG',
+    image: '/assets/About/2024MarkhamOVINScootyDemo-066.jpg',
+    imagePosition: '50% 45%',
   },
   {
     icon: Globe,
@@ -102,7 +104,8 @@ const TABS = [
       { value: '5', label: 'Platforms', icon: Globe },
       { value: 'Daily', label: 'Updates', icon: Clock },
     ] as { value: string; label: string; icon: LucideIcon }[],
-    image: '/assets/Partners/DSC02478.JPG',
+    image: '/assets/About/2024MarkhamOVINScootyDemo-053.jpg',
+    imagePosition: '50% 30%',
   },
 ];
 
@@ -203,29 +206,29 @@ export const AboutPage = () => {
   const [canadaRef, canadaInView] = useInView({ triggerOnce: true, threshold: 0.05 });
   const [socialsRef, socialsInView] = useInView({ triggerOnce: true, threshold: 0.05 });
 
-  const current = TABS[activeTab];
 
   return (
     <div className="min-h-screen bg-white dark:bg-black">
 
-      {/* ── HERO + TAB NAV ── */}
+      {/* ── HERO ── */}
       <section className="relative overflow-hidden">
         {/* Background image */}
         <SiteImage
-          src="/assets/mainPage/QuotesImages/2024MarkhamOVINScootyDemo-048.jpg"
+          src="/assets/About/2024MarkhamOVINScootyDemo-031.jpg"
           alt=""
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ objectPosition: '50% 22%' }}
           sizes="100vw"
           fetchPriority="high"
           loading="eager"
           decoding="async"
         />
-        {/* Overlay — very light tint so the drone shot stays vivid */}
+        {/* Overlay — light tint so the photo stays vivid behind the heading */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-gray-50 dark:to-navy-900" />
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/50 to-transparent" />
 
         {/* Hero text */}
-        <div ref={heroRef} className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-14">
+        <div ref={heroRef} className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-24">
           <motion.h1
             initial={{ opacity: 0, x: -32 }}
             animate={heroInView ? { opacity: 1, x: 0 } : {}}
@@ -245,8 +248,11 @@ export const AboutPage = () => {
             A Canadian mobility company on a mission to modernize public transit — one community at a time.
           </motion.p>
         </div>
+      </section>
 
-        {/* Tab nav */}
+      {/* ── TAB CARDS ── */}
+      <section ref={contentRef} className="py-10 bg-gray-50 dark:bg-navy-900">
+        {/* Tab nav — sits below the hero, above the tab cards */}
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
           <motion.div
             initial={{ opacity: 0, x: -24 }}
@@ -254,7 +260,7 @@ export const AboutPage = () => {
             transition={{ duration: 0.6, delay: 0.55 }}
           >
             <div className="overflow-x-auto pb-1 flex justify-start sm:justify-center scrollbar-hide">
-              <div className="inline-flex gap-2 bg-white/10 backdrop-blur-md rounded-2xl p-2 border border-white/20 shadow-lg shrink-0">
+              <div className="inline-flex gap-2 bg-white dark:bg-white/10 backdrop-blur-md rounded-2xl p-2 border border-gray-200 dark:border-white/20 shadow-lg shrink-0">
                 {TABS.map((tab, index) => {
                   const isActive = index === activeTab;
                   return (
@@ -264,7 +270,7 @@ export const AboutPage = () => {
                       className={`relative flex flex-col items-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl text-xs font-medium transition-all duration-200 min-w-[64px] sm:min-w-[76px] ${
                         isActive
                           ? 'bg-primary-500 text-black shadow-md shadow-primary-500/40'
-                          : 'text-white/70 hover:text-white hover:bg-white/15'
+                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-white/70 dark:hover:text-white dark:hover:bg-white/15'
                       }`}
                     >
                       <tab.icon className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -276,167 +282,41 @@ export const AboutPage = () => {
             </div>
           </motion.div>
         </div>
-      </section>
 
-      {/* ── TAB CARDS ── */}
-      <section ref={contentRef} className="py-10 bg-gray-50 dark:bg-navy-900">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative">
-            {/* Left arrow */}
-            <button
-              onClick={() => goToTab((activeTab - 1 + TABS.length) % TABS.length)}
-              className="absolute -left-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-navy-800 border border-yellow-500/30 shadow-md hover:bg-primary-500 hover:border-primary-500 hover:text-black text-gray-600 dark:text-gray-300 transition-all duration-200"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-
-            {/* Right arrow */}
-            <button
-              onClick={() => goToTab((activeTab + 1) % TABS.length)}
-              className="absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-navy-800 border border-yellow-500/30 shadow-md hover:bg-primary-500 hover:border-primary-500 hover:text-black text-gray-600 dark:text-gray-300 transition-all duration-200"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -40 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="relative overflow-hidden bg-gradient-to-br from-yellow-500/15 via-yellow-500/5 to-transparent border border-yellow-500/25 rounded-3xl shadow-lg">
-                  {/* Top accent */}
-                  <div className="h-1 w-full bg-gradient-to-r from-primary-500 via-primary-400 to-primary-500/30" />
-
-                  <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px]">
-                    {/* Left — Text */}
-                    <div className="p-7 sm:p-9 lg:p-12 flex flex-col justify-center">
-                      {/* Badge */}
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold mb-5 w-fit bg-primary-500/10 border border-primary-500/20 text-primary-600 dark:text-primary-400">
-                        <current.icon className="w-3 h-3" />
-                        {current.subtitle}
-                      </div>
-
-                      <h3 className="text-3xl sm:text-4xl font-bold font-display text-gray-900 dark:text-white mb-3">
-                        {current.label}
-                      </h3>
-
-                      <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-6 max-w-sm">
-                        {current.description}
-                      </p>
-
-                      {/* Features */}
-                      <motion.div
-                        className="flex flex-col gap-2 mb-7"
-                        initial="hidden"
-                        animate="show"
-                        variants={{
-                          hidden: {},
-                          show: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } },
-                        }}
-                      >
-                        {current.features.map((feature, i) => (
-                          <motion.div
-                            key={i}
-                            variants={{
-                              hidden: { opacity: 0, x: -12 },
-                              show: { opacity: 1, x: 0 },
-                            }}
-                            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                            whileHover={{ x: 3 }}
-                            className="flex items-center gap-3 py-1 group cursor-default"
-                          >
-                            <span className="w-5 h-5 rounded-full bg-primary-500 text-black text-[10px] font-bold flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110">{i + 1}</span>
-                            <span className="text-sm font-medium text-gray-700 dark:text-gray-200">{feature}</span>
-                          </motion.div>
-                        ))}
-                      </motion.div>
-
-                      {/* Stats row */}
-                      <motion.div
-                        className="flex gap-3 mb-7 flex-wrap"
-                        initial="hidden"
-                        animate="show"
-                        variants={{
-                          hidden: {},
-                          show: { transition: { staggerChildren: 0.08, delayChildren: 0.35 } },
-                        }}
-                      >
-                        {current.highlights.map((h, i) => {
-                          const HighlightIcon = h.icon;
-                          return (
-                            <motion.div
-                              key={i}
-                              variants={{
-                                hidden: { opacity: 0, y: 12, scale: 0.94 },
-                                show: { opacity: 1, y: 0, scale: 1 },
-                              }}
-                              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                              whileHover={{ y: -3, scale: 1.03 }}
-                              className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-navy-700/50 border border-yellow-500 dark:border-navy-600/60 backdrop-blur-sm text-center min-w-[110px] min-h-[92px] flex flex-col items-center justify-center gap-1 cursor-default hover:shadow-lg hover:shadow-primary-500/20 transition-shadow"
-                            >
-                              {HighlightIcon && <HighlightIcon className="w-5 h-5 text-primary-500" />}
-                              <div className="text-sm font-black font-display text-primary-500 leading-tight whitespace-nowrap">{h.value}</div>
-                              {h.label && (
-                                <div className="text-[11px] text-gray-500 dark:text-gray-400 leading-tight">{h.label}</div>
-                              )}
-                            </motion.div>
-                          );
-                        })}
-                      </motion.div>
-
-                      {/* CTA */}
-                      <div>
-                        <motion.button
-                          className="group inline-flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-black rounded-full text-sm font-semibold hover:bg-primary-400 transition-all duration-300 w-fit shadow-md shadow-primary-500/25 hover:shadow-lg hover:shadow-primary-500/35"
-                          whileHover={{ scale: 1.04 }}
-                          whileTap={{ scale: 0.97 }}
-                        >
-                          <span>Learn More</span>
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </motion.button>
-                      </div>
-                    </div>
-
-                    {/* Right — Image */}
-                    <div className="relative overflow-hidden min-h-[240px] sm:min-h-[300px] lg:min-h-0 rounded-b-3xl lg:rounded-b-none lg:rounded-r-3xl">
-                      <SiteImage
-                        src={current.image}
-                        alt={current.label}
-                        className="about-tab-image absolute inset-0 w-full h-full object-cover"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent lg:bg-gradient-to-r lg:from-yellow-950/30 lg:via-transparent lg:to-transparent" />
-                      {/* Label pill */}
-                      <div className="absolute bottom-4 right-4 flex items-center gap-1.5 bg-black/55 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-white/15">
-                        <current.icon className="w-3 h-3 text-primary-400" />
-                        {current.label}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Dots */}
-                <div className="flex justify-center gap-2 mt-5">
-                  {TABS.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => goToTab(index)}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${
-                        index === activeTab
-                          ? 'w-8 bg-primary-500'
-                          : 'w-1.5 bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
+        <EditorialCarousel
+          items={TABS}
+          active={activeTab}
+          onActiveChange={setActiveTab}
+          getKey={(tab) => tab.label}
+          getLabel={(tab) => tab.label}
+          aspect={0.5625}
+          phoneAspect={0.75}
+          minHeight={540}
+          phoneMinHeight={560}
+          label="About SCOOTY"
+          trackId="about-track"
+          renderSlide={(tab, active) => (
+            <>
+              <SiteImage
+                src={tab.image}
+                alt={tab.label}
+                draggable={false}
+                className={`w-full h-full object-cover transition-[filter] duration-500 ${active ? '' : 'saturate-[.75] group-hover/card:saturate-100'}`}
+                style={{ objectPosition: tab.imagePosition }}
+                sizes="(min-width: 768px) 62vw, 100vw"
+              />
+              <SlideOverlay
+                icon={tab.icon}
+                eyebrow={tab.subtitle}
+                title={tab.label}
+                description={tab.description}
+                details={<CaptionList items={tab.features} />}
+                stats={tab.highlights}
+                active={active}
+              />
+            </>
+          )}
+        />
       </section>
 
       {/* ── OUR MISSION ── */}

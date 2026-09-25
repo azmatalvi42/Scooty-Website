@@ -1,15 +1,16 @@
 import { SiteImage } from './SiteImage';
 
-const visuals: Record<string, { src: string; alt: string; caption: string; position?: string }> = {
+// `position` frames the 4:3 figure; `widePosition` frames the Riders page's 16:9 carousel card.
+const visuals: Record<string, { src: string; alt: string; caption: string; position?: string; widePosition?: string }> = {
   'getting-started': {
-    src: '/assets/Cities/Burlington/burlington-scooters.png',
-    alt: 'SCOOTY scooters with scan-to-ride instructions on their handlebars',
-    caption: 'Your first ride starts with a scan.', position: '50% 35%',
+    src: '/assets/Riders/DSC02472.JPG',
+    alt: 'A helmeted rider using a phone beside a row of parked SCOOTY scooters',
+    caption: 'Your first ride starts with a scan.', position: '62% 55%', widePosition: '55% 50%',
   },
   'how-to-ride': {
-    src: '/assets/Cities/Burlington/burlington-rider.png',
-    alt: 'A helmeted SCOOTY rider standing on a scooter with both hands on the handlebars',
-    caption: 'Helmet on. Both hands on. Ready to ride.', position: '48% 52%',
+    src: '/assets/Riders/2024MarkhamOVINScootyDemo-046.jpg',
+    alt: 'Two helmeted riders on a SCOOTY e-scooter and e-bike',
+    caption: 'Helmet on. Both hands on. Ready to ride.', position: '55% 50%', widePosition: '55% 55%',
   },
   'where-to-ride': {
     src: '/assets/Riders/Carousel/riders-carousel-parking.png',
@@ -17,14 +18,14 @@ const visuals: Record<string, { src: string; alt: string; caption: string; posit
     caption: 'Check the SCOOTY app for current riding and parking zones.',
   },
   parking: {
-    src: '/assets/Cities/Burlington/burlington-scooters.png',
-    alt: 'Yellow SCOOTY scooters parked upright in a neat row beside a designated parking sign',
-    caption: 'Park upright. Leave the way clear.', position: '50% 75%',
+    src: '/assets/Riders/2024MarkhamOVINScootyDemo-002.jpg',
+    alt: 'A neat row of SCOOTY e-scooters parked upright with helmets on the handlebars',
+    caption: 'Park upright. Leave the way clear.', position: '50% 40%',
   },
   safety: {
-    src: '/assets/Cities/Markham/markham-helmet.jpg',
-    alt: 'Close-up of a black SCOOTY helmet resting on a scooter handlebar',
-    caption: 'A safer ride starts before you roll.', position: '36% 45%',
+    src: '/assets/Riders/2024MarkhamOVINScootyDemo-058.jpg',
+    alt: 'A rider wearing a helmet on a SCOOTY e-scooter',
+    caption: 'A safer ride starts before you roll.', position: '50% 15%', widePosition: '50% 20%',
   },
   vehicles: {
     src: '/assets/Riders/Carousel/riders-carousel-vehicles.png',
@@ -46,5 +47,22 @@ export function RiderCategoryImage({ topic, eager = false }: { topic: string; ea
       </div>}
       <figcaption className="rider-category-caption"><span aria-hidden="true" />{visual.caption}</figcaption>
     </figure>
+  );
+}
+
+const SCOOTERS = { src: '/assets/Cities/Burlington/burlington-scooters.png', alt: 'SCOOTY electric scooters with wide decks and handlebar displays', position: '50% 68%' };
+
+/** The topic's photo filling a Riders page carousel card; vehicles pairs the e-bikes with the e-scooters. */
+export function RiderCategorySlide({ topic, active }: { topic: string; active: boolean }) {
+  const visual = visuals[topic];
+  if (!visual) return null;
+  const tone = `w-full h-full object-cover transition-[filter] duration-500 ${active ? '' : 'saturate-[.75] group-hover/card:saturate-100'}`;
+  return (
+    <div className={`w-full h-full ${topic === 'vehicles' ? 'grid grid-cols-2 gap-1' : ''}`}>
+      <SiteImage src={visual.src} alt={visual.alt} draggable={false} className={tone} style={{ objectPosition: visual.widePosition ?? visual.position ?? 'center' }} sizes="(min-width: 768px) 62vw, 100vw" />
+      {topic === 'vehicles' && (
+        <SiteImage src={SCOOTERS.src} alt={SCOOTERS.alt} draggable={false} className={tone} style={{ objectPosition: SCOOTERS.position }} sizes="(min-width: 768px) 31vw, 50vw" />
+      )}
+    </div>
   );
 }

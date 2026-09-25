@@ -171,7 +171,10 @@ html:not(.dark) .editorial-shell :where(.text-primary-500, .text-primary-400, .t
 .editorial-shell :is(#services, #riders, #about) > .pointer-events-none,
 .editorial-shell :is(#services, #riders, #about) [aria-hidden][class*="-z-10"],
 .editorial-shell #impact .blur-2xl { opacity: 0; }
-.editorial-shell :is(#services, #riders) { padding-block: clamp(64px, 7.5vw, 112px); }
+.editorial-shell #riders { padding-block: clamp(64px, 7.5vw, 112px); }
+.editorial-shell #services { padding-block: clamp(24px, 2.5vw, 40px); } /* Tighter, editorial carousel. */
+/* The site-wide display size is too loud here; this section's heading stays compact so it fits one screen. */
+.editorial-shell #services h2.font-display { font-size: clamp(1.9rem, 2.8vw, 2.6rem); }
 .editorial-shell #about { margin: 0; border-top: 1px solid var(--editorial-border); background: transparent; }
 .editorial-shell #about > div { padding-block: clamp(64px, 7vw, 96px); }
 .editorial-shell #about a { border-radius: 50%; }
@@ -243,55 +246,23 @@ html:not(.dark) .editorial-shell :where(.text-primary-500, .text-primary-400, .t
 .editorial-hero-scroll button { gap: 4px; }
 .editorial-hero-scroll button > div { display: none; }
 
-.partner-rail {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  width: 100%;
-  min-height: 132px;
-  padding: 0 clamp(20px, 5vw, 72px);
-  overflow: hidden;
-  border-bottom: 1px solid var(--editorial-border);
-  background: color-mix(in srgb, var(--editorial-paper) 88%, transparent);
-}
-.partner-rail-label {
-  flex: 0 0 auto;
-  color: var(--editorial-muted);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-/* Capped narrower than one set of logos, so the looping copy never shows a logo twice at once. */
-.partner-rail-viewport { min-width: 0; max-width: 2000px; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
-.partner-rail-track { display: flex; width: max-content; align-items: center; animation: partner-marquee 28s linear infinite; }
-.partner-rail-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  margin-right: 42px;
-  min-width: 220px;
-  padding: 14px 18px;
-  border: 1px solid;
-  border-radius: 16px;
-  backdrop-filter: blur(8px);
-  color: var(--editorial-ink);
-  font-size: clamp(13px, 1.4vw, 16px);
-  font-weight: 700;
-  letter-spacing: -.02em;
-  white-space: nowrap;
-}
-.partner-rail-logo-box { display: grid; place-items: center; width: 52px; height: 52px; flex: 0 0 auto; overflow: hidden; border-radius: 12px; background: rgba(255,255,255,.84); }
-.partner-rail-logo { width: 100%; height: 100%; padding: 5px; object-fit: contain; }
-.partner-rail-abbr { color: #303932; font-size: 12px; font-weight: 900; letter-spacing: .06em; }
-.partner-rail-copy { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-.partner-rail-copy > span { color: var(--editorial-ink); font-size: 14px; font-weight: 800; line-height: 1.1; white-space: nowrap; }
-.partner-rail-copy small { font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
 .scooty-horizontal-logo { mix-blend-mode: normal; }
-@media (max-width: 639px) { .partner-rail-label { display: none; } .partner-rail-logo { max-width: 92px; height: 24px; } }
-@keyframes partner-marquee { to { transform: translateX(-50%); } }
-@media (prefers-reduced-motion: reduce) { .partner-rail-track { animation-play-state: paused; } }
+/* Home page partners band: same surface and divider as before, now holding the two-row partner marquee. */
+.home-partners { border-bottom: 1px solid var(--editorial-border); background: color-mix(in srgb, var(--editorial-paper) 88%, transparent); overflow: hidden; }
+/* Partner marquee (home and Partners page): two rows moving opposite ways, edges faded with a mask (works on any background). */
+.partners-marquee-row {
+  --partners-gap: clamp(36px, 5vw, 64px);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.partners-marquee-track { display: flex; width: max-content; animation: partners-marquee 32s linear infinite; will-change: transform; }
+.partners-marquee-row--reverse .partners-marquee-track { animation-direction: reverse; animation-delay: -13s; }
+.partners-marquee-row:hover .partners-marquee-track { animation-play-state: paused; }
+/* The trailing padding equals the gap, so both copies are exactly the same width. */
+.partners-marquee-group { display: flex; flex-shrink: 0; align-items: center; gap: var(--partners-gap); padding-right: var(--partners-gap); }
+@keyframes partners-marquee { to { transform: translate3d(-50%, 0, 0); } }
+@media (prefers-reduced-motion: reduce) { .partners-marquee-track { animation: none; } }
 
 /* Existing route heroes and media get the same framing without changing their content. */
 .editorial-shell main > div { border-radius: 32px; }
@@ -423,14 +394,11 @@ html:not(.dark) .editorial-shell :where(.text-primary-500, .text-primary-400, .t
 
 /* Give the About and Ride Log slides a consistent editorial crop and full-colour
    photography so each card reads as a finished story, not a thumbnail. */
-.about-tab-image,
 .blog-card-image {
   object-position: center 48%;
   transition: transform .7s cubic-bezier(.22, 1, .36, 1), filter .35s ease;
 }
-.about-tab-image { filter: saturate(1.04) contrast(1.02); }
 .blog-card-image { filter: saturate(1.08) contrast(1.03); }
-.group:hover .about-tab-image,
 .group:hover .blog-card-image { filter: saturate(1.14) contrast(1.05); }
 
 /* Home: brand gold diffuses into black, with a warm counterpart in light mode. */
@@ -489,34 +457,6 @@ html:not(.dark) .editorial-shell :where(.text-primary-500, .text-primary-400, .t
 }
 .technology-hero > .relative.z-10 { margin-top: 0; }
 
-.rideguide-phone {
-  position: relative;
-  width: min(100%, 296px);
-  padding: 13px;
-  border: 2px solid #454545;
-  border-radius: 38px;
-  background: linear-gradient(145deg, #343434, #111);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, .42), inset 0 0 0 1px rgba(255, 255, 255, .12);
-}
-.rideguide-phone-speaker {
-  position: absolute;
-  z-index: 2;
-  top: 19px;
-  left: 50%;
-  width: 74px;
-  height: 5px;
-  border-radius: 999px;
-  background: #080808;
-  transform: translateX(-50%);
-}
-.rideguide-phone-screen {
-  min-height: 540px;
-  padding: 28px 10px 14px;
-  overflow: hidden;
-  border-radius: 27px;
-  background: linear-gradient(160deg, #151515, #080808 70%);
-}
-.rideguide-phone-screen > div { max-width: none; }
 @media (max-width: 1023px) {
   .technology-hero {
     min-height: calc(100svh - 104px);
