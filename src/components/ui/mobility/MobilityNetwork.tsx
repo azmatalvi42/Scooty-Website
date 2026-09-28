@@ -113,8 +113,9 @@ export function MobilityNetwork() {
       draw();
     }
 
-    // GO signage and the SCOOTY blimp use the real logos; re-cache sprites as each one loads.
-    const logoImages = ([['go', '/assets/Cities/go-transit-logo.svg'], ['scooty', '/assets/partners-transparent/scooty-horizontal-logo.png']] as const).map(([kind, src]) => {
+    // GO signage and the SCOOTY blimp use the real logos; re-cache sprites as each one loads. The SCOOTY
+    // logo is painted small, so its 480px WebP export is plenty.
+    const logoImages = ([['go', '/assets/Cities/go-transit-logo.svg'], ['scooty', '/assets/optimized/assets-partners-transparent-scooty-horizontal-logo-480.webp']] as const).map(([kind, src]) => {
       const image = new Image();
       image.onload = () => {
         if (disposed) return;

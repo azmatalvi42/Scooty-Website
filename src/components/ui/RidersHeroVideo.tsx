@@ -46,11 +46,12 @@ export function RidersHeroVideo() {
   return (
     <>
       <SiteImage src="/assets/Riders/riders-page-hero.png" alt="" className="absolute inset-0 w-full h-full object-cover" sizes="100vw" fetchPriority="high" loading="eager" />
+      {/* No poster: the responsive image above shows through until the first frame, instead of a
+          second download of the full-size PNG. */}
       {canPlay && <video
         key={footage[index]}
         ref={videoRef}
         src={footage[index]}
-        poster="/assets/Riders/riders-page-hero.png"
         className="absolute inset-0 w-full h-full object-cover"
         muted playsInline loop={footage.length === 1} preload="metadata" aria-hidden="true"
         onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)}

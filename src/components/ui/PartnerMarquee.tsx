@@ -8,7 +8,7 @@ const PartnerMark = ({ partner }: { partner: MarqueePartner }) => (
     {/* Slightly wide tile: most partner logos are wordmarks, which would shrink in a square. */}
     <div className="w-14 h-11 sm:w-16 sm:h-12 rounded-xl overflow-hidden bg-white flex items-center justify-center flex-shrink-0">
       {partner.img
-        ? <SiteImage src={partner.img} alt={partner.name} className="w-full h-full object-contain p-1.5" />
+        ? <SiteImage src={partner.img} alt={partner.name} className="w-full h-full object-contain p-1.5" sizes="64px" />
         : <span className="text-xs font-black tracking-wider text-[#303932]" aria-hidden>{partner.name.slice(0, 3).toUpperCase()}</span>}
     </div>
     <span className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white whitespace-nowrap">

@@ -223,6 +223,7 @@ export const RidersPage = () => {
               <span className="flex items-center gap-2 border-l border-black/20 pl-4">
                 <SiteImage
                   src="/icons/appstore-icon.png"
+                  sizes="28px"
                   alt="App Store"
                   className="h-6 sm:h-7 w-auto object-contain"
                   style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.55))' }}
@@ -231,6 +232,7 @@ export const RidersPage = () => {
                 />
                 <SiteImage
                   src="/icons/playstore-icon.png"
+                  sizes="28px"
                   alt="Google Play"
                   className="h-6 sm:h-7 w-auto object-contain"
                   style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.55))' }}
