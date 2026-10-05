@@ -1169,7 +1169,7 @@ export function drawMobilityFlow(ctx: CanvasRenderingContext2D, scene: MobilityS
   entities.sort((a, b) => a.depth - b.depth);
   // The blimp flies above the whole city, so it is always drawn last; its shadow lands on the
   // ground along the buildings' sun direction.
-  const blimp = blimpPosition(seconds);
+  const blimp = blimpPosition(seconds, view);
   drawBlimpShadow(ctx, blimp);
   for (const shadow of groundShadows) shadow();
   for (const entity of entities) entity.draw();
@@ -1188,8 +1188,23 @@ function shapeEllipse(s11: number, s12: number, s22: number) {
  */
 const BLIMP = { speed: 16, from: -560, span: 2300, y: 486, altitude: 200, length: 64, radius: 21 };
 type BlimpState = Point & { z: number };
-function blimpPosition(seconds: number): BlimpState {
-  return { x: BLIMP.from + (seconds * BLIMP.speed) % BLIMP.span, y: BLIMP.y, z: BLIMP.altitude + Math.sin(seconds * .6) * 3 };
+/**
+ * The blimp's flight is fitted to the visible crop: each pass starts with the envelope just off the
+ * left/top edge (so on load it moves straight into frame), and as soon as it has cleared the right/bottom
+ * edge it starts over from the far side.
+ */
+function blimpPosition(seconds: number, view?: MapView): BlimpState {
+  const { y, altitude: z } = BLIMP;
+  let from = BLIMP.from, span = BLIMP.span;
+  if (view) {
+    // World x at which the blimp's centre is this far outside the view's edges (screen x and y both
+    // grow with world x along the flight line); the margin just covers the envelope and its fins.
+    const margin = 70;
+    const enter = Math.max((view.left - margin - 700) / .9 + y, (view.top - margin - 88 + z) / .48 - y);
+    const exit = Math.min((view.right + margin - 700) / .9 + y, (view.bottom + margin - 88 + z) / .48 - y);
+    if (exit > enter) { from = enter; span = exit - enter; }
+  }
+  return { x: from + (seconds * BLIMP.speed) % span, y, z: z + Math.sin(seconds * .6) * 3 };
 }
 function drawBlimpShadow(ctx: CanvasRenderingContext2D, p: BlimpState) {
   const { length: a, radius: b } = BLIMP;
