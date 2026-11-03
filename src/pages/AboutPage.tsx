@@ -20,6 +20,7 @@ import {
   MapPin,
   Home,
   Clock,
+  GraduationCap,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -85,6 +86,26 @@ const TABS = [
     ] as { value: string; label: string; icon: LucideIcon }[],
     image: '/assets/About/2024MarkhamOVINScootyDemo-066.jpg',
     imagePosition: '50% 45%',
+  },
+  {
+    icon: GraduationCap,
+    label: 'Education',
+    slug: 'education',
+    subtitle: 'Skills development',
+    description:
+      'SCOOTY\'s skills development program builds practical ability in the communities we serve — safe riding, day-to-day operations, and the work of running a local mobility service.',
+    features: [
+      'Hands-on training in safe riding and operations',
+      'Skills practiced alongside live city programs',
+      'Pathways into mobility and community operations',
+      'Built with the neighbourhoods we operate in',
+    ],
+    highlights: [
+      { value: 'Local', label: 'Training', icon: GraduationCap },
+      { value: 'Ontario', label: 'Communities', icon: MapPin },
+    ] as { value: string; label: string; icon: LucideIcon }[],
+    image: '/assets/mainPage/QuotesImages/DSC_4553 (1).jpg',
+    imagePosition: 'center',
   },
   {
     icon: Globe,
@@ -211,7 +232,7 @@ export const AboutPage = () => {
     <div className="min-h-screen bg-white dark:bg-black">
 
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden">
+      <section className="page-hero relative overflow-hidden">
         {/* Background image */}
         <SiteImage
           src="/assets/About/2024MarkhamOVINScootyDemo-031.jpg"
@@ -223,9 +244,7 @@ export const AboutPage = () => {
           loading="eager"
           decoding="async"
         />
-        {/* Overlay — light tint so the photo stays vivid behind the heading */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-gray-50 dark:to-navy-900" />
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/50 to-transparent" />
+        <div className="absolute inset-0 bg-black/35" />
 
         {/* Hero text */}
         <div ref={heroRef} className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-24">

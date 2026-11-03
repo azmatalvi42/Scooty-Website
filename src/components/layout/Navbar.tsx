@@ -9,7 +9,6 @@ const EASING: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const announcements = [
   { text: 'Now live in Brampton, Barrie & Burlington', linkText: 'Learn More', href: '/partners' },
   { text: 'Proud partners with Metrolinx', linkText: 'See Partnership', href: '/partners/metrolinx' },
-  { text: 'First & last-mile transit powered by AI', linkText: 'Explore', href: '/technology' },
   { text: '100% Canadian — built in Ontario', linkText: 'About Us', href: '/about' },
 ];
 
@@ -17,7 +16,6 @@ const navigation = [
   { name: 'Home',       href: '/' },
   { name: 'Riders',     href: '/riders' },
   { name: 'Partners',   href: '/partners' },
-  { name: 'Technology', href: '/technology' },
   { name: 'About Us',   href: '/about' },
   { name: 'Blog',       href: '/blog' },
 ];

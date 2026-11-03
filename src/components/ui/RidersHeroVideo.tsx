@@ -10,7 +10,7 @@ export function RidersHeroVideo() {
   const [paused, setPaused] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [failed, setFailed] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(true);
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -45,15 +45,15 @@ export function RidersHeroVideo() {
 
   return (
     <>
-      <SiteImage src="/assets/Riders/riders-page-hero.png" alt="" className="absolute inset-0 w-full h-full object-cover" sizes="100vw" fetchPriority="high" loading="eager" />
-      {/* No poster: the responsive image above shows through until the first frame, instead of a
-          second download of the full-size PNG. */}
+      {!canPlay && (
+        <SiteImage src="/assets/Riders/riders-page-hero.png" alt="" className="absolute inset-0 w-full h-full object-cover" sizes="100vw" fetchPriority="high" loading="eager" />
+      )}
       {canPlay && <video
         key={footage[index]}
         ref={videoRef}
         src={footage[index]}
         className="absolute inset-0 w-full h-full object-cover"
-        muted playsInline loop={footage.length === 1} preload="metadata" aria-hidden="true"
+        muted playsInline loop={footage.length === 1} preload="auto" aria-hidden="true"
         onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)}
         onError={() => setFailed(true)}
         onEnded={() => setIndex(current => (current + 1) % footage.length)}

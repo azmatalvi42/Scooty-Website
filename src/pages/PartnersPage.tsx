@@ -360,7 +360,7 @@ export const PartnersPage = () => {
   return (
     <div className="relative min-h-screen bg-white dark:bg-black">
       {/* ── HERO ── */}
-      <section className="relative z-10 overflow-hidden">
+      <section className="page-hero relative z-10 overflow-hidden">
         {/* Background image */}
         <SiteImage
           src="/assets/Partners/partner-img.jpg"
@@ -372,8 +372,7 @@ export const PartnersPage = () => {
           decoding="async"
         />
         {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/50 to-gray-50 dark:to-navy-900" />
-        <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-black/80 to-transparent" />
+        <div className="absolute inset-0 bg-black/35" />
 
         {/* Hero text */}
         <div ref={heroRef} className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-24">

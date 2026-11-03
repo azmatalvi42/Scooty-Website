@@ -477,7 +477,7 @@ export const CityPage = () => {
     <div className="min-h-screen bg-white dark:bg-black">
 
       {/* ── HERO ── */}
-      <section ref={heroSectionRef} className="relative h-[80vh] min-h-[560px] flex items-end overflow-hidden">
+      <section ref={heroSectionRef} className="page-hero relative flex items-end overflow-hidden">
         <motion.img
           {...imageProps(data.heroImage)}
           sizes="100vw"

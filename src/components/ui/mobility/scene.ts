@@ -7,7 +7,7 @@ export { RAIL_COLUMNS };
 export type Point = { x: number; y: number };
 type Cell = readonly [number, number];
 export type Route = { points: Point[]; lengths: number[]; length: number; color: string; transit: boolean; phase: number };
-type Scenery = { kind: 'building' | 'tree' | 'shelter' | 'dock' | 'lamp' | 'bench' | 'goal' | 'hoop' | 'station' | 'canopy'; x: number; y: number; width: number; depth: number; height: number; variant: number };
+type Scenery = { kind: 'building' | 'tree' | 'shelter' | 'dock' | 'lamp' | 'bench' | 'goal' | 'hoop' | 'station' | 'canopy' | 'firepit' | 'cart' | 'grill'; x: number; y: number; width: number; depth: number; height: number; variant: number };
 type Sprite = { image: HTMLCanvasElement; x: number; y: number; width: number; height: number };
 export type MobilityScene = {
   streets: Point[][];
@@ -194,12 +194,29 @@ export function createMobilityScene(): MobilityScene {
         continue;
       }
       const hash = Math.abs((x * 73856093) ^ (y * 19349663)) % 997;
-      if (hash % 7 === 0) {
-        // Pocket park: a small grove with a bench.
-        // South-bank parks squeeze between the embankment and the next street's pavement.
-        const place = (b: number) => y === 7 ? RIVER.bottom + 14 + (b - 30) * .5 : v + b;
+      if (hash % 7 === 0 && y === 7) {
+        // South-bank pocket park: a small grove with a bench, squeezed between the embankment and the
+        // next street's pavement.
+        const place = (b: number) => RIVER.bottom + 14 + (b - 30) * .5;
         [[30, 34], [72, 30], [40, 74], [80, 70]].forEach(([a, b], i) => add('tree', u + a, place(b), 20, 20, 26 + i * 2, (hash + i) % 3));
         add('bench', u + 50, v + 55, 18, 4, 5);
+        continue;
+      }
+      if (hash % 7 === 0) {
+        // Hangout square: four benches facing a fire pit on a round paved plaza, with street food in the
+        // left, right and back corners (two hot dog carts and a live BBQ). The front corner stays open so
+        // nothing tall stands between the camera and the fire. Everything sits inside the bike lane
+        // that rings the block.
+        const c = { x: u + 56, y: v + 56 };
+        add('firepit', c.x - 5, c.y - 5, 10, 10, 2);
+        add('bench', c.x - 6, c.y - 15, 12, 3, 5, 1);
+        add('bench', c.x - 6, c.y + 12, 12, 3, 5, 0);
+        add('bench', c.x - 15, c.y - 6, 3, 12, 5, 2);
+        add('bench', c.x + 12, c.y - 6, 3, 12, 5, 3);
+        const flip = hash % 2;
+        add('cart', flip ? u + 31 : u + 68, flip ? v + 72 : v + 34, 12, 6, 7, (hash >> 1) % 3 + 4); // +4: has a customer.
+        add('grill', flip ? u + 70 : u + 33, flip ? v + 34 : v + 72, 10, 6, 8);
+        add('cart', u + 34, v + 32, 12, 6, 7, (hash >> 2) % 3);
         continue;
       }
       const variant = [0, 1, 2, 3, 7, 8, 9, 10, 0, 3][hash % 10];
@@ -273,7 +290,7 @@ function clearOfPaths(scenery: Scenery[], traffic: Traffic) {
     }
   }
   // Clearance from a path's centre line: the figure's drawn half-width (~5) plus the object's own reach.
-  const reach: Partial<Record<Scenery['kind'], number>> = { tree: 19, lamp: 7, bench: 7, dock: 8, shelter: 8, goal: 7, hoop: 7 };
+  const reach: Partial<Record<Scenery['kind'], number>> = { tree: 19, lamp: 7, bench: 7, dock: 8, shelter: 8, goal: 7, hoop: 7, firepit: 7, cart: 7, grill: 7 };
   return scenery.filter(o => {
     const r = reach[o.kind];
     if (r === undefined) return true;
@@ -309,6 +326,10 @@ function box(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, d: 
 }
 function ellipse(ctx: CanvasRenderingContext2D, p: Point, rx: number, ry: number, color: string) {
   ctx.beginPath(); ctx.ellipse(p.x, p.y, rx, ry, 0, 0, Math.PI * 2); ctx.fillStyle = color; ctx.fill();
+}
+/** A horizontal disc of world radius `r` (a circle on the ground seen in projection). */
+function disc(ctx: CanvasRenderingContext2D, c: Point, r: number, color: string, z = 0) {
+  ellipse(ctx, project(c, z), r * 1.27, r * .68, color);
 }
 function roof(ctx: CanvasRenderingContext2D, o: Scenery) {
   const { x, y, width: w, depth: d, height: h } = o;
@@ -541,9 +562,112 @@ function drawScenery(ctx: CanvasRenderingContext2D, o: Scenery) {
   } else if (o.kind === 'canopy') {
     for (const v of [y + 2]) for (const u of [x + 2, x + w - 2]) line(ctx, project({ x: u, y: v }, 3), project({ x: u, y: v }, h), '#6d7f78', 1.3);
     box(ctx, x - 1, y, w + 2, d, 2, GO_GREEN, h);
+  } else if (o.kind === 'firepit') {
+    // Ring of stones round a bed of ash and crossed logs; the flames are drawn live.
+    const c = { x: x + w / 2, y: y + d / 2 };
+    const stones = Array.from({ length: 12 }, (_, i) => i * Math.PI / 6).sort((a, b) => Math.sin(a) + Math.cos(a) - Math.sin(b) - Math.cos(b));
+    const stone = (a: number) => box(ctx, c.x + Math.cos(a) * 4.4 - 1, c.y + Math.sin(a) * 4.4 - 1, 2, 2, h, ['#c9c3b3', '#a29d90', '#86827a']);
+    stones.filter(a => Math.sin(a) + Math.cos(a) < 0).forEach(stone);
+    disc(ctx, c, 3.6, '#4b4440', .4);
+    line(ctx, project({ x: c.x - 2.6, y: c.y - 1.4 }, 1), project({ x: c.x + 2.6, y: c.y + 1.4 }, 1), '#7a5236', 1.4);
+    line(ctx, project({ x: c.x - 1.4, y: c.y + 2.6 }, 1), project({ x: c.x + 1.4, y: c.y - 2.6 }, 1), '#8d603e', 1.4);
+    stones.filter(a => Math.sin(a) + Math.cos(a) >= 0).forEach(stone);
+  } else if (o.kind === 'cart') {
+    // Hot dog cart: a steel box on two wheels with a striped umbrella; vendor and steam are drawn live.
+    const steel = ['#f4f4ee', '#d9dcd4', '#b8bdb5'];
+    box(ctx, x, y, w, d, h - 1, steel, 1);
+    const band = (z0: number, z1: number, color: string) => {
+      polygon(ctx, [project({ x, y: y + d + .1 }, z0), project({ x: x + w, y: y + d + .1 }, z0), project({ x: x + w, y: y + d + .1 }, z1), project({ x, y: y + d + .1 }, z1)], color);
+      polygon(ctx, [project({ x: x + w + .1, y }, z0), project({ x: x + w + .1, y: y + d }, z0), project({ x: x + w + .1, y: y + d }, z1), project({ x: x + w + .1, y }, z1)], color);
+    };
+    band(3, 4.6, '#d9473b');
+    band(4.6, 5.4, '#f2c133');
+    for (const u of [x + 2.5, x + w - 2.5]) ellipse(ctx, project({ x: u, y: y + d + .4 }, 1.3), 1.5, 1.6, '#3a4446');
+    box(ctx, x + 2, y + 1.5, 1.2, 1.2, 2.6, ['#e2463a', '#c23a30', '#a3312a'], h); // Ketchup
+    box(ctx, x + 4, y + 1.5, 1.2, 1.2, 2.6, ['#f6cf38', '#e0b52a', '#c39b22'], h); // Mustard
+    plane(ctx, x + 6.5, y + 1, 4, 4, '#c9cdc5', h + .1); // Steam well lid
+    const top = { x: x + w / 2, y: y + d / 2 };
+    line(ctx, project(top, h), project(top, 22), '#7c8580', 1);
+    const palette = [['#e2483b', '#f6c43a'], ['#e2483b', '#f6f1e2'], ['#2f7fc1', '#f6c43a']][o.variant % 3];
+    const apex = project(top, 24.5);
+    const rim = Array.from({ length: 10 }, (_, i) => ({ a: i * Math.PI / 5, p: project({ x: top.x + Math.cos(i * Math.PI / 5) * 9, y: top.y + Math.sin(i * Math.PI / 5) * 9 }, 21) }));
+    // Panels back to front, so the near ones overlap the far ones.
+    rim.map((r, i) => ({ i, a: r.p, b: rim[(i + 1) % rim.length].p, depth: Math.sin(r.a + Math.PI / 10) + Math.cos(r.a + Math.PI / 10) }))
+      .sort((m, n) => m.depth - n.depth)
+      .forEach(({ i, a, b }) => polygon(ctx, [apex, a, b], palette[i % 2], '#00000018'));
+  } else if (o.kind === 'grill') {
+    // Live BBQ: a charcoal grill on legs with its lid propped open and a wooden side shelf; the glow,
+    // flames and smoke are drawn live.
+    for (const [u, v] of [[x + 1, y + 1], [x + w - 1, y + 1], [x + 1, y + d - 1], [x + w - 1, y + d - 1]]) line(ctx, project({ x: u, y: v }), project({ x: u, y: v }, 5), '#3b3d3c', 1);
+    polygon(ctx, [project({ x, y }, 8), project({ x: x + w, y }, 8), project({ x: x + w, y: y - 1.5 }, 15), project({ x, y: y - 1.5 }, 15)], '#333536', '#1f2121');
+    box(ctx, x, y, w, d, 3.5, ['#2b2d2e', '#3d4040', '#2c2f30'], 4.5);
+    box(ctx, x + w, y + 1, 5, d - 2, 1, ['#d1a46c', '#a87e4c', '#8d6a40'], 6.5);
+    box(ctx, x + w + 1, y + 1.8, 1.4, 1.4, 2.2, ['#b3463a', '#923a30', '#7a3029'], 7.5); // Sauce
+  } else if (o.kind === 'bench') {
+    // Seat plus a backrest on the side given by `variant`: +y, -y, -x or +x.
+    const colors = ['#b69b76', '#977f60', '#6f7560'];
+    const back = [[x, y + d, w, 1.5], [x, y - 1.5, w, 1.5], [x - 1.5, y, 1.5, d], [x + w, y, 1.5, d]][o.variant % 4];
+    const backrest = () => box(ctx, back[0], back[1], back[2], back[3], 4, colors, h);
+    if (o.variant === 1 || o.variant === 2) backrest();
+    box(ctx, x, y, w, d, h, colors);
+    if (o.variant === 0 || o.variant === 3) backrest();
   } else {
     box(ctx, x, y, w, d, h, ['#b69b76', '#977f60', '#6f7560']);
-    box(ctx, x, y + d, w, 1.5, 4, ['#b69b76', '#977f60', '#6f7560'], h);
+  }
+}
+
+/** Rising puffs of smoke or steam from `p` (screen point), each fading as it climbs and drifts. */
+function puffs(ctx: CanvasRenderingContext2D, p: Point, seconds: number, count: number, rise: number, size: number, rgb: string, alpha: number, rate = .2) {
+  for (let i = 0; i < count; i++) {
+    const t = (seconds * rate + i / count) % 1;
+    const a = alpha * (1 - t) * Math.min(1, t * 6);
+    ellipse(ctx, { x: p.x + t * rise * .35 + Math.sin(t * 7 + i) * 1.2, y: p.y - t * rise }, size * (.5 + t), size * (.45 + t * .9), `rgba(${rgb},${a.toFixed(3)})`);
+  }
+}
+/** Flickering tongues of flame standing on screen point `b`. */
+function flames(ctx: CanvasRenderingContext2D, b: Point, seconds: number, scale: number, seed: number) {
+  for (let j = 0; j < 3; j++) {
+    const dx = (j - 1) * 1.7 * scale;
+    const height = (6.5 + Math.sin(seconds * 5.3 + j * 2.1 + seed) * 1.5 + Math.sin(seconds * 12.7 + j + seed) * .7) * scale * (j === 1 ? 1.2 : .85);
+    const sway = Math.sin(seconds * 3.1 + j + seed) * .8 * scale;
+    const tongue = (k: number, color: string) => polygon(ctx, [
+      { x: b.x + dx - 2.1 * scale * k, y: b.y }, { x: b.x + dx - .9 * scale * k + sway * .5, y: b.y - height * k * .55 },
+      { x: b.x + dx + sway, y: b.y - height * k }, { x: b.x + dx + .9 * scale * k + sway * .5, y: b.y - height * k * .5 },
+      { x: b.x + dx + 2.1 * scale * k, y: b.y },
+    ], color);
+    tongue(1, '#f4772a');
+    tongue(.62, '#ffc341');
+    tongue(.3, '#fff2b0');
+  }
+}
+/** Live parts of the hangout squares: fire, sparks, grill glow, smoke, steam and the people at the stalls. */
+function drawHangout(ctx: CanvasRenderingContext2D, o: Scenery, seconds: number) {
+  const c = { x: o.x + o.width / 2, y: o.y + o.depth / 2 };
+  if (o.kind === 'firepit') {
+    const glow = project(c, .5), flicker = .85 + Math.sin(seconds * 7.3) * .08 + Math.sin(seconds * 13.1) * .05;
+    const g = ctx.createRadialGradient(glow.x, glow.y, 1, glow.x, glow.y, 22);
+    g.addColorStop(0, `rgba(255,170,64,${(.42 * flicker).toFixed(3)})`); g.addColorStop(1, 'rgba(255,170,64,0)');
+    ctx.save(); ctx.translate(glow.x, glow.y); ctx.scale(1, .54); ctx.translate(-glow.x, -glow.y);
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(glow.x, glow.y, 22, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+    const base = project(c, 1.2);
+    flames(ctx, base, seconds, 1, c.x);
+    for (let j = 0; j < 4; j++) {
+      const t = (seconds * .55 + j / 4) % 1;
+      ellipse(ctx, { x: base.x + Math.sin(t * 9 + j * 2) * 2.5, y: base.y - 7 - t * 16 }, .55, .55, `rgba(255,214,110,${(1 - t).toFixed(3)})`);
+    }
+    puffs(ctx, { x: base.x, y: base.y - 11 }, seconds, 4, 30, 2.2, '128,128,124', .3, .16);
+  } else if (o.kind === 'grill') {
+    // Glowing coals under the grate, burgers and corn cobs, and a column of smoke.
+    const flicker = .75 + Math.sin(seconds * 6.1 + c.x) * .15 + Math.sin(seconds * 15.3) * .1;
+    plane(ctx, o.x + .6, o.y + .6, o.width - 1.2, o.depth - 1.2, `rgba(255,${Math.round(120 + flicker * 50)},40,${flicker.toFixed(3)})`, 8.05);
+    for (let u = 1.5; u < o.width; u += 1.5) line(ctx, project({ x: o.x + u, y: o.y + .6 }, 8.1), project({ x: o.x + u, y: o.y + o.depth - .6 }, 8.1), '#2a2a2a', .45);
+    [[2.5, 2], [5, 4.2], [7.5, 2]].forEach(([u, v]) => disc(ctx, { x: o.x + u, y: o.y + v }, 1.1, '#6b3b24', 8.4));
+    line(ctx, project({ x: o.x + 2, y: o.y + 4.3 }, 8.5), project({ x: o.x + 3.6, y: o.y + 4.3 }, 8.5), '#f2c544', 1.3);
+    flames(ctx, project({ x: c.x - 2, y: c.y }, 8.2), seconds, .32, c.y);
+    flames(ctx, project({ x: c.x + 3, y: c.y + 1 }, 8.2), seconds + 1.7, .28, c.x);
+    puffs(ctx, project(c, 10), seconds, 6, 40, 2.6, '214,210,200', .42, .22);
+  } else {
+    puffs(ctx, project({ x: o.x + 8.5, y: o.y + 3 }, o.height + .5), seconds, 3, 12, 1.4, '255,255,255', .5, .3);
   }
 }
 
@@ -671,6 +795,13 @@ export function drawMobilityMap(ctx: CanvasRenderingContext2D, scene: MobilitySc
     line(ctx, project({ x: u + 76, y: v + PLATFORM.top }, 3), project({ x: u + 76, y: v + PLATFORM.bottom }, 3), '#d4b75d', 2);
   }
   for (const field of scene.facilities) drawFacility(ctx, field);
+  // Hangout squares: a round paved plaza under the fire pit and its benches, and a pad under each stall.
+  for (const o of scene.scenery) {
+    if (o.kind === 'firepit') {
+      const c = { x: o.x + o.width / 2, y: o.y + o.depth / 2 };
+      disc(ctx, c, 21, '#d9cfb2'); disc(ctx, c, 20, '#e8e1c8'); disc(ctx, c, 8, '#ddd3b8');
+    } else if (o.kind === 'cart' || o.kind === 'grill') plane(ctx, o.x - 3, o.y - 6, o.width + (o.kind === 'grill' ? 9 : 6), o.depth + 12, '#e8e1c8');
+  }
   // Directional afternoon shadows are part of the static layer.
   for (const o of scene.scenery) {
     const p = project(o);
@@ -1059,6 +1190,18 @@ export function drawMobilityFlow(ctx: CanvasRenderingContext2D, scene: MobilityS
       depth: o.x + o.y + (o.width + o.depth) / 2,
       draw: sprite ? () => ctx.drawImage(sprite.image, sprite.x, sprite.y, sprite.width, sprite.height) : () => drawScenery(ctx, o),
     });
+    if (o.kind !== 'firepit' && o.kind !== 'cart' && o.kind !== 'grill') continue;
+    const depth = o.x + o.y + (o.width + o.depth) / 2;
+    entities.push({ depth: depth + .5, draw: () => drawHangout(ctx, o, seconds) });
+    if (o.kind === 'firepit') continue;
+    // The vendor or cook works from behind the stall; some stalls have a customer waiting in front.
+    const mid = o.x + o.width / 2, sway = Math.sin(seconds * .9 + o.x) * .35;
+    const vendor = { x: mid, y: o.y - 3 };
+    entities.push({ depth: vendor.x + vendor.y, draw: () => drawPerson(ctx, vendor, sway, o.kind === 'grill' ? '#f4f1e8' : '#d9473b') });
+    if (o.kind === 'grill' || o.variant >= 4) {
+      const customer = { x: mid + 1, y: o.y + o.depth + 5 };
+      entities.push({ depth: customer.x + customer.y, draw: () => drawPerson(ctx, customer, -sway, ['#597dac', '#8d73ae', '#4f9a7c'][Math.abs(Math.round(o.x + o.y)) % 3]) });
+    }
   }
   for (const field of scene.facilities) {
     const cx = field.x + field.width / 2, cy = field.y + field.depth / 2;

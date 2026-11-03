@@ -473,29 +473,11 @@
     "width": 1260,
     "height": 920
   },
-  "/assets/mainPage/ride-arcs-barrie-poster.webp": {
-    "src": "/assets/optimized/assets-mainpage-ride-arcs-barrie-poster-720.webp",
-    "srcSet": "/assets/optimized/assets-mainpage-ride-arcs-barrie-poster-240.webp 240w, /assets/optimized/assets-mainpage-ride-arcs-barrie-poster-480.webp 480w, /assets/optimized/assets-mainpage-ride-arcs-barrie-poster-720.webp 720w",
-    "width": 720,
-    "height": 406
-  },
-  "/assets/mainPage/ride-arcs-brampton-poster.webp": {
-    "src": "/assets/optimized/assets-mainpage-ride-arcs-brampton-poster-720.webp",
-    "srcSet": "/assets/optimized/assets-mainpage-ride-arcs-brampton-poster-240.webp 240w, /assets/optimized/assets-mainpage-ride-arcs-brampton-poster-480.webp 480w, /assets/optimized/assets-mainpage-ride-arcs-brampton-poster-720.webp 720w",
-    "width": 720,
-    "height": 406
-  },
-  "/assets/mainPage/ride-arcs-burlington-poster.webp": {
-    "src": "/assets/optimized/assets-mainpage-ride-arcs-burlington-poster-720.webp",
-    "srcSet": "/assets/optimized/assets-mainpage-ride-arcs-burlington-poster-240.webp 240w, /assets/optimized/assets-mainpage-ride-arcs-burlington-poster-480.webp 480w, /assets/optimized/assets-mainpage-ride-arcs-burlington-poster-720.webp 720w",
-    "width": 720,
-    "height": 406
-  },
-  "/assets/mainPage/ride-arcs-markham-poster.webp": {
-    "src": "/assets/optimized/assets-mainpage-ride-arcs-markham-poster-720.webp",
-    "srcSet": "/assets/optimized/assets-mainpage-ride-arcs-markham-poster-240.webp 240w, /assets/optimized/assets-mainpage-ride-arcs-markham-poster-480.webp 480w, /assets/optimized/assets-mainpage-ride-arcs-markham-poster-720.webp 720w",
-    "width": 720,
-    "height": 406
+  "/assets/mainPage/ride-trips-poster.webp": {
+    "src": "/assets/optimized/assets-mainpage-ride-trips-poster-1280.webp",
+    "srcSet": "/assets/optimized/assets-mainpage-ride-trips-poster-240.webp 240w, /assets/optimized/assets-mainpage-ride-trips-poster-480.webp 480w, /assets/optimized/assets-mainpage-ride-trips-poster-960.webp 960w, /assets/optimized/assets-mainpage-ride-trips-poster-1280.webp 1280w",
+    "width": 1280,
+    "height": 720
   },
   "/assets/partners-transparent/barrie.png": {
     "src": "/assets/optimized/assets-partners-transparent-barrie-381.webp",

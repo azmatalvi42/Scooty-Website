@@ -11,7 +11,7 @@ import type { ReactNode } from 'react';
  */
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-const SLIDE: Transition = { duration: 0.7, ease: EASE };
+const SLIDE: Transition = { duration: 0.38, ease: EASE };
 const INSTANT = { duration: 0 } as const;
 const REVEAL = [0.16, 1, 0.3, 1] as const;
 
@@ -238,47 +238,87 @@ export function EditorialCarousel<T>({
     };
   }, []);
 
-  // Trackpad swipes: one slide per gesture, ignoring its trailing momentum.
+  const dragX = useMotionValue(0);
+  const layoutRef = useRef(layout);
+  layoutRef.current = layout;
+  const reduceRef = useRef(reduceMotion);
+  reduceRef.current = reduceMotion;
+
+  // Two-finger swipes follow the fingers and change slide the moment the gesture is clear.
+  // The trackpad's leftover coast is ignored, so the slide does not wait for it to die down.
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage || total < 2) return;
-    let travel = 0;
-    let locked = false;
-    let settle = 0;
-    const onWheel = (event: WheelEvent) => {
-      if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
-      event.preventDefault();
-      window.clearTimeout(settle);
-      settle = window.setTimeout(() => {
-        travel = 0;
-        locked = false;
-      }, 200);
-      if (locked) return;
-      travel += event.deltaX;
-      if (Math.abs(travel) > 60) {
-        locked = true;
-        go(Math.sign(travel));
-      }
+    let accum = 0;
+    let axis: 'idle' | 'x' | 'y' = 'idle';
+    let committed = false;
+    let idle = 0;
+    let last = 0;
+
+    const pixels = (delta: number, mode: number, page: number) =>
+      mode === 1 ? delta * 16 : mode === 2 ? delta * page : delta;
+
+    const settle = () => {
+      const width = layoutRef.current?.activeW ?? 480;
+      const distance = accum;
+      const already = committed;
+      accum = 0;
+      axis = 'idle';
+      committed = false;
+      if (already) return;
+      if (Math.abs(distance) > Math.min(36, width * 0.06)) go(Math.sign(distance));
+      animate(dragX, 0, { duration: reduceRef.current ? 0 : SLIDE.duration, ease: [...EASE] });
     };
+
+    const commit = (direction: number) => {
+      committed = true;
+      go(direction);
+      animate(dragX, 0, { duration: reduceRef.current ? 0 : SLIDE.duration, ease: [...EASE] });
+    };
+
+    const onWheel = (event: WheelEvent) => {
+      const now = performance.now();
+      const dx = pixels(event.deltaX, event.deltaMode, window.innerWidth);
+      const dy = pixels(event.deltaY, event.deltaMode, window.innerHeight);
+      if (committed) {
+        event.preventDefault();
+        window.clearTimeout(idle);
+        idle = window.setTimeout(settle, 140);
+        return;
+      }
+      if (axis === 'idle' || now - last > 140) {
+        accum = axis === 'idle' ? accum : 0;
+        axis = Math.abs(dx) + 4 >= Math.abs(dy) ? 'x' : 'y';
+      }
+      last = now;
+      window.clearTimeout(idle);
+      idle = window.setTimeout(settle, 50);
+      if (axis === 'y' && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 6) axis = 'x';
+      if (axis === 'y') return;
+      event.preventDefault();
+      accum += dx;
+      const width = layoutRef.current?.activeW ?? 480;
+      dragX.set(clamp(-accum, -width * 0.22, width * 0.22));
+      if (Math.abs(dx) > 24 || Math.abs(accum) > Math.min(28, width * 0.05)) commit(Math.sign(accum || dx));
+    };
+
     stage.addEventListener('wheel', onWheel, { passive: false });
     return () => {
       stage.removeEventListener('wheel', onWheel);
-      window.clearTimeout(settle);
+      window.clearTimeout(idle);
     };
-  }, [go, total]);
-
-  const dragX = useMotionValue(0);
+  }, [dragX, go, total]);
   // Set once a press turns into a drag, so releasing it doesn't also count as a click.
   const dragged = useRef(false);
 
   const onPan = (_: PointerEvent, info: PanInfo) => dragX.set(info.offset.x);
 
   const onPanEnd = (_: PointerEvent, info: PanInfo) => {
-    const flick = Math.abs(info.velocity.x) > 500 ? Math.sign(info.velocity.x) : 0;
-    const threshold = Math.min(140, (layout?.activeW ?? 0) * 0.2);
+    const flick = Math.abs(info.velocity.x) > 280 ? Math.sign(info.velocity.x) : 0;
+    const threshold = Math.min(72, (layout?.activeW ?? 0) * 0.12);
     const pulled = Math.abs(info.offset.x) > threshold ? Math.sign(info.offset.x) : 0;
     go(-(flick || pulled));
-    animate(dragX, 0, { duration: reduceMotion ? 0 : 0.7, ease: [...EASE] });
+    animate(dragX, 0, { duration: reduceMotion ? 0 : SLIDE.duration, ease: [...EASE] });
   };
 
   const reach = total > 1 ? Math.floor(total / 2) + 1 : 0;
@@ -304,7 +344,7 @@ export function EditorialCarousel<T>({
       {/* Full bleed, so neighbouring cards are cropped by the viewport edge */}
       <div
         ref={stageRef}
-        className="relative mx-auto max-w-[1920px] overflow-x-clip min-[1921px]:[mask-image:linear-gradient(90deg,transparent,#000_6%,#000_94%,transparent)]"
+        className="relative mx-auto max-w-[1920px] overflow-x-clip overscroll-x-contain min-[1921px]:[mask-image:linear-gradient(90deg,transparent,#000_6%,#000_94%,transparent)]"
         style={{ height: layout ? layout.activeH : undefined }}
       >
         {context && (

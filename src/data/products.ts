@@ -31,20 +31,4 @@ export const products = [
     steps: ['Start with your destination and a question about your trip.', 'Explore routes and relevant service information.', 'Get guidance as your travel plans change.'],
     cta: 'Explore partnership opportunities', href: '/partners',
   },
-  {
-    slug: 'patchforce', tag: 'Patchforce', title: 'Patchforce',
-    headline: 'From a resident’s photo to a documented repair.',
-    sectionTitle: 'A clear path from report to repair.', workflowTitle: 'See it. Route it. Repair it.',
-    description: 'AI-native reporting and operations for municipal public works. Turn a resident’s photo into a ranked, routed and fully documented repair.',
-    image: '/assets/illustrations/patchforce.svg',
-    alt: 'Patchforce workflow showing a resident photo becoming a ranked, routed and documented repair', position: 'center', accent: '#A9C8A0', backdrop: '#172720',
-    introduction: 'Connect what residents see with the work that needs to happen. Patchforce brings reporting, prioritization, routing and repair documentation into one public-works workflow.',
-    features: [
-      { title: 'Start with a photo', text: 'A resident’s photo becomes the starting point for a public-works report.' },
-      { title: 'Rank and route the work', text: 'Turn reports into ranked repairs and route the work to the team that needs to act.' },
-      { title: 'Document the repair', text: 'Keep the repair fully documented, connecting the original report to the work carried out.' },
-    ],
-    steps: ['A resident captures an issue in a photo.', 'The repair is ranked and routed for action.', 'The work becomes a fully documented repair.'],
-    cta: 'Explore municipal partnerships', href: '/partners',
-  },
 ];

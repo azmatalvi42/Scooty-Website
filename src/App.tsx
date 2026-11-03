@@ -23,7 +23,6 @@ import { RidersPage } from './pages/RidersPage';
 import { RiderDetailPage } from './pages/RiderDetailPage';
 import { PartnersPage } from './pages/PartnersPage';
 import { ProductPage } from './pages/ProductPage';
-import { TechnologyPage } from './pages/TechnologyPage';
 import { CityPage } from './pages/CityPage';
 import { AboutPage } from './pages/AboutPage';
 import { RideLogPage } from './pages/RideLogPage';
@@ -55,7 +54,6 @@ function App() {
               <Route path="/partners" element={<PartnersPage />} />
               <Route path="/partners/:city" element={<CityPage />} />
               <Route path="/products/:productSlug" element={<ProductPage />} />
-              <Route path="/technology" element={<TechnologyPage />} />
               <Route path="/blog" element={<RideLogPage />} />
               <Route path="/blog/:slug" element={<BlogPostPage />} />
               <Route path="/about" element={<AboutPage />} />

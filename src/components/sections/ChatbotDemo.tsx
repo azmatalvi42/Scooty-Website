@@ -22,12 +22,7 @@ const perks = [
   },
 ];
 
-const rideMaps = [
-  { base: '/assets/mainPage/ride-arcs-markham', alt: 'Animated map of SCOOTY ride arcs across Downtown Markham' },
-  { base: '/assets/mainPage/ride-arcs-burlington', alt: 'Animated map of SCOOTY ride arcs along the Burlington Centennial Trail' },
-  { base: '/assets/mainPage/ride-arcs-barrie', alt: 'Animated map of SCOOTY ride arcs on the Barrie waterfront' },
-  { base: '/assets/mainPage/ride-arcs-brampton', alt: 'Animated map of SCOOTY ride arcs across Brampton' },
-];
+const rideMap = { base: '/assets/mainPage/ride-trips', alt: 'Animated map of SCOOTY trips arcing across the city' };
 
 const EASING: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -140,15 +135,10 @@ export const ChatbotDemo = () => {
             transition={{ duration: 0.65, delay: 0.12, ease: EASING }}
             className="relative flex justify-center"
           >
-            {/* Looping videos encoded from the "<City> Ride Arcs.gif" originals at twice tile width (same
-                frames, about 1% of the GIFs' weight); they play only while on screen. */}
-            <div className="grid w-full grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-              {rideMaps.map((map) => (
-                // Small radius so the corner doesn't clip the city label baked into each map.
-                <div key={map.base} className="overflow-hidden rounded-[10px] bg-[#0a0a0a] ring-1 ring-black/5 dark:ring-white/10">
-                  <LoopVideo base={map.base} label={map.alt} width={720} height={405} className="block w-full h-auto aspect-video" />
-                </div>
-              ))}
+            {/* Looping video graded from "Brampton Ride Arcs.gif" (city labels removed, seamless loop);
+                it plays only while on screen. See media-originals/README.md. */}
+            <div className="w-full overflow-hidden rounded-2xl bg-[#0a0a0a] ring-1 ring-black/5 dark:ring-white/10">
+              <LoopVideo base={rideMap.base} label={rideMap.alt} width={1280} height={720} className="block w-full h-auto aspect-video" />
             </div>
           </motion.div>
 

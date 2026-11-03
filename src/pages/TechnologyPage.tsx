@@ -3,22 +3,18 @@ import { useInView } from 'react-intersection-observer';
 import { useRef } from 'react';
 import {
   ArrowRight,
-  MapPin,
   Bot,
   Bus,
   Navigation,
   Zap,
   Route,
-  ShieldCheck,
   Radio,
-  Layers,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { ParticleBackground } from '../components/ui/ParticleBackground';
 import { SiteImage } from '../components/ui/SiteImage';
 import { OnDemandDemo } from '../components/tech/OnDemandDemo';
-import { PatchforceDemo } from '../components/tech/PatchforceDemo';
 import { RideGuideDemo } from '../components/tech/RideGuideDemo';
 
 /* ── Reusable section wrapper ── */
@@ -64,26 +60,8 @@ const PRODUCTS: Product[] = [
     Visual: OnDemandDemo,
   },
   {
-    id: 'patchforce',
-    n: '02',
-    icon: Layers,
-    shortName: 'Patchforce',
-    tagline: 'From resident report to documented repair.',
-    titleTop: '',
-    titleAccent: 'Patchforce',
-    description:
-      'AI-native reporting and operations for municipal public works. A resident’s photo becomes a ranked, routed and fully documented repair.',
-    features: [
-      { icon: MapPin, label: 'Resident reports' },
-      { icon: Zap, label: 'Ranked & routed' },
-      { icon: ShieldCheck, label: 'Fully documented' },
-    ],
-    cta: { label: 'Learn More', href: '/products/patchforce' },
-    Visual: PatchforceDemo,
-  },
-  {
     id: 'rideguide',
-    n: '03',
+    n: '02',
     icon: Bot,
     shortName: 'AI RideGuide',
     tagline: 'Conversational, real-time transit intelligence.',
@@ -131,10 +109,10 @@ const ProductIndex = ({ products }: { products: Product[] }) => {
           className="text-center max-w-2xl mx-auto mb-14"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-white leading-tight">
-            Three products working as one
+            Two products working as one
           </h2>
           <p className="text-gray-400 mt-4 text-base sm:text-lg leading-relaxed">
-            On-demand mobility, AI-native public works, and AI transit intelligence — built to move
+            On-demand mobility and AI transit intelligence — built to move
             people the entire way, not just part of it.
           </p>
         </motion.div>
@@ -281,29 +259,7 @@ export const TechnologyPage = () => {
             loading="eager"
           />
         </motion.div>
-        {/* Cinematic overlay stack — darken, vignette, brand wash, bottom fade to black.
-           The photo is a bright golden-hour scene, so the centre carries an extra
-           scrim to keep the headline legible over the sun flare. */}
-        <div className="absolute inset-0 bg-black/45" />
-        <div
-          className="absolute inset-0"
-          style={{ background: 'radial-gradient(75% 70% at 50% 52%, rgba(0,0,0,0.55) 0%, transparent 70%)' }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{ background: 'radial-gradient(120% 90% at 50% 25%, transparent 35%, rgba(0,0,0,0.6) 100%)' }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black" />
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/60 to-transparent" />
-        <div className="absolute bottom-0 left-0 w-2/3 h-2/3 bg-primary-500/[0.06] blur-[120px] rounded-full pointer-events-none" />
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(254,192,1,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(254,192,1,0.6) 1px, transparent 1px)',
-            backgroundSize: '60px 60px',
-          }}
-        />
+        <div className="absolute inset-0 bg-black/35" />
 
         <motion.div
           style={{ opacity: heroOpacity }}
@@ -326,7 +282,7 @@ export const TechnologyPage = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed mb-7 [filter:drop-shadow(0_1px_8px_rgba(0,0,0,0.8))]"
           >
-            Three products. One platform. Connecting communities through on-demand mobility, AI-native public works, and AI-powered transit intelligence.
+            Two products. One platform. Connecting communities through on-demand mobility and AI-powered transit intelligence.
           </motion.p>
 
           <motion.div
@@ -407,7 +363,7 @@ export const TechnologyPage = () => {
               Ready to Transform Transit?
             </h2>
             <p className="text-black/60 text-xl mb-10 max-w-xl mx-auto">
-              Partner with SCOOTY to bring on-demand mobility, AI-native public works, and AI transit intelligence to your community.
+              Partner with SCOOTY to bring on-demand mobility and AI transit intelligence to your community.
             </p>
             <motion.button
               onClick={() => navigate('/partners')}

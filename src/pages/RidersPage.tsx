@@ -179,7 +179,7 @@ export const RidersPage = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-black">
       {/* Hero and tab navigation share the SCOOTY footage */}
-      <section className="relative overflow-hidden">
+      <section className="page-hero relative overflow-hidden">
         <RidersHeroVideo />
         {/* Keep the heading and navigation readable over changing footage. */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/75 pointer-events-none" />

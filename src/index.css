@@ -162,12 +162,14 @@ body { background: var(--editorial-page); background-image: var(--site-gradient)
 .editorial-shell :where(section) { scroll-margin-top: 140px; }
 .editorial-shell :where(.text-gray-500) { color: var(--editorial-muted); }
 .editorial-shell :where(.text-gray-900) { color: var(--editorial-ink); }
-/* Keep saturated yellow for surfaces; small yellow text needs stronger contrast on paper. */
-html:not(.dark) .editorial-shell :where(.text-primary-500, .text-primary-400, .text-\[\#FEC001\]):not(svg) {
-  color: #806000;
-}
 .editorial-shell main > section:not(#home),
 .editorial-shell main > div { background: transparent; }
+/* Light mode: page bands use the same cream/yellow surface as the home page.
+   Cards, chips, and intentional dark media sections keep their own fills. */
+html:not(.dark) .editorial-shell main section.bg-white,
+html:not(.dark) .editorial-shell main section.bg-gray-50 {
+  background-color: transparent;
+}
 .editorial-shell :is(#services, #riders, #about) > .pointer-events-none,
 .editorial-shell :is(#services, #riders, #about) [aria-hidden][class*="-z-10"],
 .editorial-shell #impact .blur-2xl { opacity: 0; }
@@ -264,6 +266,16 @@ html:not(.dark) .editorial-shell :where(.text-primary-500, .text-primary-400, .t
 @keyframes partners-marquee { to { transform: translate3d(-50%, 0, 0); } }
 @media (prefers-reduced-motion: reduce) { .partners-marquee-track { animation: none; } }
 
+/* Photo heroes on riders, partners, about, city, and blog posts share one height. */
+.page-hero {
+  height: clamp(520px, 68vh, 720px);
+}
+.page-hero > .relative.z-10 {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 /* Existing route heroes and media get the same framing without changing their content. */
 .editorial-shell main > div { border-radius: 32px; }
 .editorial-shell main > div > section:first-of-type {

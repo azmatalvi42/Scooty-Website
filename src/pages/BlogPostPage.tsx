@@ -114,7 +114,7 @@ export const BlogPostPage = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-black">
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden">
+      <section className="page-hero relative overflow-hidden">
         <div className="absolute inset-0">
           <SiteImage
             src={post.image}
@@ -127,7 +127,7 @@ export const BlogPostPage = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/40" />
         </div>
 
-        <div className="relative z-10 mx-auto flex min-h-[46vh] max-w-3xl flex-col justify-end px-4 pb-10 pt-28 sm:min-h-[52vh] sm:px-6 sm:pb-12 lg:px-8">
+        <div className="relative z-10 mx-auto flex h-full max-w-3xl flex-col justify-end px-4 pb-10 pt-28 sm:px-6 sm:pb-12 lg:px-8">
           <motion.div
             initial={reduce ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}

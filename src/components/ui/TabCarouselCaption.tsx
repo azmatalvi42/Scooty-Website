@@ -23,16 +23,15 @@ type SlideOverlayProps = {
  */
 export const SlideOverlay = ({ icon: Icon, eyebrow, title, description, details, stats = [], cta, active }: SlideOverlayProps) => (
   <div className={`absolute inset-0 transition-opacity duration-500 ${active ? 'opacity-100' : 'pointer-events-none opacity-0'}`} aria-hidden={!active}>
-    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 to-black/20 md:bg-gradient-to-r md:from-black/90 md:via-black/75 md:to-transparent" />
-    <div className="absolute inset-0 hidden bg-gradient-to-t from-black/40 to-transparent md:block" />
-    <div className="relative flex h-full flex-col justify-end gap-4 p-5 sm:p-8 md:w-[74%] xl:w-[62%] md:justify-center md:gap-5 lg:p-10 [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
+    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
+    <div className="absolute bottom-4 left-4 right-4 flex flex-col gap-3 sm:bottom-6 sm:left-6 sm:right-auto sm:w-[min(26rem,52%)] md:gap-4 [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_4px_16px_rgba(0,0,0,0.75)]">
       <div>
         <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#FEC001] text-black text-[10px] font-bold rounded-full mb-2.5 tracking-widest uppercase [text-shadow:none]">
           <Icon className="w-3 h-3" aria-hidden />
           {eyebrow}
         </span>
         <h3 className="font-bold font-display text-white leading-[1.1] tracking-tight text-2xl sm:text-3xl">{title}</h3>
-        <p className="mt-2 text-white/85 leading-relaxed text-[13px] sm:text-[15px]">{description}</p>
+        <p className="mt-2 text-white leading-relaxed text-[13px] sm:text-[15px]">{description}</p>
       </div>
       {details}
       {stats.length > 0 && (
