@@ -1,3 +1,4 @@
+import { useKeepTabInView } from '../hooks/useKeepTabInView';
 import { RiderCategorySlide } from '../components/ui/RiderCategoryImage';
 import { EditorialCarousel } from '../components/ui/EditorialCarousel';
 import { SlideOverlay, CaptionList, CAPTION_CTA } from '../components/ui/TabCarouselCaption';
@@ -168,6 +169,7 @@ const RiderTabDetails = ({ tab }: { tab: RiderTab }) => {
 
 export const RidersPage = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const tabStripRef = useKeepTabInView<HTMLDivElement>(activeTab);
 
   const goToTab = (index: number) => {
     setActiveTab(index);
@@ -258,7 +260,7 @@ export const RidersPage = () => {
             animate={heroInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.65 }}
           >
-            <div className="overflow-x-auto pb-1 flex justify-start sm:justify-center scrollbar-hide">
+            <div ref={tabStripRef} className="overflow-x-auto pb-1 flex justify-start sm:justify-center scrollbar-hide">
               <div className="inline-flex gap-2 bg-white dark:bg-white/10 backdrop-blur-md rounded-2xl p-2 border border-gray-200 dark:border-white/20 shadow-lg shrink-0">
                 {TABS.map((tab, index) => {
                   const isActive = index === activeTab;
@@ -296,7 +298,7 @@ export const RidersPage = () => {
           trackId="riders-track"
           renderSlide={(tab, active) => (
             <>
-              <RiderCategorySlide topic={tab.slug} active={active} />
+              <RiderCategorySlide topic={tab.slug} />
               <SlideOverlay
                 icon={tab.icon}
                 eyebrow={tab.subtitle}

@@ -83,15 +83,13 @@ export const Services = () => {
         revealed={inView}
         labelledBy="solutions-heading"
         trackId="solutions-track"
-        renderSlide={(solution, active) => (
+        renderSlide={(solution) => (
           <SiteImage
             src={solution.image}
             alt={solution.alt}
             draggable={false}
             // Illustrations are shown whole, letterboxed on their own backdrop colour.
-            className={`w-full h-full transition-[filter] duration-500 ${solution.image.endsWith('.svg') ? 'object-contain' : 'object-cover'} ${
-              active ? '' : 'saturate-[.75] group-hover/card:saturate-100'
-            }`}
+            className={`w-full h-full ${solution.image.endsWith('.svg') ? 'object-contain' : 'object-cover'}`}
             style={{ objectPosition: solution.position }}
           />
         )}

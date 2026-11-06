@@ -1,5 +1,6 @@
 import { SiteImage } from '../ui/SiteImage';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { PanInfo } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { ArrowRight, ChevronLeft, ChevronRight, Shield, Heart, Handshake, Quote, X, Plus } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
@@ -38,6 +39,8 @@ const coreValues = [
 
 const CAROUSEL_EASE: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
 const REVEAL_EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+// Cards past the first few start together, so the scroller's far end isn't left empty for a second.
+const revealDelay = (i: number) => 0.08 + Math.min(i, 4) * 0.09;
 
 // ── Text card style presets ──────────────────────────────────────────────────
 const textCardStyles = [
@@ -68,7 +71,7 @@ const QuoteTextCard = ({
     <motion.button
       initial={{ opacity: 0, y: 10 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.55, delay: 0.08 + i * 0.09, ease: REVEAL_EASE }}
+      transition={{ duration: 0.55, delay: revealDelay(i), ease: REVEAL_EASE }}
       onClick={onClick}
       className={`relative rounded-2xl p-5 sm:p-7 flex flex-col justify-between text-left cursor-pointer group h-full focus:outline-none focus-visible:ring-2 ${ringColor} ${s.bg} ${className}`}
       whileHover={{ y: -3 }}
@@ -97,18 +100,20 @@ const QuoteImageCard = ({
   i,
   inView,
   onClick,
+  sizes,
   className = '',
 }: {
   q: typeof governmentQuotes[0];
   i: number;
   inView: boolean;
   onClick: () => void;
+  sizes: string;
   className?: string;
 }) => (
   <motion.button
     initial={{ opacity: 0, scale: 0.98 }}
     animate={inView ? { opacity: 1, scale: 1 } : {}}
-    transition={{ duration: 0.6, delay: 0.08 + i * 0.09, ease: REVEAL_EASE }}
+    transition={{ duration: 0.6, delay: revealDelay(i), ease: REVEAL_EASE }}
     onClick={onClick}
     className={`relative rounded-2xl overflow-hidden group cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FEC001] focus-visible:ring-offset-2 focus-visible:ring-offset-black h-full w-full ${className}`}
     whileHover={{ y: -3 }}
@@ -119,6 +124,8 @@ const QuoteImageCard = ({
       alt={q.name}
       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
       style={{ objectPosition: q.imagePosition }}
+      sizes={sizes}
+      draggable={false}
       loading="lazy"
       decoding="async"
     />
@@ -146,13 +153,37 @@ const QuotesScroller = ({
   onSelect: (idx: number) => void;
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const dragStart = useRef<number | null>(null);
+  const dragged = useRef(false);
+
+  // Touch and trackpads scroll natively; a mouse has no way to scroll sideways, so it drags instead.
+  const onPan = (event: PointerEvent, info: PanInfo) => {
+    const scroller = scrollRef.current;
+    if (!scroller || event.pointerType !== 'mouse') return;
+    dragged.current = true;
+    if (dragStart.current === null) dragStart.current = scroller.scrollLeft;
+    scroller.scrollLeft = dragStart.current - info.offset.x;
+  };
 
   return (
     <div className="relative">
-      <div
+      <motion.div
         ref={scrollRef}
-        className="overflow-x-auto scrollbar-hide pb-4 scroll-smooth overscroll-x-contain overscroll-y-auto"
+        className="overflow-x-auto scrollbar-hide pb-4 overscroll-x-contain overscroll-y-auto select-none cursor-grab active:cursor-grabbing"
         style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y pan-x' }}
+        onPointerDownCapture={() => {
+          dragged.current = false;
+        }}
+        onPan={onPan}
+        onPanEnd={() => {
+          dragStart.current = null;
+        }}
+        onClickCapture={(event) => {
+          if (!dragged.current) return;
+          event.preventDefault();
+          event.stopPropagation();
+          dragged.current = false;
+        }}
       >
         <div
           className="grid gap-3.5 px-4 sm:px-6 lg:px-8"
@@ -175,6 +206,7 @@ const QuotesScroller = ({
                     q={q} i={i}
                     inView={inView}
                     onClick={() => onSelect(i)}
+                    sizes="800px"
                     className="w-full h-full"
                   />
                 </div>
@@ -186,6 +218,7 @@ const QuotesScroller = ({
                   key={i} q={q} i={i}
                   inView={inView}
                   onClick={() => onSelect(i)}
+                  sizes="400px"
                   className="w-full h-full"
                 />
               );
@@ -201,7 +234,7 @@ const QuotesScroller = ({
             );
           })}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

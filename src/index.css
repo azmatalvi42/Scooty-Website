@@ -266,6 +266,12 @@ html:not(.dark) .editorial-shell main section.bg-gray-50 {
 @keyframes partners-marquee { to { transform: translate3d(-50%, 0, 0); } }
 @media (prefers-reduced-motion: reduce) { .partners-marquee-track { animation: none; } }
 
+.cta-orb--large { animation: cta-orb-large 8s ease-in-out infinite; }
+.cta-orb--small { animation: cta-orb-small 10s ease-in-out infinite; }
+@keyframes cta-orb-large { 50% { transform: scale(1.2); } }
+@keyframes cta-orb-small { 50% { transform: scale(1.15); } }
+@media (prefers-reduced-motion: reduce) { .cta-orb { animation: none; } }
+
 /* Photo heroes on riders, partners, about, city, and blog posts share one height. */
 .page-hero {
   height: clamp(520px, 68vh, 720px);

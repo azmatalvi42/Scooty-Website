@@ -53,10 +53,10 @@ export function RiderCategoryImage({ topic, eager = false }: { topic: string; ea
 const SCOOTERS = { src: '/assets/Cities/Burlington/burlington-scooters.png', alt: 'SCOOTY electric scooters with wide decks and handlebar displays', position: '50% 68%' };
 
 /** The topic's photo filling a Riders page carousel card; vehicles pairs the e-bikes with the e-scooters. */
-export function RiderCategorySlide({ topic, active }: { topic: string; active: boolean }) {
+export function RiderCategorySlide({ topic }: { topic: string }) {
   const visual = visuals[topic];
   if (!visual) return null;
-  const tone = `w-full h-full object-cover transition-[filter] duration-500 ${active ? '' : 'saturate-[.75] group-hover/card:saturate-100'}`;
+  const tone = 'w-full h-full object-cover';
   return (
     <div className={`w-full h-full ${topic === 'vehicles' ? 'grid grid-cols-2 gap-1' : ''}`}>
       <SiteImage src={visual.src} alt={visual.alt} draggable={false} className={tone} style={{ objectPosition: visual.widePosition ?? visual.position ?? 'center' }} sizes="(min-width: 768px) 62vw, 100vw" />

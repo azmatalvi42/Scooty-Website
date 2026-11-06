@@ -1,3 +1,4 @@
+import { useKeepTabInView } from '../hooks/useKeepTabInView';
 import { SiteImage } from '../components/ui/SiteImage';
 import { EditorialCarousel } from '../components/ui/EditorialCarousel';
 import { SlideOverlay, CaptionList } from '../components/ui/TabCarouselCaption';
@@ -344,6 +345,7 @@ const ProudPartnersMarquee = () => (
 
 export const PartnersPage = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const tabStripRef = useKeepTabInView<HTMLDivElement>(activeTab);
 
   const goToTab = (index: number) => {
     setActiveTab(index);
@@ -422,7 +424,7 @@ export const PartnersPage = () => {
             animate={heroInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.65 }}
           >
-            <div className="overflow-x-auto pb-1 flex justify-start sm:justify-center scrollbar-hide">
+            <div ref={tabStripRef} className="overflow-x-auto pb-1 flex justify-start sm:justify-center scrollbar-hide">
               <div className="inline-flex gap-2 bg-white dark:bg-white/10 backdrop-blur-md rounded-2xl p-2 border border-gray-200 dark:border-white/20 shadow-lg shrink-0">
                 {partnerSolutions.map((sol, index) => {
                   const isActive = index === activeTab;
@@ -465,7 +467,7 @@ export const PartnersPage = () => {
                 src={sol.image}
                 alt={sol.title}
                 draggable={false}
-                className={`w-full h-full object-cover transition-[filter] duration-500 ${active ? '' : 'saturate-[.75] group-hover/card:saturate-100'}`}
+                className="w-full h-full object-cover"
                 style={{ objectPosition: 'imagePosition' in sol ? sol.imagePosition : 'center' }}
                 sizes="(min-width: 768px) 62vw, 100vw"
               />
@@ -797,16 +799,8 @@ export const PartnersPage = () => {
             backgroundSize: '40px 40px',
           }}
         />
-        <motion.div
-          className="absolute top-10 left-10 w-60 h-60 bg-white/10 rounded-full blur-3xl pointer-events-none"
-          animate={{ scale: [1, 1.2, 1] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.div
-          className="absolute bottom-10 right-10 w-48 h-48 bg-black/10 rounded-full blur-3xl pointer-events-none"
-          animate={{ scale: [1, 1.15, 1] }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-        />
+        <div className="cta-orb cta-orb--large absolute top-10 left-10 w-60 h-60 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="cta-orb cta-orb--small absolute bottom-10 right-10 w-48 h-48 bg-black/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div

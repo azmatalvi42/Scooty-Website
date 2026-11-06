@@ -1,7 +1,10 @@
 import { motion, AnimatePresence, animate, useMotionValue, useReducedMotion } from 'framer-motion';
 import type { PanInfo, Transition } from 'framer-motion';
-import { useState, useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import { memo, startTransition, useState, useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { createWheelGesture, WHEEL_IDLE_MS } from './carouselWheel';
+import { EagerImagesContext } from './SiteImage';
 
 /**
  * The home page's "Our Solutions" carousel, shared so every carousel on the site moves and reads
@@ -11,9 +14,11 @@ import type { ReactNode } from 'react';
  */
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-const SLIDE: Transition = { duration: 0.38, ease: EASE };
-const INSTANT = { duration: 0 } as const;
+const SLIDE_SECONDS = 0.38;
+const SLIDE: Transition = { duration: SLIDE_SECONDS, ease: EASE };
+const INSTANT: Transition = { type: false };
 const REVEAL = [0.16, 1, 0.3, 1] as const;
+const DIMMED = 0.45; // black over a neighbouring card, darkening it to 55%
 
 const PHONE_MAX = 768; // one dominant card, with the next one peeking in
 
@@ -23,12 +28,12 @@ type Layout = {
   activeW: number;
   activeH: number;
   sideW: number;
-  sideH: number;
+  sideScale: number;
   radius: number;
   phone: boolean;
 };
 
-type Box = { x: number; y: number; width: number; height: number; opacity: number; filter: string };
+type Box = { transform: string; opacity: number };
 type ExitContext = { pos: number; layout: Layout; transition: Transition };
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
@@ -61,7 +66,7 @@ function computeLayout(width: number, viewportH: number, aspect: number, phoneAs
       activeW,
       activeH,
       sideW: activeW * 0.8,
-      sideH: Math.round(activeH * 0.8),
+      sideScale: 0.8,
       radius: 28,
       phone: false,
     };
@@ -69,22 +74,27 @@ function computeLayout(width: number, viewportH: number, aspect: number, phoneAs
   const gap = 12;
   const activeW = width - 16 - gap - 44;
   const activeH = Math.max(phoneMinHeight, Math.round(activeW * phoneAspect));
-  return { anchor: 16, gap, activeW, activeH, sideW: activeW * 0.86, sideH: Math.round(activeH * 0.86), radius: 22, phone: true };
+  return { anchor: 16, gap, activeW, activeH, sideW: activeW * 0.86, sideScale: 0.86, radius: 22, phone: true };
 }
 
 /**
- * Where the card `offset` places away from the active one sits on the track, and how it reads: neighbours
- * are darkened (not faded, so the page never shows through). Phones preview only the next card.
+ * Where the card `offset` places away from the active one sits on the track. Every card keeps the active
+ * card's size and neighbours are scaled down, so a slide change only ever moves a transform. That also
+ * lets the browser run it off the main thread, which needs the raw string (framer-motion runs x/y/scale
+ * in JS) in one fixed format, since the values are interpolated token by token.
+ * Phones preview only the next card.
  */
+const toTransform = (x: number, y: number, scale: number) => `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) scale(${scale})`;
+
 function place(layout: Layout, offset: number): Box {
-  const { anchor, gap, activeW, sideW, activeH, sideH } = layout;
-  if (offset === 0) return { x: anchor, y: 0, width: activeW, height: activeH, opacity: 1, filter: 'brightness(1)' };
+  const { anchor, gap, activeW, sideW, activeH, sideScale } = layout;
+  if (offset === 0) return { transform: toTransform(anchor, 0, 1), opacity: 1 };
   const x =
     offset > 0
       ? anchor + activeW + gap + (offset - 1) * (sideW + gap)
       : anchor + offset * (sideW + gap);
   const shown = Math.abs(offset) === 1 && !(layout.phone && offset < 0);
-  return { x, y: (activeH - sideH) / 2, width: sideW, height: sideH, opacity: shown ? 1 : 0, filter: 'brightness(0.55)' };
+  return { transform: toTransform(x, (activeH - activeH * sideScale) / 2, sideScale), opacity: shown ? 1 : 0 };
 }
 
 type SlideProps = {
@@ -102,6 +112,7 @@ type SlideProps = {
 
 /** One card: large imagery in a rounded rectangle. Neighbours are smaller and dimmed. */
 const Slide = ({ label, backdrop, index, total, virtualIndex, offset, enterOffset, context, onSelect, children }: SlideProps) => {
+  const dimFor = (cardOffset: number) => ({ opacity: cardOffset === 0 ? 0 : DIMMED });
   const { layout, transition } = context;
   const active = offset === 0;
   // A leaving card glides to wherever its offset now lands, then unmounts. AnimatePresence
@@ -126,13 +137,30 @@ const Slide = ({ label, backdrop, index, total, virtualIndex, offset, enterOffse
       aria-roledescription="slide"
       aria-label={`${index + 1} of ${total}: ${label}`}
       aria-hidden={active ? undefined : true}
-      className={`group/card absolute left-0 top-0 overflow-hidden isolate will-change-transform ${active ? '' : 'cursor-pointer'}`}
-      style={{ borderRadius: layout.radius, backgroundColor: backdrop }}
+      className={`absolute left-0 top-0 overflow-hidden isolate ${Math.abs(offset) <= 2 ? 'will-change-transform' : ''} ${active ? '' : 'cursor-pointer'}`}
+      style={{ width: layout.activeW, height: layout.activeH, transformOrigin: '0 0', borderRadius: layout.radius, backgroundColor: backdrop }}
     >
       {children}
+      {/* Darkened rather than faded, so the page never shows through. */}
+      <motion.div
+        aria-hidden
+        className="absolute inset-0 bg-black pointer-events-none"
+        initial={dimFor(enterOffset)}
+        animate={dimFor(offset)}
+        transition={transition}
+      />
     </motion.div>
   );
 };
+
+type SlideContentProps = {
+  item: unknown;
+  active: boolean;
+  render: { current: (item: never, active: boolean) => ReactNode };
+};
+
+/** A slide's contents, re-rendered only when the card's slide or focus changes, not on every step. */
+const SlideContent = memo(({ item, active, render }: SlideContentProps) => <>{render.current(item as never, active)}</>);
 
 type EditorialCarouselProps<T> = {
   items: T[];
@@ -211,15 +239,33 @@ export function EditorialCarousel<T>({
   }, []);
 
   // Controlled use: follow the page's menu, and report slides changed from inside the carousel.
+  // A value we reported ourselves is only the page catching up; following it could undo a newer step.
+  const lastReported = useRef(active);
   useEffect(() => {
-    if (activeProp === undefined) return;
+    if (activeProp === undefined || activeProp === lastReported.current) return;
     setPos((p) => p + shortestStep(wrap(p, total), activeProp, total));
   }, [activeProp, total]);
   const onActiveChangeRef = useRef(onActiveChange);
   onActiveChangeRef.current = onActiveChange;
   useEffect(() => {
-    onActiveChangeRef.current?.(active);
+    lastReported.current = active;
+    // The page's re-render can wait; the slide already moving can't.
+    startTransition(() => onActiveChangeRef.current?.(active));
   }, [active]);
+
+  const renderSlideRef = useRef(renderSlide);
+  renderSlideRef.current = renderSlide;
+
+  // Neighbours sit clipped off-stage, where lazy images wouldn't load until they're about to show.
+  const [nearRef, near] = useInView({ rootMargin: '600px 0px', triggerOnce: true });
+  const regionRef = useRef<HTMLDivElement | null>(null);
+  const setRegion = useCallback(
+    (node: HTMLDivElement | null) => {
+      regionRef.current = node;
+      nearRef(node);
+    },
+    [nearRef],
+  );
 
   useLayoutEffect(() => {
     const stage = stageRef.current;
@@ -244,81 +290,91 @@ export function EditorialCarousel<T>({
   const reduceRef = useRef(reduceMotion);
   reduceRef.current = reduceMotion;
 
+  const rebound = useCallback(() => {
+    animate(dragX, 0, { duration: reduceRef.current ? 0 : SLIDE_SECONDS, ease: [...EASE] });
+  }, [dragX]);
+
   // Two-finger swipes follow the fingers and change slide the moment the gesture is clear.
-  // The trackpad's leftover coast is ignored, so the slide does not wait for it to die down.
   useEffect(() => {
-    const stage = stageRef.current;
-    if (!stage || total < 2) return;
-    let accum = 0;
-    let axis: 'idle' | 'x' | 'y' = 'idle';
-    let committed = false;
+    const region = regionRef.current;
+    if (!region || total < 2) return;
+    const gesture = createWheelGesture();
     let idle = 0;
-    let last = 0;
+    let base: number | null = null; // where the track was when this swipe took hold of it
 
     const pixels = (delta: number, mode: number, page: number) =>
       mode === 1 ? delta * 16 : mode === 2 ? delta * page : delta;
 
-    const settle = () => {
-      const width = layoutRef.current?.activeW ?? 480;
-      const distance = accum;
-      const already = committed;
-      accum = 0;
-      axis = 'idle';
-      committed = false;
-      if (already) return;
-      if (Math.abs(distance) > Math.min(36, width * 0.06)) go(Math.sign(distance));
-      animate(dragX, 0, { duration: reduceRef.current ? 0 : SLIDE.duration, ease: [...EASE] });
+    const release = () => {
+      if (base === null) return;
+      base = null;
+      rebound();
     };
 
-    const commit = (direction: number) => {
-      committed = true;
-      go(direction);
-      animate(dragX, 0, { duration: reduceRef.current ? 0 : SLIDE.duration, ease: [...EASE] });
+    const onIdle = () => {
+      const direction = gesture.idle(performance.now());
+      if (direction) go(direction);
+      release();
     };
 
     const onWheel = (event: WheelEvent) => {
-      const now = performance.now();
-      const dx = pixels(event.deltaX, event.deltaMode, window.innerWidth);
-      const dy = pixels(event.deltaY, event.deltaMode, window.innerHeight);
-      if (committed) {
-        event.preventDefault();
-        window.clearTimeout(idle);
-        idle = window.setTimeout(settle, 140);
-        return;
-      }
-      if (axis === 'idle' || now - last > 140) {
-        accum = axis === 'idle' ? accum : 0;
-        axis = Math.abs(dx) + 4 >= Math.abs(dy) ? 'x' : 'y';
-      }
-      last = now;
-      window.clearTimeout(idle);
-      idle = window.setTimeout(settle, 50);
-      if (axis === 'y' && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 6) axis = 'x';
-      if (axis === 'y') return;
-      event.preventDefault();
-      accum += dx;
       const width = layoutRef.current?.activeW ?? 480;
-      dragX.set(clamp(-accum, -width * 0.22, width * 0.22));
-      if (Math.abs(dx) > 24 || Math.abs(accum) > Math.min(28, width * 0.05)) commit(Math.sign(accum || dx));
+      const step = gesture.handle(
+        {
+          dx: pixels(event.deltaX, event.deltaMode, window.innerWidth),
+          dy: pixels(event.deltaY, event.deltaMode, window.innerHeight),
+          time: event.timeStamp,
+          cancelable: event.cancelable,
+          ctrlKey: event.ctrlKey,
+        },
+        width,
+      );
+      if (step.prevent && event.cancelable) event.preventDefault();
+      window.clearTimeout(idle);
+      if (step.prevent) idle = window.setTimeout(onIdle, WHEEL_IDLE_MS);
+      if (step.drag !== null) {
+        if (base === null) {
+          // A rebound still running would overwrite every set() below.
+          dragX.stop();
+          base = dragX.get();
+        }
+        dragX.set(clamp(base - step.drag, -width * 0.22, width * 0.22));
+      }
+      if (step.commit) go(step.commit);
+      if (step.commit || (step.drag === 0 && !step.prevent)) release();
     };
 
-    stage.addEventListener('wheel', onWheel, { passive: false });
+    region.addEventListener('wheel', onWheel, { passive: false });
     return () => {
-      stage.removeEventListener('wheel', onWheel);
+      region.removeEventListener('wheel', onWheel);
       window.clearTimeout(idle);
     };
-  }, [dragX, go, total]);
+  }, [dragX, go, rebound, total]);
   // Set once a press turns into a drag, so releasing it doesn't also count as a click.
   const dragged = useRef(false);
+  const panBase = useRef<number | null>(null);
 
-  const onPan = (_: PointerEvent, info: PanInfo) => dragX.set(info.offset.x);
+  const onPan = (_: PointerEvent, info: PanInfo) => {
+    dragged.current = true;
+    if (panBase.current === null) {
+      // Same as the wheel: stop any rebound, and carry on from where it had reached.
+      dragX.stop();
+      panBase.current = dragX.get();
+    }
+    dragX.set(panBase.current + info.offset.x);
+  };
 
-  const onPanEnd = (_: PointerEvent, info: PanInfo) => {
-    const flick = Math.abs(info.velocity.x) > 280 ? Math.sign(info.velocity.x) : 0;
-    const threshold = Math.min(72, (layout?.activeW ?? 0) * 0.12);
-    const pulled = Math.abs(info.offset.x) > threshold ? Math.sign(info.offset.x) : 0;
-    go(-(flick || pulled));
-    animate(dragX, 0, { duration: reduceMotion ? 0 : SLIDE.duration, ease: [...EASE] });
+  const onPanEnd = (event: PointerEvent, info: PanInfo) => {
+    panBase.current = null;
+    // A cancelled press is the browser taking over, usually to scroll the page: not a swipe.
+    if (event.type !== 'pointercancel') {
+      const sideways = Math.abs(info.velocity.x) > Math.abs(info.velocity.y);
+      const flick = sideways && Math.abs(info.velocity.x) > 280 ? Math.sign(info.velocity.x) : 0;
+      const threshold = Math.min(72, (layout?.activeW ?? 0) * 0.12);
+      const pulled = Math.abs(info.offset.x) > threshold ? Math.sign(info.offset.x) : 0;
+      go(-(flick || pulled));
+    }
+    rebound();
   };
 
   const reach = total > 1 ? Math.floor(total / 2) + 1 : 0;
@@ -327,6 +383,7 @@ export function EditorialCarousel<T>({
 
   return (
     <motion.div
+      ref={setRegion}
       initial={{ opacity: 0, y: 10 }}
       animate={revealed ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: 0.15, ease: REVEAL }}
@@ -344,7 +401,7 @@ export function EditorialCarousel<T>({
       {/* Full bleed, so neighbouring cards are cropped by the viewport edge */}
       <div
         ref={stageRef}
-        className="relative mx-auto max-w-[1920px] overflow-x-clip overscroll-x-contain min-[1921px]:[mask-image:linear-gradient(90deg,transparent,#000_6%,#000_94%,transparent)]"
+        className="relative mx-auto max-w-[1920px] overflow-x-clip min-[1921px]:[mask-image:linear-gradient(90deg,transparent,#000_6%,#000_94%,transparent)]"
         style={{ height: layout ? layout.activeH : undefined }}
       >
         {context && (
@@ -355,9 +412,6 @@ export function EditorialCarousel<T>({
             onPointerDownCapture={() => {
               dragged.current = false;
             }}
-            onPanStart={() => {
-              dragged.current = true;
-            }}
             onPan={onPan}
             onPanEnd={onPanEnd}
             onClickCapture={(event) => {
@@ -367,28 +421,30 @@ export function EditorialCarousel<T>({
               dragged.current = false;
             }}
           >
-            <AnimatePresence initial={false} custom={context}>
-              {slots.map((virtualIndex) => {
-                const index = wrap(virtualIndex, total);
-                const item = items[index];
-                return (
-                  <Slide
-                    key={virtualIndex}
-                    label={getLabel(item)}
-                    backdrop={getBackdrop(item)}
-                    index={index}
-                    total={total}
-                    virtualIndex={virtualIndex}
-                    offset={virtualIndex - pos}
-                    enterOffset={virtualIndex - lastPos.current}
-                    context={context}
-                    onSelect={() => go(virtualIndex - pos)}
-                  >
-                    {renderSlide(item, virtualIndex === pos)}
-                  </Slide>
-                );
-              })}
-            </AnimatePresence>
+            <EagerImagesContext.Provider value={near}>
+              <AnimatePresence initial={false} custom={context}>
+                {slots.map((virtualIndex) => {
+                  const index = wrap(virtualIndex, total);
+                  const item = items[index];
+                  return (
+                    <Slide
+                      key={virtualIndex}
+                      label={getLabel(item)}
+                      backdrop={getBackdrop(item)}
+                      index={index}
+                      total={total}
+                      virtualIndex={virtualIndex}
+                      offset={virtualIndex - pos}
+                      enterOffset={virtualIndex - lastPos.current}
+                      context={context}
+                      onSelect={() => go(virtualIndex - pos)}
+                    >
+                      <SlideContent item={item} active={virtualIndex === pos} render={renderSlideRef} />
+                    </Slide>
+                  );
+                })}
+              </AnimatePresence>
+            </EagerImagesContext.Provider>
           </motion.div>
         )}
       </div>
@@ -427,7 +483,7 @@ export function EditorialCarousel<T>({
               className="flex items-center h-8 px-1"
             >
               <span
-                className={`block h-1 rounded-full transition-all duration-500 ${index === active ? '' : 'bg-black/15 dark:bg-white/20'}`}
+                className={`block h-1 rounded-full transition-colors duration-500 ${index === active ? '' : 'bg-black/15 dark:bg-white/20'}`}
                 style={{ width: index === active ? 32 : 12, backgroundColor: index === active ? getAccent(item) : undefined }}
               />
             </button>
